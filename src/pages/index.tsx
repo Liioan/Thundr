@@ -10,7 +10,12 @@ const Home: NextPage = () => {
         <meta name="description" content="Note app" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="h-screen bg-background-light dark:bg-background-dark"></main>
+      <main className="h-[10000px] bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum,
+        architecto voluptatum consectetur illum soluta totam maxime explicabo?
+        Ex sequi ullam eum cupiditate, impedit quam odio, officia, accusamus
+        dolore magnam dolorum?
+      </main>
     </>
   );
 };

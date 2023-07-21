@@ -13,13 +13,16 @@ export default {
       },
       fontSize: {
         small: "0.938",
-        big: "1.25rem",
+        medium: "1.25rem",
+        big: "1.5rem",
       },
     },
     colors: {
       background: {
         dark: "#16161E",
+        "dark-opacity": "rgb(22, 22, 30, .8)",
         light: "#CBCCD1",
+        "light-opacity": "rgb(203, 204, 205, .8)",
       },
       foreground: {
         dark: "#1E2130",
