@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import "@theme-toggles/react/css/Expand.css";
 import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
+import Overlay from "./Overlay";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -86,7 +87,7 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="fixed top-0 z-10 flex w-full justify-between p-[25px]">
+      <nav className="fixed top-0 z-30 flex w-full justify-between p-[25px]">
         <MenuButton
           isMenuOpened={isMenuOpened}
           setIsMenuOpened={setIsMenuOpened}
@@ -102,45 +103,36 @@ const Nav = () => {
           />
         </Link>
       </nav>
-      <AnimatePresence>
-        {isMenuOpened && (
-          <motion.div
-            className="fixed flex h-screen w-screen flex-col bg-background-light-opacity px-[25px] pt-24 backdrop-blur-sm transition-colors duration-200 dark:bg-background-dark-opacity lg:max-w-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <ThemeSwitch />
-            {session != null ? (
-              <div className="flex flex-col gap-[50px]">
-                <div className="relative flex flex-col gap-[10px] after:absolute after:-bottom-[25px] after:h-[4px] after:w-full after:bg-accent-light after:content-[''] dark:after:bg-accent-dark">
-                  {links.map((link) => (
-                    <Link
-                      href={link.path}
-                      key={link.path}
-                      className="text-big text-text-light dark:text-text-dark"
-                    >
-                      {link.text}
-                    </Link>
-                  ))}
-                </div>
-                <button
-                  onClick={() => void signOut()}
-                  className="self-start text-big text-danger-light dark:text-danger-dark"
+      <Overlay condition={isMenuOpened} zIndex="z-20">
+        <ThemeSwitch />
+        {session != null ? (
+          <div className="flex flex-col gap-[50px]">
+            <div className="relative flex flex-col gap-[10px] after:absolute after:-bottom-[25px] after:h-[4px] after:w-full after:rounded-full after:bg-accent-light after:content-[''] dark:after:bg-accent-dark">
+              {links.map((link) => (
+                <Link
+                  href={link.path}
+                  key={link.path}
+                  className="text-big text-text-light dark:text-text-dark"
                 >
-                  Log out
-                </button>
-              </div>
-            ) : (
-              <div className="flex h-3/4 items-center justify-center">
-                <span className="text-big text-text-light dark:text-text-dark">
-                  Log in to see more
-                </span>
-              </div>
-            )}
-          </motion.div>
+                  {link.text}
+                </Link>
+              ))}
+            </div>
+            <button
+              onClick={() => void signOut()}
+              className="self-start text-big text-danger-light dark:text-danger-dark"
+            >
+              Log out
+            </button>
+          </div>
+        ) : (
+          <div className="flex h-3/4 items-center justify-center">
+            <span className="text-big text-text-light dark:text-text-dark">
+              Log in to see more
+            </span>
+          </div>
         )}
-      </AnimatePresence>
+      </Overlay>
     </>
   );
 };

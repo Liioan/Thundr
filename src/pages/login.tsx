@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
+import { useEffect } from "react";
 
 const Login: NextPage = () => {
   const { theme } = useTheme();
