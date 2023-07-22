@@ -7,10 +7,15 @@ import {
   type ReactNode,
   useState,
 } from "react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/solid";
 import Checkbox from "./Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
 import Title from "./Title";
+import { useUiStore } from "~/store/useUiStore";
 
 type noteTypeOptions =
   | "note"
@@ -195,6 +200,7 @@ const INITIAL_DATA: FormData = {
 
 const NoteCreator = () => {
   const [data, setData] = useState(INITIAL_DATA);
+  const { isNoteCreatorOpen, setIsNoteCreatorOpen } = useUiStore();
 
   const updateFields = (fields: Partial<FormData>) => {
     setData((prev) => {
@@ -217,6 +223,7 @@ const NoteCreator = () => {
       updateFields={updateFields}
     />,
   ];
+
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm(steps);
 
@@ -228,7 +235,7 @@ const NoteCreator = () => {
   };
 
   return (
-    <Overlay condition={true} zIndex="10">
+    <Overlay condition={isNoteCreatorOpen} zIndex="10">
       <div className=" flex h-3/4 items-center justify-center">
         <div className="h-[400px] w-[280px] rounded-15 bg-foreground-light p-7 dark:bg-foreground-dark">
           <form
@@ -259,6 +266,7 @@ const NoteCreator = () => {
               <button
                 className="min-w-min rounded-full bg-accent-light px-3 text-center text-small font-medium text-text-light dark:bg-accent-dark"
                 type="button"
+                onClick={setIsNoteCreatorOpen}
               >
                 cancel
               </button>
@@ -284,3 +292,17 @@ const NoteCreator = () => {
 };
 
 export default NoteCreator;
+
+export const OpenNoteCreatorButton = () => {
+  const { setIsNoteCreatorOpen } = useUiStore();
+
+  return (
+    <button
+      className="fixed bottom-[25px] right-[25px] z-0 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
+      onClick={setIsNoteCreatorOpen}
+    >
+      <PencilSquareIcon className="w-5 text-text-light" />
+      new
+    </button>
+  );
+};

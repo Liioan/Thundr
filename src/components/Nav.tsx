@@ -103,7 +103,7 @@ const Nav = () => {
           />
         </Link>
       </nav>
-      <Overlay condition={isMenuOpened} zIndex="z-20">
+      <Overlay condition={isMenuOpened} zIndex="z-20" className="lg:max-w-sm">
         <ThemeSwitch />
         {session != null ? (
           <div className="flex flex-col gap-[50px]">
