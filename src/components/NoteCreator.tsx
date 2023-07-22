@@ -16,17 +16,11 @@ import Checkbox from "./Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
 import Title from "./Title";
 import { useUiStore } from "~/store/useUiStore";
-
-type noteTypeOptions =
-  | "note"
-  | "todoList"
-  | "progressTracker"
-  | "decisionTree"
-  | "counter";
+import { api } from "~/utils/api";
 
 interface FormData {
   noteTitle?: string;
-  noteType: noteTypeOptions;
+  noteType: string;
   isMarkdown?: boolean;
   daysAmount?: number;
   remindDate?: string;
@@ -34,10 +28,10 @@ interface FormData {
 
 type updateFieldsType = (fields: Partial<FormData>) => void;
 
-type NoteTypeFormProps = noteTypeOptions & {
-  noteType: noteTypeOptions;
+interface NoteTypeFormProps {
+  noteType: string;
   updateFields: updateFieldsType;
-};
+}
 
 interface FormWrapperProps {
   children: ReactNode;
@@ -59,7 +53,7 @@ const FormWrapper = ({ children, className = "" }: FormWrapperProps) => {
 };
 
 const NoteTypeForm = ({ noteType, updateFields }: NoteTypeFormProps) => {
-  const noteTypeList: { value: noteTypeOptions; text: string }[] = [
+  const noteTypeList: { value: string; text: string }[] = [
     { value: "note", text: "Note" },
     { value: "todoList", text: "Todo list" },
     { value: "progressTracker", text: "Progress tracker" },
@@ -86,7 +80,7 @@ const NoteTypeForm = ({ noteType, updateFields }: NoteTypeFormProps) => {
 
 interface AdditionalInfoFormProps {
   noteTitle?: string;
-  noteType: noteTypeOptions;
+  noteType: string;
   isMarkdown?: boolean;
   daysAmount?: number;
   updateFields: updateFieldsType;
@@ -209,8 +203,6 @@ const NoteCreator = () => {
   };
 
   const steps: ReactElement[] = [
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     <NoteTypeForm key={"NoteTypeForm"} {...data} updateFields={updateFields} />,
     <AdditionalInfoForm
       key={"AdditionalInfoForm"}
@@ -227,11 +219,16 @@ const NoteCreator = () => {
   const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm(steps);
 
+  const createNote = api.note.createNote.useMutation({
+    onSuccess: (noteCreated) => {
+      console.log(noteCreated);
+    },
+  });
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!isLastStep) return next();
-
-    console.log("note created", data);
+    createNote.mutate({ ...data });
   };
 
   return (

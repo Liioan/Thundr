@@ -48,6 +48,8 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    //! non nextauth
+    notes         Note[]
 }
 
 model VerificationToken {
@@ -56,4 +58,17 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Note {
+    id           String    @id @default(cuid())
+    title        String
+    content      String?   @db.Text
+    isMarkdown   Boolean
+    reminderDate DateTime?
+    userId       String
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@index([userId])
 }
