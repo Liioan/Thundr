@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect, type SetStateAction, type Dispatch } from "react";
+import { useState, type SetStateAction, type Dispatch } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -64,27 +64,10 @@ const ThemeSwitch = () => {
 
 const Nav = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   const { data: session } = useSession();
 
   const { theme } = useTheme();
-
-  const onResize = () => {
-    setIsMobile(window.innerWidth <= 1024);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  });
-
-  useEffect(() => {
-    onResize();
-  }, []);
 
   let logoUrl = "/logo_dark.svg";
   if (theme === "light") {
@@ -120,9 +103,9 @@ const Nav = () => {
         </Link>
       </nav>
       <AnimatePresence>
-        {(isMenuOpened || !isMobile) && (
+        {isMenuOpened && (
           <motion.div
-            className="fixed flex h-screen w-screen flex-col bg-background-light-opacity px-[25px] pt-24 backdrop-blur-sm transition-colors duration-200 dark:bg-background-dark-opacity"
+            className="fixed flex h-screen w-screen flex-col bg-background-light-opacity px-[25px] pt-24 backdrop-blur-sm transition-colors duration-200 dark:bg-background-dark-opacity lg:max-w-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
