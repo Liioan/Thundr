@@ -76,6 +76,7 @@ const Nav = () => {
   }
 
   const links = [
+    { path: "/", text: "Home" },
     { path: "/notes", text: "Notes" },
     { path: "/Todos", text: "Todo's" },
     { path: "/counters", text: "Counters" },
