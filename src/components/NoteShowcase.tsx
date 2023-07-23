@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Title from "./ui/Title";
+import PinSwitch from "./ui/PinSwitch";
 
 interface NoteShowcaseProps {
   id: string;
@@ -25,7 +26,10 @@ const NoteShowcase = ({
 
   return (
     <Link href={`/notes/${id}`}>
-      <div className="flex min-h-[150px] w-mobile flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
+      <div className=" ] relative flex w-mobile flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
+        <span className="absolute right-[30px] top-[35px]">
+          <PinSwitch toggled={pinned} />
+        </span>
         <Title text={title} />
         <p className="text-small text-text-light dark:text-text-dark">
           {content ? (

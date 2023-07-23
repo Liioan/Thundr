@@ -24,7 +24,7 @@ const Title = ({
       <input
         type="text"
         disabled={isDisabled}
-        className={`mb-2 w-full  text-medium font-medium text-secondary-light focus:text-primary-light focus:outline-none  dark:text-secondary-dark dark:focus:text-primary-dark ${
+        className={`mb-2 w-min  text-medium font-medium text-secondary-light focus:text-primary-light focus:outline-none  dark:text-secondary-dark dark:focus:text-primary-dark ${
           isDisabled
             ? "bg-foreground-light dark:bg-foreground-dark"
             : "bg-background-light dark:bg-background-dark "
