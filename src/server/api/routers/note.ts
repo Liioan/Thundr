@@ -17,7 +17,7 @@ export const noteRouter = createTRPCRouter({
         const data = {
           title: noteTitle?.length ? noteTitle : "untitled",
           isMarkdown: isMarkdown ?? false,
-          content: null,
+          content: "",
           reminderDate: reminderDate,
           userId: ctx.session.user.id,
         };
@@ -25,6 +25,29 @@ export const noteRouter = createTRPCRouter({
         return newNote;
       }
     ),
+
+  editNote: protectedProcedure
+    .input(
+      z.object({
+        noteId: z.string(),
+        pinned: z.boolean().optional(),
+        title: z.string().optional(),
+        content: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input: { noteId, pinned, title, content }, ctx }) => {
+      const editedNote = await ctx.prisma.note.update({
+        where: {
+          id: noteId,
+        },
+        data: {
+          pinned: pinned,
+          title: title,
+          content: content,
+        },
+      });
+      return editedNote;
+    }),
 
   getNoteDetails: protectedProcedure
     .input(z.object({ noteId: z.string() }))

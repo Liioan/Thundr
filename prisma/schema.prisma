@@ -63,7 +63,7 @@ model VerificationToken {
 model Note {
     id           String  @id @default(cuid())
     title        String
-    content      String? @db.Text
+    content      String  @db.Text
     isMarkdown   Boolean
     reminderDate String?
     userId       String
