@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const noteRouter = createTRPCRouter({
   createNote: protectedProcedure
@@ -17,26 +13,31 @@ export const noteRouter = createTRPCRouter({
       })
     )
     .mutation(
-      async ({
-        input: { noteTitle, noteType, isMarkdown, daysAmount, reminderDate },
-        ctx,
-      }) => {
-        console.log();
-        switch (noteType) {
-          case "note":
-            const data = {
-              title: noteTitle?.length ? noteTitle : "untitled",
-              isMarkdown: isMarkdown ?? false,
-              content: null,
-              reminderDate: reminderDate,
-              userId: ctx.session.user.id,
-            };
-            await ctx.prisma.note.create({ data });
-            break;
-        }
-        return { reminderDate };
+      async ({ input: { noteTitle, isMarkdown, reminderDate }, ctx }) => {
+        const data = {
+          title: noteTitle?.length ? noteTitle : "untitled",
+          isMarkdown: isMarkdown ?? false,
+          content: null,
+          reminderDate: reminderDate,
+          userId: ctx.session.user.id,
+        };
+        const newNote = await ctx.prisma.note.create({ data });
+        return newNote;
       }
     ),
+
+  getNoteDetails: protectedProcedure
+    .input(z.object({ noteId: z.string() }))
+    .query(async ({ input: { noteId }, ctx }) => {
+      const currentUserId = ctx.session.user.id;
+      const noteData = await ctx.prisma.note.findUnique({
+        where: {
+          id: noteId,
+        },
+      });
+      if (noteData?.userId !== currentUserId) return null;
+      return noteData;
+    }),
 
   getAllNotes: protectedProcedure
     .input(

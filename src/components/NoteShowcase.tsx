@@ -24,7 +24,7 @@ const NoteShowcase = ({
   }
 
   return (
-    <Link href={`/note/${id}`}>
+    <Link href={`/notes/${id}`}>
       <div className="flex min-h-[150px] w-mobile flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
         <Title text={title} />
         <p className="text-small text-text-light dark:text-text-dark">

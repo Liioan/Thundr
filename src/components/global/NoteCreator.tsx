@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Title from "../ui/Title";
 import { useUiStore } from "~/store/useUiStore";
 import { api } from "~/utils/api";
+import Router from "next/router";
 
 interface FormData {
   noteTitle?: string;
@@ -221,12 +222,13 @@ const NoteCreator = () => {
     />,
   ];
 
-  const { currentStepIndex, step, isFirstStep, isLastStep, back, next } =
+  const { currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } =
     useMultistepForm(steps);
 
   const createNote = api.note.createNote.useMutation({
-    onSuccess: (noteCreated) => {
-      console.log(noteCreated);
+    onSuccess: async (newNote) => {
+      setIsNoteCreatorOpen();
+      await Router.push(`/notes/${newNote?.id}`);
     },
   });
 
@@ -234,12 +236,11 @@ const NoteCreator = () => {
     e.preventDefault();
     if (!isLastStep) return next();
     createNote.mutate({ ...data });
-    console.log(data.reminderDate);
   };
 
   return (
     <Overlay condition={isNoteCreatorOpen} zIndex="z-10">
-      <div className=" flex h-3/4 items-center justify-center">
+      <div className=" flex h-3/4 items-center justify-center transition-colors duration-200">
         <div className="h-[400px] w-[280px] rounded-15 bg-foreground-light p-7 dark:bg-foreground-dark">
           <form
             className="flex h-full w-full flex-col justify-between gap-4 "
@@ -269,7 +270,11 @@ const NoteCreator = () => {
               <button
                 className="min-w-min rounded-full bg-accent-light px-3 text-center text-small font-medium text-text-light dark:bg-accent-dark"
                 type="button"
-                onClick={setIsNoteCreatorOpen}
+                onClick={() => {
+                  setIsNoteCreatorOpen();
+                  setData(INITIAL_DATA);
+                  goTo(0);
+                }}
               >
                 cancel
               </button>

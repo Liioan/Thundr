@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { BeatLoader } from "react-spinners";
 import NoteShowcase from "~/components/NoteShowcase";
+import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
 
 const AllNotesSection = () => {
   const { data: sessionData } = useSession();
@@ -58,6 +59,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="h-[10000px] bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
         <AllNotesSection />
+        <OpenNoteCreatorButton />
       </main>
     </>
   );
