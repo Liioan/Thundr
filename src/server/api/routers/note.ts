@@ -21,19 +21,33 @@ export const noteRouter = createTRPCRouter({
         input: { noteTitle, noteType, isMarkdown, daysAmount, reminderDate },
         ctx,
       }) => {
+        console.log();
         switch (noteType) {
           case "note":
             const data = {
-              title: noteTitle ?? "untitled",
+              title: noteTitle?.length ? noteTitle : "untitled",
               isMarkdown: isMarkdown ?? false,
               content: null,
-              reminderDate: reminderDate ?? null,
+              reminderDate: reminderDate,
               userId: ctx.session.user.id,
             };
             await ctx.prisma.note.create({ data });
             break;
         }
-        return { noteCreated: true };
+        return { reminderDate };
       }
     ),
+
+  getAllNotes: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ input: { userId }, ctx }) => {
+      const notes = await ctx.prisma.note.findMany({
+        where: { userId: userId },
+      });
+      return notes;
+    }),
 });

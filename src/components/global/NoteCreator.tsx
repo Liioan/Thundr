@@ -1,6 +1,6 @@
 import { useMultistepForm } from "~/hooks/useMultistepForm";
-import Header from "./Header";
-import Overlay from "./Overlay";
+import Header from "../ui/Header";
+import Overlay from "../ui/Overlay";
 import {
   type FormEvent,
   type ReactElement,
@@ -12,9 +12,9 @@ import {
   ArrowRightIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/solid";
-import Checkbox from "./Checkbox";
+import Checkbox from "../ui/Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
-import Title from "./Title";
+import Title from "../ui/Title";
 import { useUiStore } from "~/store/useUiStore";
 import { api } from "~/utils/api";
 
@@ -23,7 +23,7 @@ interface FormData {
   noteType: string;
   isMarkdown?: boolean;
   daysAmount?: number;
-  remindDate?: string;
+  reminderDate?: string;
 }
 
 type updateFieldsType = (fields: Partial<FormData>) => void;
@@ -171,14 +171,19 @@ interface RemindDateFormProps {
 }
 
 const RemindDateForm = ({ remindDate, updateFields }: RemindDateFormProps) => {
+  const makeDate = (date: Date) => {
+    const fullDate = date.toISOString().split("T")[0];
+    updateFields({ reminderDate: fullDate });
+  };
+
   return (
     <FormWrapper className="flex flex-col gap-3">
       <Title text="Remind date (optional)" />
       <input
         type="date"
         className="h-12 w-full rounded-5 border-2 border-accent-light bg-foreground-light px-2 text-text-light transition-colors duration-200 focus:outline-none focus-visible:border-secondary-light dark:border-accent-dark dark:bg-foreground-dark dark:text-text-dark dark:focus-visible:border-secondary-dark"
-        value={remindDate}
-        onChange={(e) => updateFields({ remindDate: e.target.value })}
+        value={void remindDate?.toString}
+        onChange={(e) => makeDate(new Date(e.target.value))}
       />
     </FormWrapper>
   );
@@ -189,7 +194,7 @@ const INITIAL_DATA: FormData = {
   noteType: "note",
   isMarkdown: false,
   daysAmount: 0,
-  remindDate: "",
+  reminderDate: undefined,
 };
 
 const NoteCreator = () => {
@@ -229,10 +234,11 @@ const NoteCreator = () => {
     e.preventDefault();
     if (!isLastStep) return next();
     createNote.mutate({ ...data });
+    console.log(data.reminderDate);
   };
 
   return (
-    <Overlay condition={isNoteCreatorOpen} zIndex="10">
+    <Overlay condition={isNoteCreatorOpen} zIndex="z-10">
       <div className=" flex h-3/4 items-center justify-center">
         <div className="h-[400px] w-[280px] rounded-15 bg-foreground-light p-7 dark:bg-foreground-dark">
           <form

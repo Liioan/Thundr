@@ -4,8 +4,10 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ThemeProvider } from "next-themes";
-import Nav from "~/components/Nav";
-import NoteCreator, { OpenNoteCreatorButton } from "~/components/NoteCreator";
+import Nav from "~/components/global/Nav";
+import NoteCreator, {
+  OpenNoteCreatorButton,
+} from "~/components/global/NoteCreator";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

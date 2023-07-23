@@ -61,12 +61,13 @@ model VerificationToken {
 }
 
 model Note {
-    id           String    @id @default(cuid())
+    id           String  @id @default(cuid())
     title        String
-    content      String?   @db.Text
+    content      String? @db.Text
     isMarkdown   Boolean
-    reminderDate DateTime?
+    reminderDate String?
     userId       String
+    pinned       Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id])
 
