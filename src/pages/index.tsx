@@ -4,9 +4,9 @@ import { getServerAuthSession } from "../server/auth";
 import Header from "~/components/ui/Header";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import { BeatLoader } from "react-spinners";
 import NoteShowcase from "~/components/NoteShowcase";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
+import LoadingScreen from "~/components/global/LoadingScreen";
 
 const AllNotesSection = () => {
   const { data: sessionData } = useSession();
@@ -19,10 +19,7 @@ const AllNotesSection = () => {
     return (
       <>
         <Header text="All notes" />
-        <div className="flex h-40 flex-col items-center justify-center gap-4">
-          <BeatLoader color="#44CBCA" />
-          <p>loading</p>
-        </div>
+        <LoadingScreen />
       </>
     );
 

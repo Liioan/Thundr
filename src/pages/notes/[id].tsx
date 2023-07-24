@@ -7,6 +7,7 @@ import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import { BeatLoader } from "react-spinners";
+import LoadingScreen from "~/components/global/LoadingScreen";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -33,13 +34,7 @@ const NotePage: NextPage = () => {
     handleEdit();
   }, [isNotePinned]);
 
-  if (note.isLoading)
-    return (
-      <div className="flex h-40 flex-col items-center justify-center gap-4">
-        <BeatLoader color="#44CBCA" />
-        <p>loading</p>
-      </div>
-    );
+  if (note.isLoading) return <LoadingScreen fullscreen />;
 
   if (note.data == null) return null;
 
