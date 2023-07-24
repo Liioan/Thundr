@@ -13,12 +13,17 @@ const NotePage: NextPage = () => {
   const { id } = router.query;
 
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
+  const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<string | undefined>();
   const [noteTitle, setNoteTitle] = useState<string | undefined>();
   const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
-  const editNote = api.note.editNote.useMutation();
+  const editNote = api.note.editNote.useMutation({
+    async onSuccess(input) {
+      await utils.note.getNoteDetails.fetch({ noteId: input.id });
+    },
+  });
 
   const handleEdit = () => {
     editNote.mutate({
