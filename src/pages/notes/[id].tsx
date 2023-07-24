@@ -66,7 +66,13 @@ const NotePage: NextPage = () => {
             <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
           </button>
         </div>
-        <form className="flex flex-col gap-[25px]">
+        <form
+          className="flex flex-col gap-[25px]"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleEdit();
+          }}
+        >
           <Title
             text={noteTitle ?? note.data.title}
             isDisabled={false}
