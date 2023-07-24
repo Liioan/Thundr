@@ -26,7 +26,7 @@ const NoteShowcase = ({
 
   return (
     <Link href={`/notes/${id}`}>
-      <div className=" ] relative flex w-mobile flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
+      <div className=" ] relative flex w-full flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
         <span className="absolute right-[30px] top-[35px]">
           <PinSwitch toggled={pinned} />
         </span>
