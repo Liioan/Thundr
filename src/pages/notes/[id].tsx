@@ -6,7 +6,6 @@ import GoBackButton from "~/components/global/GoBackButton";
 import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
-import { BeatLoader } from "react-spinners";
 import LoadingScreen from "~/components/global/LoadingScreen";
 
 const NotePage: NextPage = () => {
@@ -15,9 +14,9 @@ const NotePage: NextPage = () => {
 
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
 
-  const [noteContent, setNoteContent] = useState(note.data?.content);
-  const [noteTitle, setNoteTitle] = useState(note.data?.title);
-  const [isNotePinned, setIsNotePinned] = useState(note.data?.pinned ?? false);
+  const [noteContent, setNoteContent] = useState<string | undefined>();
+  const [noteTitle, setNoteTitle] = useState<string | undefined>();
+  const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
   const editNote = api.note.editNote.useMutation();
 
@@ -33,6 +32,12 @@ const NotePage: NextPage = () => {
   useEffect(() => {
     handleEdit();
   }, [isNotePinned]);
+
+  useEffect(() => {
+    setNoteContent(note.data?.content);
+    setNoteTitle(note.data?.title);
+    setIsNotePinned(note.data?.pinned);
+  }, [note.data]);
 
   if (note.isLoading) return <LoadingScreen fullscreen />;
 
