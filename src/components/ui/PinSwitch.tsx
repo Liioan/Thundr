@@ -16,9 +16,9 @@ const PinSwitch = ({ toggled }: PinSwitchProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
+            transition={{ duration: 0.2 }}
           >
-            <BookmarkSolidIcon className=" right-0 h-6 text-secondary-light dark:text-secondary-dark" />
+            <BookmarkSolidIcon className=" right-0 h-6 text-primary-light dark:text-primary-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -29,7 +29,7 @@ const PinSwitch = ({ toggled }: PinSwitchProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
+            transition={{ duration: 0.2 }}
           >
             <BookmarkOutlineIcon className=" right-0 h-6 text-secondary-light dark:text-secondary-dark" />
           </motion.span>
