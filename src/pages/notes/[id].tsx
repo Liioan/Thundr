@@ -7,6 +7,7 @@ import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
+import TextArea from "~/components/ui/TextArea";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -79,12 +80,13 @@ const NotePage: NextPage = () => {
             onChangeEvent={setNoteTitle}
             onBlurEvent={handleEdit}
           />
-          <textarea
+          <TextArea
             className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
             placeholder="type something here"
-            value={noteContent ?? note.data.content}
-            onChange={(e) => setNoteContent(e.target.value)}
-            onBlur={handleEdit}
+            text={noteContent ?? note.data.content}
+            onChangeEvent={setNoteContent}
+            onBlurEvent={handleEdit}
+            isDisabled={false}
           />
         </form>
       </main>
