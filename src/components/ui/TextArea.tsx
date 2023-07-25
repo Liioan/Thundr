@@ -4,6 +4,7 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
+  useEffect,
 } from "react";
 
 interface TextAreaProps {
@@ -36,6 +37,22 @@ const TextArea = ({
       onChangeEvent(newValue);
     }
   };
+
+  const onResize = () => {
+    updateTextAreaSize(textAreaRef.current);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  });
+
+  useEffect(() => {
+    onResize();
+  }, []);
 
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const inputRef = useCallback((textArea: HTMLTextAreaElement) => {

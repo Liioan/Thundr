@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
+import { ResponsiveWrapper } from "~/components/global/ResponsiveWrapper";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -58,40 +59,42 @@ const NotePage: NextPage = () => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <main className="flex h-screen flex-col gap-[25px] bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
-        <div className="flex items-center justify-between">
-          <GoBackButton />
-          <button
-            className="flex h-10 w-10 items-center justify-center"
-            onClick={() => {
-              setIsNotePinned((prev) => !prev);
+        <ResponsiveWrapper>
+          <div className="flex items-center justify-between">
+            <GoBackButton />
+            <button
+              className="flex h-10 w-10 items-center justify-center"
+              onClick={() => {
+                setIsNotePinned((prev) => !prev);
+              }}
+            >
+              <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
+            </button>
+          </div>
+          <form
+            className="flex w-full flex-col gap-[25px]"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleEdit();
             }}
           >
-            <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
-          </button>
-        </div>
-        <form
-          className="flex flex-col gap-[25px]"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleEdit();
-          }}
-        >
-          <Title
-            text={noteTitle ?? note.data.title}
-            isDisabled={false}
-            onChangeEvent={setNoteTitle}
-            onBlurEvent={handleEdit}
-          />
-          <TextArea
-            className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
-            placeholder="type something here"
-            text={noteContent ?? note.data.content}
-            onChangeEvent={setNoteContent}
-            onBlurEvent={handleEdit}
-            isDisabled={false}
-            maxLength={3000}
-          />
-        </form>
+            <Title
+              text={noteTitle ?? note.data.title}
+              isDisabled={false}
+              onChangeEvent={setNoteTitle}
+              onBlurEvent={handleEdit}
+            />
+            <TextArea
+              className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
+              placeholder="type something here"
+              text={noteContent ?? note.data.content}
+              onChangeEvent={setNoteContent}
+              onBlurEvent={handleEdit}
+              isDisabled={false}
+              maxLength={3000}
+            />
+          </form>
+        </ResponsiveWrapper>
       </main>
     </>
   );

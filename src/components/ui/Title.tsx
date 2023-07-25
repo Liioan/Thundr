@@ -24,7 +24,7 @@ const Title = ({
       <TextArea
         className={`mb-2 resize-none text-medium font-medium text-secondary-light focus:text-primary-light focus:outline-none  dark:text-secondary-dark dark:focus:text-primary-dark ${
           isDisabled
-            ? "max-h-8 max-w-[250px] overflow-hidden bg-foreground-light dark:bg-foreground-dark "
+            ? "max-h-8 w-full overflow-hidden bg-foreground-light dark:bg-foreground-dark "
             : " w-full bg-background-light dark:bg-background-dark"
         }`}
         text={insertText()}

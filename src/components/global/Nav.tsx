@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, type SetStateAction, type Dispatch } from "react";
+import { useState, type SetStateAction, type Dispatch, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -66,6 +66,22 @@ const ThemeSwitch = () => {
 const Nav = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
+  const onResize = () => {
+    setIsMenuOpened(window.innerWidth >= 1800);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  });
+
+  useEffect(() => {
+    onResize();
+  }, []);
+
   const { data: session } = useSession();
 
   const { theme } = useTheme();
@@ -104,7 +120,11 @@ const Nav = () => {
           />
         </Link>
       </nav>
-      <Overlay condition={isMenuOpened} zIndex="z-20" className="lg:max-w-sm">
+      <Overlay
+        condition={isMenuOpened}
+        zIndex="z-20"
+        className="md:max-w-sm lg:border-r-2 lg:border-foreground-light lg:dark:border-foreground-dark"
+      >
         <ThemeSwitch />
         {session != null ? (
           <div className="flex flex-col gap-[50px]">

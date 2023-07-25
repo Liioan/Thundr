@@ -8,7 +8,7 @@ interface PinSwitchProps {
 
 const PinSwitch = ({ toggled }: PinSwitchProps) => {
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative z-10 flex items-center justify-center">
       <AnimatePresence>
         {toggled && (
           <motion.span

@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import NoteShowcase from "~/components/NoteShowcase";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
 import LoadingScreen from "~/components/global/LoadingScreen";
+import { ResponsiveWrapper } from "~/components/global/ResponsiveWrapper";
+import { NoteListWrapper } from "~/components/global/NoteListWrapper";
 
 const AllNotesSection = () => {
   const { data: sessionData } = useSession();
@@ -26,19 +28,21 @@ const AllNotesSection = () => {
   return (
     <>
       {notes.data != null ? (
-        <div className="flex flex-col gap-[25px]">
+        <ResponsiveWrapper>
           <Header text="All notes" />
-          {notes.data?.map((note) => (
-            <NoteShowcase
-              key={note.id}
-              id={note.id}
-              title={note.title}
-              content={note.content}
-              reminderDate={note.reminderDate}
-              pinned={note.pinned}
-            />
-          ))}
-        </div>
+          <NoteListWrapper>
+            {notes.data?.map((note) => (
+              <NoteShowcase
+                key={note.id}
+                id={note.id}
+                title={note.title}
+                content={note.content}
+                reminderDate={note.reminderDate}
+                pinned={note.pinned}
+              />
+            ))}
+          </NoteListWrapper>
+        </ResponsiveWrapper>
       ) : (
         <div>no notes</div>
       )}
@@ -54,7 +58,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Note app" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="h-[10000px] bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
+      <main className="flex h-screen flex-col bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
         <AllNotesSection />
         <OpenNoteCreatorButton />
       </main>
