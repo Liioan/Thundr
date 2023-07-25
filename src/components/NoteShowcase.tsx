@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Title from "./ui/Title";
 import PinSwitch from "./ui/PinSwitch";
+import { parseJson } from "~/utils/parseJson";
+import { type note } from "~/types/NoteType";
 
 interface NoteShowcaseProps {
   id: string;
@@ -24,6 +26,8 @@ const NoteShowcase = ({
     date = new Date(reminderDate).toLocaleDateString();
   }
 
+  const parsedContent = parseJson<note>(content ?? "");
+
   return (
     <Link href={`/notes/${id}`}>
       <div className="relative flex w-full max-w-sm flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
@@ -32,17 +36,17 @@ const NoteShowcase = ({
         </span>
         <Title text={title} />
         <p className="text-small text-text-light dark:text-text-dark">
-          {content ? (
-            content.length > 100 ? (
+          {parsedContent ? (
+            parsedContent.length > 100 ? (
               <>
-                {content.substring(0, 100)}
+                {parsedContent.substring(0, 100)}
                 <span className="font-bold text-primary-light dark:text-primary-dark">
                   {" "}
                   ...
                 </span>
               </>
             ) : (
-              content
+              parsedContent
             )
           ) : (
             <span className="text-text-light opacity-50 dark:text-text-dark">

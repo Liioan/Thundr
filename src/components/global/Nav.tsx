@@ -134,6 +134,7 @@ const Nav = () => {
                   href={link.path}
                   key={link.path}
                   className="text-big text-text-light dark:text-text-dark"
+                  onClick={() => setIsMenuOpened(false)}
                 >
                   {link.text}
                 </Link>

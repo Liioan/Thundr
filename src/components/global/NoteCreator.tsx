@@ -22,7 +22,6 @@ import Router from "next/router";
 interface FormData {
   noteTitle?: string;
   noteType: string;
-  isMarkdown?: boolean;
   daysAmount?: number;
   reminderDate?: string;
 }
@@ -101,7 +100,7 @@ const AdditionalInfoForm = ({
         <button
           type="button"
           className="flex items-center gap-2"
-          onClick={() => updateFields({ isMarkdown: false })}
+          onClick={() => updateFields({ noteType: "note" })}
         >
           <Checkbox toggled={!isMarkdown} />
           Normal note
@@ -109,7 +108,7 @@ const AdditionalInfoForm = ({
         <button
           type="button"
           className="flex items-center gap-2"
-          onClick={() => updateFields({ isMarkdown: true })}
+          onClick={() => updateFields({ noteType: "markdownNote" })}
         >
           <Checkbox toggled={isMarkdown ? true : false} />
           Markdown note
@@ -193,7 +192,6 @@ const RemindDateForm = ({ remindDate, updateFields }: RemindDateFormProps) => {
 const INITIAL_DATA: FormData = {
   noteTitle: "",
   noteType: "note",
-  isMarkdown: false,
   daysAmount: 0,
   reminderDate: undefined,
 };

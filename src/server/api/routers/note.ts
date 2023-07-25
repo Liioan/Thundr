@@ -7,21 +7,60 @@ export const noteRouter = createTRPCRouter({
       z.object({
         noteTitle: z.string().optional(),
         noteType: z.string(),
-        isMarkdown: z.boolean().optional(),
         daysAmount: z.number().optional(),
         reminderDate: z.string().optional(),
       })
     )
     .mutation(
-      async ({ input: { noteTitle, isMarkdown, reminderDate }, ctx }) => {
-        const data = {
-          title: noteTitle?.length ? noteTitle : "untitled",
-          isMarkdown: isMarkdown ?? false,
-          content: "",
-          reminderDate: reminderDate,
-          userId: ctx.session.user.id,
+      async ({
+        input: { noteTitle, reminderDate, noteType, daysAmount },
+        ctx,
+      }) => {
+        const createContent = () => {
+          let data = "";
+
+          if (noteType === "note" || noteType === "markdownNote") {
+            data = JSON.stringify("");
+          }
+          if (noteType === "todoList") {
+            data = JSON.stringify([]);
+          }
+          if (noteType === "progressTracker") {
+            if (daysAmount == null) return;
+            const content: { dayNumber: number; isFinished: boolean }[] = [];
+            for (let i = 0; i < daysAmount; i++) {
+              content.push({ dayNumber: i + 1, isFinished: false });
+            }
+            data = JSON.stringify(content);
+          }
+          if (noteType === "decisionTree") {
+            data = JSON.stringify([]);
+          }
+          if (noteType === "counter") {
+            data = JSON.stringify(0);
+          }
+
+          return data;
         };
-        const newNote = await ctx.prisma.note.create({ data });
+
+        const noteTypeId = await ctx.prisma.noteType.findFirst({
+          where: {
+            type: noteType,
+          },
+        });
+
+        if (noteTypeId == null) return;
+
+        const newNote = await ctx.prisma.note.create({
+          data: {
+            title: noteTitle?.length ? noteTitle : "untitled",
+            noteTypeId: noteTypeId.id,
+            content: createContent() ?? "",
+            reminderDate: reminderDate ?? undefined,
+            userId: ctx.session.user.id,
+          },
+        });
+
         return newNote;
       }
     ),
@@ -36,6 +75,7 @@ export const noteRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input: { noteId, pinned, title, content }, ctx }) => {
+      const stringifiedContent = JSON.stringify(content);
       const editedNote = await ctx.prisma.note.update({
         where: {
           id: noteId,
@@ -43,7 +83,7 @@ export const noteRouter = createTRPCRouter({
         data: {
           pinned: pinned,
           title: title,
-          content: content,
+          content: stringifiedContent,
         },
       });
       return editedNote;

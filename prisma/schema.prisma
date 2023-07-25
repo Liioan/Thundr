@@ -61,15 +61,22 @@ model VerificationToken {
 }
 
 model Note {
-    id           String  @id @default(cuid())
+    id           String   @id @default(cuid())
     title        String
-    content      String  @db.Text
-    isMarkdown   Boolean
+    content      String   @db.Text
     reminderDate String?
     userId       String
-    pinned       Boolean @default(false)
-
-    user User @relation(fields: [userId], references: [id])
+    noteTypeId   String
+    pinned       Boolean  @default(false)
+    type         NoteType @relation(fields: [noteTypeId], references: [id])
+    user         User     @relation(fields: [userId], references: [id])
 
     @@index([userId])
+    @@index([noteTypeId])
+}
+
+model NoteType {
+    id    String @id @default(cuid())
+    type  String
+    notes Note[]
 }

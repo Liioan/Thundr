@@ -9,6 +9,8 @@ import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
 import { ResponsiveWrapper } from "~/components/global/ResponsiveWrapper";
+import { parseJson } from "~/utils/parseJson";
+import { type note } from "~/types/NoteType";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -43,7 +45,9 @@ const NotePage: NextPage = () => {
   }, [isNotePinned]);
 
   useEffect(() => {
-    setNoteContent(note.data?.content);
+    if (note.data?.content != null) {
+      setNoteContent(parseJson<note>(note.data.content));
+    }
     setNoteTitle(note.data?.title);
     setIsNotePinned(note.data?.pinned);
   }, [note.data]);
