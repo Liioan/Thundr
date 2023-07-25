@@ -27,6 +27,8 @@ const NotePage: NextPage = () => {
   });
 
   const handleEdit = () => {
+    if (noteContent === note.data?.content && noteTitle === note.data?.title)
+      return;
     editNote.mutate({
       noteId: id as string,
       title: noteTitle,
