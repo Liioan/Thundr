@@ -89,6 +89,7 @@ const NotePage: NextPage = () => {
             onChangeEvent={setNoteContent}
             onBlurEvent={handleEdit}
             isDisabled={false}
+            maxLength={3000}
           />
         </form>
       </main>

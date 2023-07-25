@@ -13,6 +13,7 @@ interface TextAreaProps {
   onChangeEvent?: Dispatch<SetStateAction<string | undefined>>;
   onBlurEvent?: () => void;
   placeholder?: string;
+  maxLength?: number;
 }
 
 const updateTextAreaSize = (textArea?: HTMLTextAreaElement) => {
@@ -28,6 +29,7 @@ const TextArea = ({
   onBlurEvent,
   className = "",
   placeholder = "",
+  maxLength = 150,
 }: TextAreaProps) => {
   const handleChange = (newValue: string) => {
     if (onChangeEvent != null) {
@@ -46,6 +48,7 @@ const TextArea = ({
   }, [text]);
   return (
     <textarea
+      maxLength={maxLength}
       ref={inputRef}
       style={{ height: 0 }}
       disabled={isDisabled}
