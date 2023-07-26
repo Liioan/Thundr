@@ -8,6 +8,7 @@ import "@theme-toggles/react/css/Expand.css";
 import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
+import GoogleIcon from "../ui/GoogleIcon";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -104,25 +105,40 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="fixed top-0 z-30 flex w-full justify-between p-[25px]">
+      <nav className="fixed top-0 z-40 flex w-full justify-between p-[25px]">
         <MenuButton
           isMenuOpened={isMenuOpened}
           setIsMenuOpened={setIsMenuOpened}
         />
-        <Link href={"/"} className="flex items-center justify-center">
-          <Image
-            src={logoUrl}
-            width={100}
-            height={30}
-            alt="logo"
-            priority
-            className="h-auto w-auto"
+        <Link href={"/"} className="flex items-center justify-center gap-4">
+          <AnimatePresence>
+            {isMenuOpened && (
+              <motion.div
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, y: -100 }}
+                transition={{ ease: "anticipate", duration: 0.5 }}
+              >
+                <Image
+                  src={logoUrl}
+                  width={100}
+                  height={30}
+                  alt="logo"
+                  priority
+                  className="h-auto w-auto"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <GoogleIcon
+            iconName="filter_drama"
+            className="bg-gradient-light bg-clip-text text-3xl font-semibold text-transparent dark:bg-gradient-dark"
           />
         </Link>
       </nav>
       <Overlay
         condition={isMenuOpened}
-        zIndex="z-20"
+        zIndex="z-30"
         className="md:max-w-sm lg:border-r-2 lg:border-foreground-light lg:dark:border-foreground-dark"
       >
         <ThemeSwitch />

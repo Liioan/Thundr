@@ -16,6 +16,10 @@ export default {
         medium: "1.25rem",
         big: "1.5rem",
       },
+      backgroundImage: {
+        "gradient-dark": "linear-gradient(314deg, #9747FF 0%, #44CBCA 100%)",
+        "gradient-light": "linear-gradient(314deg, #5A4A78 0%, #166775 100%)",
+      },
     },
     colors: {
       background: {
@@ -52,6 +56,7 @@ export default {
         dark: "#9ECE6A",
         light: "#5B921F",
       },
+      transparent: "rgba(0, 0, 0, 0)",
     },
   },
   plugins: [],

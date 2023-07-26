@@ -237,7 +237,7 @@ const NoteCreator = () => {
   };
 
   return (
-    <Overlay condition={isNoteCreatorOpen} zIndex="z-10">
+    <Overlay condition={isNoteCreatorOpen} zIndex="z-20">
       <div className=" flex h-3/4 items-center justify-center transition-colors duration-200">
         <div className="h-[400px] w-[280px] rounded-15 bg-foreground-light p-7 dark:bg-foreground-dark">
           <form

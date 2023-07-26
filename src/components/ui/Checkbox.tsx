@@ -1,5 +1,5 @@
-import { CheckIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
+import GoogleIcon from "./GoogleIcon";
 
 interface CheckboxProps {
   toggled: boolean;
@@ -17,12 +17,14 @@ const Checkbox = ({ toggled }: CheckboxProps) => {
       <AnimatePresence>
         {toggled && (
           <motion.span
+            className="flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ ease: "backInOut", duration: 0.2 }}
           >
-            <CheckIcon className="w-5 -translate-x-[1px] text-text-light" />
+            {/* <CheckIcon className="w-5 -translate-x-[1px] text-text-light" /> */}
+            <GoogleIcon iconName="done" className=" text-text-light" />
           </motion.span>
         )}
       </AnimatePresence>
