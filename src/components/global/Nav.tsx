@@ -9,6 +9,7 @@ import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
 import GoogleIcon from "../ui/GoogleIcon";
+import NavLink from "../ui/NavLink";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -147,16 +148,16 @@ const Nav = () => {
           <div className="flex flex-col gap-[50px]">
             <div className="relative flex flex-col gap-[10px] after:absolute after:-bottom-[25px] after:h-[4px] after:w-full after:rounded-full after:bg-accent-light after:content-[''] dark:after:bg-accent-dark">
               {links.map((link) => (
-                <Link
+                <NavLink
                   href={link.path}
                   key={link.path}
                   className="text-big text-text-light dark:text-text-dark"
-                  onClick={() => {
+                  onClickEvent={() => {
                     !isDesktop && setIsMenuOpened(false);
                   }}
                 >
                   {link.text}
-                </Link>
+                </NavLink>
               ))}
             </div>
             <button
