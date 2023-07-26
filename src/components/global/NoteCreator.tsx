@@ -147,16 +147,26 @@ const AdditionalInfoForm = ({
     );
 
   let otherNoteTitle = "";
-  if (noteType === "counter") otherNoteTitle = "Counter";
-  if (noteType === "decisionTree") otherNoteTitle = "Decision tree";
-  if (noteType === "todoList") otherNoteTitle = "Todo list";
+  let placeholderText = "";
+  if (noteType === "counter") {
+    otherNoteTitle = "Counter";
+    placeholderText = "E.g.: Books I read";
+  }
+  if (noteType === "decisionTree") {
+    otherNoteTitle = "Decision tree";
+    placeholderText = "E.g.: Buying new laptop";
+  }
+  if (noteType === "todoList") {
+    otherNoteTitle = "Todo list";
+    placeholderText = "E.g.: Shopping list";
+  }
 
   return (
     <FormWrapper className="flex flex-col gap-3">
       <Title text={otherNoteTitle + " title"} />
       <input
         type="text"
-        placeholder="E.g.: Coding everyday"
+        placeholder={placeholderText}
         className="h-12 rounded-5 border-2 border-accent-light bg-foreground-light px-2 text-text-light transition-colors duration-200 focus:outline-none focus-visible:border-secondary-light dark:border-accent-dark dark:bg-foreground-dark dark:text-text-dark dark:focus-visible:border-secondary-dark"
         value={noteTitle}
         onChange={(e) => updateFields({ noteTitle: e.target.value })}
@@ -226,7 +236,9 @@ const NoteCreator = () => {
   const createNote = api.note.createNote.useMutation({
     onSuccess: async (newNote) => {
       setIsNoteCreatorOpen();
-      await Router.push(`/notes/${newNote?.id}`);
+      setData(INITIAL_DATA);
+      goTo(0);
+      await Router.push(`/${newNote?.noteType}s/${newNote?.id}`);
     },
   });
 

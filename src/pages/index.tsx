@@ -39,6 +39,7 @@ const AllNotesSection = () => {
                 content={note.content}
                 reminderDate={note.reminderDate}
                 pinned={note.pinned}
+                noteTypeId={note.noteTypeId}
               />
             ))}
           </NoteListWrapper>

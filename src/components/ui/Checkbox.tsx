@@ -24,7 +24,10 @@ const Checkbox = ({ toggled }: CheckboxProps) => {
             transition={{ ease: "backInOut", duration: 0.2 }}
           >
             {/* <CheckIcon className="w-5 -translate-x-[1px] text-text-light" /> */}
-            <GoogleIcon iconName="done" className=" text-text-light" />
+            <GoogleIcon
+              iconName="done"
+              className=" -translate-x-[1px] text-text-light"
+            />
           </motion.span>
         )}
       </AnimatePresence>

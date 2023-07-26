@@ -61,7 +61,7 @@ export const noteRouter = createTRPCRouter({
           },
         });
 
-        return newNote;
+        return { ...newNote, noteType };
       }
     ),
 
@@ -113,5 +113,17 @@ export const noteRouter = createTRPCRouter({
         where: { userId: userId },
       });
       return notes;
+    }),
+
+  getNoteType: protectedProcedure
+    .input(z.object({ noteTypeId: z.string() }))
+    .query(async ({ input: { noteTypeId }, ctx }) => {
+      const noteType = await ctx.prisma.noteType.findFirst({
+        where: {
+          id: noteTypeId,
+        },
+      });
+
+      return noteType;
     }),
 });

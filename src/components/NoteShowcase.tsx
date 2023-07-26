@@ -3,6 +3,7 @@ import Title from "./ui/Title";
 import PinSwitch from "./ui/PinSwitch";
 import { parseJson } from "~/utils/parseJson";
 import { type note } from "~/types/NoteType";
+import { api } from "~/utils/api";
 
 interface NoteShowcaseProps {
   id: string;
@@ -10,6 +11,7 @@ interface NoteShowcaseProps {
   content: string | null;
   reminderDate: string | null;
   pinned: boolean;
+  noteTypeId: string;
 }
 
 const NoteShowcase = ({
@@ -18,6 +20,7 @@ const NoteShowcase = ({
   content,
   reminderDate,
   pinned,
+  noteTypeId,
 }: NoteShowcaseProps) => {
   const today = new Date().toLocaleDateString();
 
@@ -25,11 +28,12 @@ const NoteShowcase = ({
   if (reminderDate != null) {
     date = new Date(reminderDate).toLocaleDateString();
   }
+  const noteType = api.note.getNoteType.useQuery({ noteTypeId });
 
   const parsedContent = parseJson<note>(content ?? "");
 
   return (
-    <Link href={`/notes/${id}`}>
+    <Link href={`/${noteType.data?.type}/${id}`}>
       <div className="relative flex w-full max-w-sm flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinned} />
