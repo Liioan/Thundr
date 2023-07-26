@@ -78,7 +78,7 @@ const links = [
 
 const Nav = () => {
   const [isDesktop, setIsDesktop] = useState(false);
-  const [isMenuOpened, setIsMenuOpened] = useState(false || !isDesktop);
+  const [isMenuOpened, setIsMenuOpened] = useState(false || isDesktop);
 
   const onResize = () => {
     setIsDesktop(window.innerWidth >= 1800);
@@ -95,6 +95,10 @@ const Nav = () => {
   useEffect(() => {
     onResize();
   }, []);
+
+  useEffect(() => {
+    setIsMenuOpened(isDesktop);
+  }, [isDesktop]);
 
   const { data: session } = useSession();
 
@@ -174,6 +178,18 @@ const Nav = () => {
             </span>
           </div>
         )}
+        <a
+          href="https://github.com/Liioan/Thundr"
+          className="absolute bottom-[25px] left-[25px]"
+        >
+          <Image
+            src={"/github.svg"}
+            width={30}
+            height={30}
+            alt="github logo"
+            className="opacity-50 dark:invert"
+          />
+        </a>
       </Overlay>
     </>
   );
