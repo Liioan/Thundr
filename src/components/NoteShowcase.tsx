@@ -33,7 +33,7 @@ const NoteShowcase = ({
   const parsedContent = parseJson<note>(content ?? "");
 
   return (
-    <Link href={`/${noteType.data?.type}/${id}`}>
+    <Link href={`/${noteType.data?.type}s/${id}`}>
       <div className="relative flex w-full max-w-sm flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinned} />

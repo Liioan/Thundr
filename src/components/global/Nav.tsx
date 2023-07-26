@@ -64,11 +64,23 @@ const ThemeSwitch = () => {
   );
 };
 
+const links = [
+  { path: "/", text: "Home" },
+  { path: "/notes", text: "Notes" },
+  { path: "/Todos", text: "Todo's" },
+  { path: "/counters", text: "Counters" },
+  { path: "/progressTrackers", text: "Progress trackers" },
+  { path: "/decisionTrees", text: "Decision trees" },
+  { path: "/sharedFiles", text: "Shared files" },
+  { path: "/allFiles", text: "All files" },
+];
+
 const Nav = () => {
-  const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [isMenuOpened, setIsMenuOpened] = useState(false || !isDesktop);
 
   const onResize = () => {
-    setIsMenuOpened(window.innerWidth >= 1800);
+    setIsDesktop(window.innerWidth >= 1800);
   };
 
   useEffect(() => {
@@ -91,17 +103,6 @@ const Nav = () => {
   if (theme === "light") {
     logoUrl = "/logo_light.svg";
   }
-
-  const links = [
-    { path: "/", text: "Home" },
-    { path: "/notes", text: "Notes" },
-    { path: "/Todos", text: "Todo's" },
-    { path: "/counters", text: "Counters" },
-    { path: "/progressTrackers", text: "Progress trackers" },
-    { path: "/decisionTrees", text: "Decision trees" },
-    { path: "/sharedFiles", text: "Shared files" },
-    { path: "/allFiles", text: "All files" },
-  ];
 
   return (
     <>
@@ -150,7 +151,9 @@ const Nav = () => {
                   href={link.path}
                   key={link.path}
                   className="text-big text-text-light dark:text-text-dark"
-                  onClick={() => setIsMenuOpened(false)}
+                  onClick={() => {
+                    !isDesktop && setIsMenuOpened(false);
+                  }}
                 >
                   {link.text}
                 </Link>
