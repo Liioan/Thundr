@@ -9,6 +9,7 @@ import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
 import Icon from "./Icon";
 import NavLink from "../ui/NavLink";
+import usePopup from "~/hooks/usePopup";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -59,13 +60,17 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
 
 const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme();
+  const { openPopup } = usePopup();
 
   return (
     <Expand
       duration={500}
       className="self-end text-4xl text-text-light dark:text-text-dark"
       toggled={theme == "light"}
-      toggle={() => setTheme(theme === "dark" ? "light" : "dark")}
+      toggle={() => {
+        setTheme(theme === "dark" ? "light" : "dark");
+        openPopup(theme === "dark" ? "Lumos" : "Nox", false);
+      }}
     />
   );
 };

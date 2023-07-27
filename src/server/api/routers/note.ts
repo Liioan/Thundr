@@ -160,7 +160,7 @@ export const noteRouter = createTRPCRouter({
           id: noteId,
         },
       });
-      return { message: "Note deleted successfully" };
+      return "Note deleted";
     }),
 });
 

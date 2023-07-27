@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import Nav from "~/components/global/Nav";
 import NoteCreator from "~/components/global/NoteCreator";
+import Popup from "~/components/global/Popup";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,6 +17,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <ThemeProvider attribute="class" defaultTheme="dark">
         <Nav />
         <NoteCreator />
+        <Popup />
         <Component {...pageProps} />
       </ThemeProvider>
     </SessionProvider>

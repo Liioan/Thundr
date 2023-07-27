@@ -13,31 +13,36 @@ import { parseJson } from "~/utils/parseJson";
 import { type note } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/DeleteButton";
+import usePopup from "~/hooks/usePopup";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
-  const deleteNote = api.note.deleteNote.useMutation({
-    onSuccess(message) {
-      console.log(message);
-    },
-  });
   const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<string | undefined>();
   const [noteTitle, setNoteTitle] = useState<string | undefined>();
   const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
+  const { openPopup } = usePopup();
+
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
       await utils.note.getNoteDetails.fetch({ noteId: input.id });
     },
+    onError(data) {
+      openPopup(data.message, true);
+    },
   });
 
   const handleEdit = () => {
-    if (noteContent === note.data?.content && noteTitle === note.data?.title)
+    if (note.data == null) return;
+    if (
+      noteContent === parseJson<note>(note.data.content) &&
+      noteTitle === note.data?.title
+    )
       return;
     editNote.mutate({
       noteId: id as string,
@@ -49,6 +54,7 @@ const NotePage: NextPage = () => {
 
   useEffect(() => {
     handleEdit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNotePinned]);
 
   useEffect(() => {
@@ -106,11 +112,7 @@ const NotePage: NextPage = () => {
             />
           </form>
           <div className="absolute bottom-[25px] flex items-center justify-between">
-            <DeleteButton
-              onClickEvent={() =>
-                deleteNote.mutate({ noteId: note.data?.id ?? "" })
-              }
-            />
+            <DeleteButton id={note.data.id} />
             {/* share button in */}
           </div>
         </ResponsiveWrapper>
