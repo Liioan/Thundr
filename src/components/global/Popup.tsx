@@ -1,9 +1,27 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import usePopup from "~/hooks/usePopup";
 import { useUiStore } from "~/store/useUiStore";
 
 const Popup = () => {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  const onResize = () => {
+    setIsDesktop(window.innerWidth >= 1800);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  });
+
+  useEffect(() => {
+    onResize();
+  }, []);
+
   const { closePopup } = usePopup();
   const { isPopupOpen, popupMessage, isPopupError } = useUiStore();
 
@@ -20,10 +38,10 @@ const Popup = () => {
       <AnimatePresence>
         {isPopupOpen && (
           <motion.div
-            className="absolute bottom-[25px] z-50 flex w-full items-center justify-center"
-            initial={{ opacity: 0, y: 100 }}
+            className="absolute bottom-[50px] z-50 flex w-full items-center justify-center"
+            initial={{ opacity: 0, y: !isDesktop ? 100 : 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
+            exit={{ opacity: 0, y: !isDesktop ? 100 : 0 }}
             transition={{ duration: 0.5, ease: "backInOut" }}
           >
             <div
