@@ -4,18 +4,20 @@ import { getServerAuthSession } from "../server/auth";
 import Header from "~/components/ui/Header";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import NoteShowcase from "~/components/NoteShowcase";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
 import LoadingScreen from "~/components/global/LoadingScreen";
-import { ResponsiveWrapper } from "~/components/global/ResponsiveWrapper";
-import { NoteListWrapper } from "~/components/global/NoteListWrapper";
+import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
+import Main from "~/components/ui/Main";
+import InfiniteNoteList from "~/components/global/InfiniteNoteList";
 
 const AllNotesSection = () => {
   const { data: sessionData } = useSession();
   if (!sessionData) return null;
-  const notes = api.note.getAllNotes.useQuery({
-    userId: sessionData.user.id,
-  });
+
+  const notes = api.note.infiniteNotes.useInfiniteQuery(
+    { userId: sessionData.user.id },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
 
   if (notes.isLoading)
     return (
@@ -27,26 +29,16 @@ const AllNotesSection = () => {
 
   return (
     <>
-      {notes.data != null ? (
-        <ResponsiveWrapper>
-          <Header text="All notes" />
-          <NoteListWrapper>
-            {notes.data?.map((note) => (
-              <NoteShowcase
-                key={note.id}
-                id={note.id}
-                title={note.title}
-                content={note.content}
-                reminderDate={note.reminderDate}
-                pinned={note.pinned}
-                noteTypeId={note.noteTypeId}
-              />
-            ))}
-          </NoteListWrapper>
-        </ResponsiveWrapper>
-      ) : (
-        <div>no notes</div>
-      )}
+      <ResponsiveWrapper>
+        <Header text="All notes" />
+        <InfiniteNoteList
+          notes={notes.data?.pages.flatMap((page) => page.notes)}
+          isError={notes.isError}
+          isLoading={notes.isLoading}
+          hasMore={notes.hasNextPage}
+          fetchNewNotes={notes.fetchNextPage}
+        />
+      </ResponsiveWrapper>
     </>
   );
 };
@@ -59,10 +51,10 @@ const Home: NextPage = () => {
         <meta name="description" content="Note app" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="flex h-screen flex-col bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
+      <Main>
         <AllNotesSection />
         <OpenNoteCreatorButton />
-      </main>
+      </Main>
     </>
   );
 };

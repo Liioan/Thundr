@@ -8,9 +8,10 @@ import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
-import { ResponsiveWrapper } from "~/components/global/ResponsiveWrapper";
+import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
 import { parseJson } from "~/utils/parseJson";
 import { type note } from "~/types/NoteType";
+import Main from "~/components/ui/Main";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -62,7 +63,7 @@ const NotePage: NextPage = () => {
         <title>{`Note - ${note.data?.title}`}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="flex h-screen flex-col gap-[25px] bg-background-light px-[25px] pt-24 transition-colors duration-200 dark:bg-background-dark">
+      <Main>
         <ResponsiveWrapper>
           <div className="flex items-center justify-between">
             <GoBackButton />
@@ -99,7 +100,7 @@ const NotePage: NextPage = () => {
             />
           </form>
         </ResponsiveWrapper>
-      </main>
+      </Main>
     </>
   );
 };

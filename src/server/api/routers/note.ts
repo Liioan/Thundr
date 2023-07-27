@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  type createTRPCContext,
+  createTRPCRouter,
+  protectedProcedure,
+} from "~/server/api/trpc";
+import type { Prisma } from "@prisma/client";
+import { type inferAsyncReturnType } from "@trpc/server";
 
 export const noteRouter = createTRPCRouter({
   createNote: protectedProcedure
@@ -102,28 +108,98 @@ export const noteRouter = createTRPCRouter({
       return noteData;
     }),
 
-  getAllNotes: protectedProcedure
+  infiniteNotesOfType: protectedProcedure
     .input(
       z.object({
         userId: z.string(),
+        noteType: z.string(),
+        limit: z.number().optional(),
+        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
       })
     )
-    .query(async ({ input: { userId }, ctx }) => {
-      const notes = await ctx.prisma.note.findMany({
-        where: { userId: userId },
-      });
-      return notes;
-    }),
-
-  getNoteType: protectedProcedure
-    .input(z.object({ noteTypeId: z.string() }))
-    .query(async ({ input: { noteTypeId }, ctx }) => {
-      const noteType = await ctx.prisma.noteType.findFirst({
+    .query(async ({ input: { limit = 10, userId, noteType, cursor }, ctx }) => {
+      const noteTypeId = await ctx.prisma.noteType.findFirst({
         where: {
-          id: noteTypeId,
+          type: noteType,
+        },
+        select: {
+          id: true,
         },
       });
 
-      return noteType;
+      return await getInfiniteNotes({
+        limit,
+        ctx,
+        cursor,
+        whereClause: { userId: userId, noteTypeId: noteTypeId?.id },
+      });
+    }),
+
+  infiniteNotes: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        limit: z.number().optional(),
+        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
+      })
+    )
+    .query(async ({ input: { limit = 10, userId, cursor }, ctx }) => {
+      return await getInfiniteNotes({
+        limit,
+        ctx,
+        cursor,
+        whereClause: { userId },
+      });
     }),
 });
+
+async function getInfiniteNotes({
+  whereClause,
+  ctx,
+  limit,
+  cursor,
+}: {
+  whereClause?: Prisma.NoteWhereInput;
+  limit: number;
+  cursor: { id: string; createdAt: Date } | undefined;
+  ctx: inferAsyncReturnType<typeof createTRPCContext>;
+}) {
+  const data = await ctx.prisma.note.findMany({
+    take: limit + 1,
+    cursor: cursor ? { createdAt_id: cursor } : undefined,
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    where: whereClause,
+    select: {
+      id: true,
+      content: true,
+      pinned: true,
+      title: true,
+      type: true,
+      reminderDate: true,
+      createdAt: true,
+    },
+  });
+
+  let nextCursor: typeof cursor | undefined;
+  if (data.length > limit) {
+    const nextItem = data.pop();
+    if (nextItem != null) {
+      nextCursor = { id: nextItem.id, createdAt: nextItem.createdAt };
+    }
+  }
+
+  return {
+    notes: data.map((note) => {
+      return {
+        id: note.id,
+        content: note.content,
+        pinned: note.pinned,
+        title: note.title,
+        type: note.type.type,
+        reminderDate: note.reminderDate,
+        createdAt: note.createdAt,
+      };
+    }),
+    nextCursor,
+  };
+}

@@ -68,9 +68,12 @@ model Note {
     userId       String
     noteTypeId   String
     pinned       Boolean  @default(false)
-    type         NoteType @relation(fields: [noteTypeId], references: [id])
-    user         User     @relation(fields: [userId], references: [id])
+    createdAt    DateTime @default(now())
 
+    type NoteType @relation(fields: [noteTypeId], references: [id])
+    user User     @relation(fields: [userId], references: [id])
+
+    @@unique([createdAt, id])
     @@index([userId])
     @@index([noteTypeId])
 }
