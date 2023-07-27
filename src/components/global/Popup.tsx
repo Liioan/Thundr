@@ -31,6 +31,7 @@ const Popup = () => {
         closePopup();
       }, 2000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPopupOpen]);
 
   return (
@@ -45,7 +46,7 @@ const Popup = () => {
             transition={{ duration: 0.5, ease: "backInOut" }}
           >
             <div
-              className={`flex h-16 w-auto items-center justify-center rounded-15  px-6 text-medium font-bold  ${
+              className={`flex h-16 w-auto max-w-xs items-center justify-center rounded-15  px-6 text-medium font-bold  ${
                 isPopupError
                   ? "bg-danger-light text-text-light dark:bg-danger-dark"
                   : "bg-foreground-light text-text-light dark:bg-foreground-dark  dark:text-text-dark"

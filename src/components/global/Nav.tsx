@@ -197,7 +197,7 @@ const Nav = () => {
             width={30}
             height={30}
             alt="github logo"
-            className="opacity-50 dark:invert"
+            className="h-7 w-7 opacity-50 dark:invert"
           />
         </a>
       </Overlay>

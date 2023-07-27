@@ -19,14 +19,6 @@ const AllNotesSection = () => {
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
-  if (notes.isLoading)
-    return (
-      <>
-        <Header text="All notes" />
-        <LoadingScreen />
-      </>
-    );
-
   return (
     <>
       <ResponsiveWrapper>

@@ -1,6 +1,5 @@
 import { api } from "~/utils/api";
 import Icon from "../global/Icon";
-import { useUiStore } from "~/store/useUiStore";
 import usePopup from "~/hooks/usePopup";
 import { useRouter } from "next/router";
 

@@ -13,7 +13,6 @@ import { parseJson } from "~/utils/parseJson";
 import { type note } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/DeleteButton";
-import usePopup from "~/hooks/usePopup";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -26,22 +25,17 @@ const NotePage: NextPage = () => {
   const [noteTitle, setNoteTitle] = useState<string | undefined>();
   const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
-  const { openPopup } = usePopup();
-
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
       await utils.note.getNoteDetails.fetch({ noteId: input.id });
     },
-    onError(data) {
-      openPopup(data.message, true);
-    },
   });
 
-  const handleEdit = () => {
-    if (note.data == null) return;
+  const handleEdit = (hasPinChanged?: boolean) => {
     if (
-      noteContent === parseJson<note>(note.data.content) &&
-      noteTitle === note.data?.title
+      noteContent === parseJson<note>(note.data?.content ?? "") &&
+      noteTitle === note.data?.title &&
+      !hasPinChanged
     )
       return;
     editNote.mutate({
@@ -53,7 +47,7 @@ const NotePage: NextPage = () => {
   };
 
   useEffect(() => {
-    handleEdit();
+    handleEdit(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isNotePinned]);
 
