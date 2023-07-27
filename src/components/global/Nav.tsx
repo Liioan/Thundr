@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useState, type SetStateAction, type Dispatch, useEffect } from "react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -8,7 +7,7 @@ import "@theme-toggles/react/css/Expand.css";
 import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
-import GoogleIcon from "../ui/GoogleIcon";
+import Icon from "./Icon";
 import NavLink from "../ui/NavLink";
 
 interface MenuButtonProps {
@@ -25,26 +24,32 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
       <AnimatePresence>
         {!isMenuOpened && (
           <motion.span
-            className="absolute"
+            className="absolute flex items-center justify-center"
             initial={{ rotate: "180deg", opacity: 0 }}
             animate={{ rotate: "0deg", opacity: 1 }}
             exit={{ rotate: "180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Bars3Icon className="w-full text-primary-light dark:text-primary-dark" />
+            <Icon
+              iconName="menu"
+              className="text-4xl text-primary-light dark:text-primary-dark"
+            />
           </motion.span>
         )}
       </AnimatePresence>
       <AnimatePresence>
         {isMenuOpened && (
           <motion.span
-            className="absolute"
+            className="absolute flex items-center justify-center"
             initial={{ rotate: "-180deg", opacity: 0 }}
             animate={{ rotate: "0deg", opacity: 1 }}
             exit={{ rotate: "-180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <XMarkIcon className="w-full text-primary-light dark:text-primary-dark" />
+            <Icon
+              iconName="close"
+              className="text-4xl text-primary-light dark:text-primary-dark"
+            />
           </motion.span>
         )}
       </AnimatePresence>
@@ -136,7 +141,7 @@ const Nav = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <GoogleIcon
+          <Icon
             iconName="filter_drama"
             className="bg-gradient-light bg-clip-text text-3xl font-semibold text-transparent dark:bg-gradient-dark"
           />

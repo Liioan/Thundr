@@ -1,4 +1,4 @@
-import GoogleIcon from "./GoogleIcon";
+import Icon from "../global/Icon";
 
 interface DeleteButtonProps {
   onClickEvent: () => void;
@@ -10,7 +10,7 @@ const DeleteButton = ({ onClickEvent }: DeleteButtonProps) => {
       className="flex h-8 w-8 items-center justify-center rounded-full bg-danger-light dark:bg-danger-dark"
       onClick={onClickEvent}
     >
-      <GoogleIcon iconName="delete" className="text-text-light" />
+      <Icon iconName="delete" className="text-text-light" />
     </button>
   );
 };

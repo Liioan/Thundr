@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import GoogleIcon from "./GoogleIcon";
+import Icon from "../global/Icon";
 
 interface CheckboxProps {
   toggled: boolean;
@@ -24,7 +24,7 @@ const Checkbox = ({ toggled }: CheckboxProps) => {
             transition={{ ease: "backInOut", duration: 0.2 }}
           >
             {/* <CheckIcon className="w-5 -translate-x-[1px] text-text-light" /> */}
-            <GoogleIcon
+            <Icon
               iconName="done"
               className=" -translate-x-[1px] text-text-light"
             />

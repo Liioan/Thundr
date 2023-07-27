@@ -1,6 +1,5 @@
-import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/24/solid";
-import { BookmarkIcon as BookmarkOutlineIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
+import Icon from "../global/Icon";
 
 interface PinSwitchProps {
   toggled: boolean;
@@ -18,7 +17,10 @@ const PinSwitch = ({ toggled }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <BookmarkSolidIcon className=" right-0 h-6 text-primary-light dark:text-primary-dark" />
+            <Icon
+              iconName="bookmark"
+              className="filled text-3xl font-light text-primary-light dark:text-primary-dark"
+            />
           </motion.span>
         )}
       </AnimatePresence>
@@ -31,7 +33,10 @@ const PinSwitch = ({ toggled }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <BookmarkOutlineIcon className=" right-0 h-6 text-secondary-light dark:text-secondary-dark" />
+            <Icon
+              iconName="bookmark"
+              className="text-3xl font-light text-secondary-light dark:text-secondary-dark"
+            />
           </motion.span>
         )}
       </AnimatePresence>

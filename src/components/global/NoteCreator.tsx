@@ -7,17 +7,13 @@ import {
   type ReactNode,
   useState,
 } from "react";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  PencilSquareIcon,
-} from "@heroicons/react/24/solid";
 import Checkbox from "../ui/Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
 import Title from "../ui/Title";
 import { useUiStore } from "~/store/useUiStore";
 import { api } from "~/utils/api";
 import Router from "next/router";
+import Icon from "./Icon";
 
 interface FormData {
   noteTitle?: string;
@@ -274,7 +270,10 @@ const NoteCreator = () => {
                 onClick={back}
                 type="button"
               >
-                <ArrowLeftIcon className="w-6 text-text-light dark:text-background-dark" />
+                <Icon
+                  iconName="chevron_left"
+                  className="-translate-x-[1px] text-4xl text-text-light"
+                />
               </button>
 
               <button
@@ -298,7 +297,10 @@ const NoteCreator = () => {
                     finish
                   </span>
                 ) : (
-                  <ArrowRightIcon className="w-6 text-text-light" />
+                  <Icon
+                    iconName="chevron_right"
+                    className="translate-x-[1px] text-4xl text-text-light"
+                  />
                 )}
               </button>
             </div>
@@ -319,7 +321,7 @@ export const OpenNoteCreatorButton = () => {
       className="fixed bottom-[25px] right-[25px] z-0 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
       onClick={setIsNoteCreatorOpen}
     >
-      <PencilSquareIcon className="w-5 text-text-light" />
+      <Icon iconName="add_box" className="" />
       new
     </button>
   );
