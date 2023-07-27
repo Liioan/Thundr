@@ -151,6 +151,17 @@ export const noteRouter = createTRPCRouter({
         whereClause: { userId },
       });
     }),
+
+  deleteNote: protectedProcedure
+    .input(z.object({ noteId: z.string() }))
+    .mutation(async ({ input: { noteId }, ctx }) => {
+      await ctx.prisma.note.delete({
+        where: {
+          id: noteId,
+        },
+      });
+      return { message: "Note deleted successfully" };
+    }),
 });
 
 async function getInfiniteNotes({

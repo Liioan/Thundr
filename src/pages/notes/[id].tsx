@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import GoBackButton from "~/components/global/GoBackButton";
+import GoBackButton from "~/components/ui/GoBackButton";
 import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
@@ -12,6 +12,7 @@ import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
 import { parseJson } from "~/utils/parseJson";
 import { type note } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
+import DeleteButton from "~/components/ui/DeleteButton";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -99,6 +100,7 @@ const NotePage: NextPage = () => {
               maxLength={3000}
             />
           </form>
+          <DeleteButton onClickEvent={() => console.log("delete")} />
         </ResponsiveWrapper>
       </Main>
     </>

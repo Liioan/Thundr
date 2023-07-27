@@ -70,8 +70,8 @@ model Note {
     pinned       Boolean  @default(false)
     createdAt    DateTime @default(now())
 
-    type NoteType @relation(fields: [noteTypeId], references: [id])
-    user User     @relation(fields: [userId], references: [id])
+    type NoteType @relation(fields: [noteTypeId], references: [id], onDelete: Cascade)
+    user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([createdAt, id])
     @@index([userId])
