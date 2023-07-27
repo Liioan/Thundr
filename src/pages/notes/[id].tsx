@@ -19,6 +19,11 @@ const NotePage: NextPage = () => {
   const { id } = router.query;
 
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
+  const deleteNote = api.note.deleteNote.useMutation({
+    onSuccess(message) {
+      console.log(message);
+    },
+  });
   const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<string | undefined>();
@@ -100,7 +105,14 @@ const NotePage: NextPage = () => {
               maxLength={3000}
             />
           </form>
-          <DeleteButton onClickEvent={() => console.log("delete")} />
+          <div className="absolute bottom-[25px] flex items-center justify-between">
+            <DeleteButton
+              onClickEvent={() =>
+                deleteNote.mutate({ noteId: note.data?.id ?? "" })
+              }
+            />
+            {/* share button in */}
+          </div>
         </ResponsiveWrapper>
       </Main>
     </>
