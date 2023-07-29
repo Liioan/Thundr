@@ -105,9 +105,9 @@ const NotePage: NextPage = () => {
               maxLength={3000}
             />
           </form>
-          <div className="absolute bottom-[25px] flex items-center justify-between">
+          <div className="absolute bottom-[25px] flex items-center gap-5 self-end">
             <DeleteButton id={note.data.id} />
-            {/* share button in */}
+            <div>{/* button */}</div>
           </div>
         </ResponsiveWrapper>
       </Main>

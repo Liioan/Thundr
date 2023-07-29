@@ -74,50 +74,48 @@ const NotePage: NextPage = () => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Main>
-        <ResponsiveWrapper className="h-full justify-between">
-          <div>
-            <div className="flex items-center justify-between">
-              <GoBackButton />
-              <button
-                className="flex h-10 w-10 items-center justify-center"
-                onClick={() => {
-                  setIsNotePinned((prev) => !prev);
-                }}
-              >
-                <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
-              </button>
-            </div>
-            <form
-              className="flex w-full flex-col gap-[25px]"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleEdit();
+        <ResponsiveWrapper>
+          <div className="flex items-center justify-between">
+            <GoBackButton />
+            <button
+              className="flex h-10 w-10 items-center justify-center"
+              onClick={() => {
+                setIsNotePinned((prev) => !prev);
               }}
             >
-              <Title
-                text={noteTitle ?? note.data.title}
-                isDisabled={false}
-                onChangeEvent={setNoteTitle}
-                onBlurEvent={handleEdit}
-              />
-              {isEditing ? (
-                <TextArea
-                  className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
-                  placeholder="type something here"
-                  text={noteContent ?? note.data.content}
-                  onChangeEvent={setNoteContent}
-                  onBlurEvent={handleEdit}
-                  isDisabled={false}
-                  maxLength={3000}
-                />
-              ) : (
-                <ReactMarkdown className="prose overflow-auto text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
-                  {noteContent ?? note.data.content}
-                </ReactMarkdown>
-              )}
-            </form>
+              <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
+            </button>
           </div>
-          <div className="bottom-[25px] flex w-full items-center justify-between">
+          <form
+            className="flex w-full flex-col gap-[25px]"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleEdit();
+            }}
+          >
+            <Title
+              text={noteTitle ?? note.data.title}
+              isDisabled={false}
+              onChangeEvent={setNoteTitle}
+              onBlurEvent={handleEdit}
+            />
+            {isEditing ? (
+              <TextArea
+                className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
+                placeholder="type something here"
+                text={noteContent ?? note.data.content}
+                onChangeEvent={setNoteContent}
+                onBlurEvent={handleEdit}
+                isDisabled={false}
+                maxLength={3000}
+              />
+            ) : (
+              <ReactMarkdown className="prose overflow-auto text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
+                {noteContent ?? note.data.content}
+              </ReactMarkdown>
+            )}
+          </form>
+          <div className="absolute bottom-[25px] flex items-center gap-5 self-end">
             <DeleteButton id={note.data.id} />
             <div>
               <button

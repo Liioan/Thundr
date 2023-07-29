@@ -318,7 +318,7 @@ export const OpenNoteCreatorButton = () => {
 
   return (
     <button
-      className="fixed bottom-[25px] right-[25px] z-0 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
+      className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
       onClick={setIsNoteCreatorOpen}
     >
       <Icon iconName="add_box" className="" />
