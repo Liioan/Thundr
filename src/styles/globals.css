@@ -9,6 +9,24 @@
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #252627;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #44cbca;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7aa2f7;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
