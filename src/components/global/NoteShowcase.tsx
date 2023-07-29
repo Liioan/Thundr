@@ -113,7 +113,7 @@ const NoteShowcase = ({
 }: NoteShowcaseProps) => {
   return (
     <Link href={`/${noteType}s/${id}`}>
-      <div className="relative flex w-full flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
+      <div className="relative flex w-full flex-col gap-[10px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:h-[200px]">
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinned} />
         </span>
