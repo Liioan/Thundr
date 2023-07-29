@@ -74,7 +74,9 @@ const RenderMarkdownNote = ({ content }: RenderComponentsProps) => {
   }
 
   return parsedContent ? (
-    <ReactMarkdown>{parsedContent}</ReactMarkdown>
+    <ReactMarkdown className="prose overflow-hidden text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
+      {parsedContent}
+    </ReactMarkdown>
   ) : (
     <span className="text-text-light opacity-50 dark:text-text-dark">
       no content
