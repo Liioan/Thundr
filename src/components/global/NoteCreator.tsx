@@ -85,11 +85,10 @@ interface AdditionalInfoFormProps {
 const AdditionalInfoForm = ({
   noteTitle,
   noteType,
-  isMarkdown,
   daysAmount,
   updateFields,
 }: AdditionalInfoFormProps) => {
-  if (noteType === "note")
+  if (noteType === "note" || noteType === "markdownNote")
     return (
       <FormWrapper className="flex flex-col gap-3">
         <Title text="Select note type" />
@@ -98,7 +97,7 @@ const AdditionalInfoForm = ({
           className="flex items-center gap-2"
           onClick={() => updateFields({ noteType: "note" })}
         >
-          <Checkbox toggled={!isMarkdown} />
+          <Checkbox toggled={noteType === "note"} />
           Normal note
         </button>
         <button
@@ -106,7 +105,7 @@ const AdditionalInfoForm = ({
           className="flex items-center gap-2"
           onClick={() => updateFields({ noteType: "markdownNote" })}
         >
-          <Checkbox toggled={isMarkdown ? true : false} />
+          <Checkbox toggled={noteType === "markdownNote"} />
           Markdown note
         </button>
         <Title text="Note title" />
