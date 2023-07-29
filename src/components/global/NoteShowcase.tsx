@@ -2,7 +2,95 @@ import Link from "next/link";
 import Title from "../ui/Title";
 import PinSwitch from "../ui/PinSwitch";
 import { parseJson } from "~/utils/parseJson";
-import { type note } from "~/types/NoteType";
+import { type markdownNote, type note } from "~/types/NoteType";
+import ReactMarkdown from "react-markdown";
+
+interface RenderDateProps {
+  reminderDate: string | null;
+}
+
+const RenderDate = ({ reminderDate }: RenderDateProps) => {
+  const today = new Date().toLocaleDateString();
+
+  let date: string | undefined;
+  if (reminderDate != null) {
+    date = new Date(reminderDate).toLocaleDateString();
+  }
+
+  return (
+    <>
+      {date != null ? (
+        <span
+          className={`self-end text-accent-light  dark:text-accent-dark ${
+            today === date
+              ? "text-primary-light opacity-100 dark:text-primary-dark"
+              : "opacity-50"
+          }`}
+        >
+          {date}
+        </span>
+      ) : null}
+    </>
+  );
+};
+
+interface RenderComponentsProps {
+  content: string;
+}
+
+const RenderNote = ({ content }: RenderComponentsProps) => {
+  const parsedContent = parseJson<note>(content ?? "");
+
+  if (parsedContent == undefined) return null;
+
+  return parsedContent ? (
+    <p className="text-small text-text-light dark:text-text-dark">
+      {parsedContent.length > 100 ? (
+        <>
+          {parsedContent.substring(0, 100)}
+          <span className="font-bold text-primary-light dark:text-primary-dark">
+            {" "}
+            ...
+          </span>
+        </>
+      ) : (
+        parsedContent
+      )}
+    </p>
+  ) : (
+    <span className="text-text-light opacity-50 dark:text-text-dark">
+      no content
+    </span>
+  );
+};
+
+const RenderMarkdownNote = ({ content }: RenderComponentsProps) => {
+  let parsedContent = parseJson<markdownNote>(content ?? "");
+
+  if (parsedContent == undefined) return null;
+
+  if (parsedContent.length > 100) {
+    parsedContent = parsedContent.substring(0, 100) + "...";
+  }
+
+  return parsedContent ? (
+    <ReactMarkdown>{parsedContent}</ReactMarkdown>
+  ) : (
+    <span className="text-text-light opacity-50 dark:text-text-dark">
+      no content
+    </span>
+  );
+};
+
+interface RenderContentProps {
+  type: string;
+  content: string;
+}
+
+const RenderContent = ({ type, content }: RenderContentProps) => {
+  if (type === "note") return <RenderNote content={content} />;
+  if (type === "markdownNote") return <RenderMarkdownNote content={content} />;
+};
 
 interface NoteShowcaseProps {
   id: string;
@@ -21,16 +109,6 @@ const NoteShowcase = ({
   pinned,
   noteType,
 }: NoteShowcaseProps) => {
-  const today = new Date().toLocaleDateString();
-
-  let date: string | undefined;
-  if (reminderDate != null) {
-    date = new Date(reminderDate).toLocaleDateString();
-  }
-  // const noteType = api.note.getNoteType.useQuery({ noteTypeId });
-
-  const parsedContent = parseJson<note>(content ?? "");
-
   return (
     <Link href={`/${noteType}s/${id}`}>
       <div className="relative flex w-full flex-col gap-[10px] rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark">
@@ -38,36 +116,8 @@ const NoteShowcase = ({
           <PinSwitch toggled={pinned} />
         </span>
         <Title text={title} />
-        <p className="text-small text-text-light dark:text-text-dark">
-          {parsedContent ? (
-            parsedContent.length > 100 ? (
-              <>
-                {parsedContent.substring(0, 100)}
-                <span className="font-bold text-primary-light dark:text-primary-dark">
-                  {" "}
-                  ...
-                </span>
-              </>
-            ) : (
-              parsedContent
-            )
-          ) : (
-            <span className="text-text-light opacity-50 dark:text-text-dark">
-              no content
-            </span>
-          )}
-        </p>
-        {date != null ? (
-          <span
-            className={`self-end text-accent-light  dark:text-accent-dark ${
-              today === date
-                ? "text-primary-light opacity-100 dark:text-primary-dark"
-                : "opacity-50"
-            }`}
-          >
-            {date}
-          </span>
-        ) : null}
+        <RenderContent content={content ?? ""} type={noteType} />
+        <RenderDate reminderDate={reminderDate} />
       </div>
     </Link>
   );

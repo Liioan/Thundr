@@ -1,5 +1,5 @@
 export const parseJson = <noteType>(data: string) => {
-  let result: noteType | undefined = undefined;
+  let result: noteType | undefined;
   try {
     result = JSON.parse(data);
   } catch (err) {
