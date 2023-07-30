@@ -110,7 +110,7 @@ const NotePage: NextPage = () => {
                 maxLength={3000}
               />
             ) : (
-              <ReactMarkdown className="prose overflow-auto text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
+              <ReactMarkdown className="prose overflow-auto text-text-light marker:text-accent-light prose-headings:text-text-light prose-p:text-text-light prose-a:text-secondary-light prose-code:text-text-dark dark:text-text-dark dark:marker:text-accent-dark dark:prose-headings:text-text-dark dark:prose-p:text-text-dark dark:prose-a:text-secondary-dark dark:prose-code:text-text-dark">
                 {noteContent ?? note.data.content}
               </ReactMarkdown>
             )}

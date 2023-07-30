@@ -70,13 +70,28 @@ const RenderMarkdownNote = ({ content }: RenderComponentsProps) => {
   if (parsedContent == undefined) return null;
 
   if (parsedContent.length > 100) {
-    parsedContent = parsedContent.substring(0, 100) + "...";
+    parsedContent = parsedContent.substring(0, 100);
   }
 
   return parsedContent ? (
-    <ReactMarkdown className="prose overflow-hidden text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
+    // <>
+    //   <ReactMarkdown className="prose overflow-hidden text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
+    //     {parsedContent}
+    //   </ReactMarkdown>
+    //   {parsedContent.length >= 100 && (
+    //     <span className="font-bold text-primary-light dark:text-primary-dark">
+    //       {" "}
+    //       ...
+    //     </span>
+    //   )}
+    // </>
+    <p>
       {parsedContent}
-    </ReactMarkdown>
+      <span className="font-bold text-primary-light dark:text-primary-dark">
+        {" "}
+        ...
+      </span>
+    </p>
   ) : (
     <span className="text-text-light opacity-50 dark:text-text-dark">
       no content
@@ -113,7 +128,7 @@ const NoteShowcase = ({
 }: NoteShowcaseProps) => {
   return (
     <Link href={`/${noteType}s/${id}`}>
-      <div className="relative flex w-full flex-col gap-[10px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:h-[200px]">
+      <div className="relative flex min-h-[150px] w-full flex-col gap-[10px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:min-h-[200px]">
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinned} />
         </span>
