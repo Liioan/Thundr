@@ -39,7 +39,7 @@ const Popup = () => {
       <AnimatePresence>
         {isPopupOpen && (
           <motion.div
-            className="absolute bottom-[50px] z-50 flex w-full items-center justify-center"
+            className="fixed bottom-[50px] z-50 flex w-full items-center justify-center"
             initial={{ opacity: 0, y: !isDesktop ? 100 : 0 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: !isDesktop ? 100 : 0 }}
