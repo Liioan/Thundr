@@ -6,6 +6,7 @@ import {
   type ReactElement,
   type ReactNode,
   useState,
+  useEffect,
 } from "react";
 import Checkbox from "../ui/Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
@@ -211,6 +212,18 @@ const NoteCreator = () => {
     });
   };
 
+  const onKeyboardClick = (event: KeyboardEvent) => {
+    if (!isNoteCreatorOpen) return;
+
+    if (event.key === "Escape") setIsNoteCreatorOpen(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => onKeyboardClick(e));
+
+    return window.removeEventListener("keydown", (e) => onKeyboardClick(e));
+  });
+
   const steps: ReactElement[] = [
     <NoteTypeForm key={"NoteTypeForm"} {...data} updateFields={updateFields} />,
     <AdditionalInfoForm
@@ -230,7 +243,7 @@ const NoteCreator = () => {
 
   const createNote = api.note.createNote.useMutation({
     onSuccess: async (newNote) => {
-      setIsNoteCreatorOpen();
+      setIsNoteCreatorOpen(false);
       setData(INITIAL_DATA);
       goTo(0);
       await Router.push(`/${newNote?.noteType}s/${newNote?.id}`);
@@ -279,7 +292,7 @@ const NoteCreator = () => {
                 className="min-w-min rounded-full bg-accent-light px-3 text-center text-small font-medium text-text-light dark:bg-accent-dark"
                 type="button"
                 onClick={() => {
-                  setIsNoteCreatorOpen();
+                  setIsNoteCreatorOpen(false);
                   setData(INITIAL_DATA);
                   goTo(0);
                 }}
@@ -313,14 +326,26 @@ const NoteCreator = () => {
 export default NoteCreator;
 
 export const OpenNoteCreatorButton = () => {
-  const { setIsNoteCreatorOpen } = useUiStore();
+  const { setIsNoteCreatorOpen, isNoteCreatorOpen } = useUiStore();
+
+  const onKeyboardClick = (event: KeyboardEvent) => {
+    if (isNoteCreatorOpen) return;
+
+    if (event.key === "N" && event.shiftKey) setIsNoteCreatorOpen(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => onKeyboardClick(e));
+
+    return window.removeEventListener("keydown", (e) => onKeyboardClick(e));
+  });
 
   return (
     <button
       className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
-      onClick={setIsNoteCreatorOpen}
+      onClick={() => setIsNoteCreatorOpen(true)}
     >
-      <Icon iconName="add_box" className="" />
+      <Icon iconName="add_box" className="text-text-light" />
       new
     </button>
   );
