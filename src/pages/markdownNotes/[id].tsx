@@ -115,7 +115,7 @@ const NotePage: NextPage = () => {
               </ReactMarkdown>
             )}
           </form>
-          <div className="absolute bottom-[25px] flex items-center gap-5 self-end">
+          <div className="fixed bottom-[25px] flex items-center gap-5 self-end">
             <DeleteButton id={note.data.id} />
             <div>
               <button
