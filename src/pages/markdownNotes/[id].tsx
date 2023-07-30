@@ -63,7 +63,7 @@ const NotePage: NextPage = () => {
     setIsNotePinned(note.data?.pinned);
   }, [note.data]);
 
-  if (note.isLoading) return <LoadingScreen fullscreen />;
+  if (note.isLoading) return <LoadingScreen />;
 
   if (note.data == null) return null;
 

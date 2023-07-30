@@ -5,7 +5,6 @@ import Header from "~/components/ui/Header";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
-import LoadingScreen from "~/components/global/LoadingScreen";
 import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
 import Main from "~/components/ui/Main";
 import InfiniteNoteList from "~/components/global/InfiniteNoteList";
