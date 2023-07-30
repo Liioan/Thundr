@@ -3,7 +3,6 @@ import Title from "../ui/Title";
 import PinSwitch from "../ui/PinSwitch";
 import { parseJson } from "~/utils/parseJson";
 import { type markdownNote, type note } from "~/types/NoteType";
-import ReactMarkdown from "react-markdown";
 
 interface RenderDateProps {
   reminderDate: string | null;
@@ -21,7 +20,7 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
     <>
       {date != null ? (
         <span
-          className={`self-end text-accent-light  dark:text-accent-dark ${
+          className={`mt-auto self-end text-accent-light  dark:text-accent-dark ${
             today === date
               ? "text-primary-light opacity-100 dark:text-primary-dark"
               : "opacity-50"
