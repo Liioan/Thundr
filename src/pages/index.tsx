@@ -14,13 +14,30 @@ const AllNotesSection = () => {
   if (!sessionData) return null;
 
   const notes = api.note.infiniteNotes.useInfiniteQuery(
-    { userId: sessionData.user.id },
+    { userId: sessionData.user.id, pinned: false },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
+
+  const pinnedNotes = api.note.infiniteNotes.useInfiniteQuery(
+    { userId: sessionData.user.id, pinned: true },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
   return (
     <>
       <ResponsiveWrapper>
+        {pinnedNotes.data?.pages[0]?.notes.length ? (
+          <>
+            <Header text="Pinned notes" />
+            <InfiniteNoteList
+              notes={pinnedNotes.data?.pages.flatMap((page) => page.notes)}
+              isError={pinnedNotes.isError}
+              isLoading={pinnedNotes.isLoading}
+              hasMore={pinnedNotes.hasNextPage}
+              fetchNewNotes={pinnedNotes.fetchNextPage}
+            />
+          </>
+        ) : null}
         <Header text="All notes" />
         <InfiniteNoteList
           notes={notes.data?.pages.flatMap((page) => page.notes)}

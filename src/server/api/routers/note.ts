@@ -23,6 +23,7 @@ export const noteRouter = createTRPCRouter({
         ctx,
       }) => {
         const createContent = () => {
+          //. this needs to create different json, for each note type
           let data = "";
 
           if (noteType === "note" || noteType === "markdownNote") {
@@ -112,43 +113,71 @@ export const noteRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string(),
+        pinned: z.boolean(),
         noteType: z.string(),
         limit: z.number().optional(),
         cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
       })
     )
-    .query(async ({ input: { limit = 10, userId, noteType, cursor }, ctx }) => {
-      const noteTypeId = await ctx.prisma.noteType.findFirst({
-        where: {
-          type: noteType,
-        },
-        select: {
-          id: true,
-        },
-      });
-
-      return await getInfiniteNotes({
-        limit,
+    .query(
+      async ({
+        input: { limit = 10, userId, noteType, pinned, cursor },
         ctx,
-        cursor,
-        whereClause: { userId: userId, noteTypeId: noteTypeId?.id },
-      });
-    }),
+      }) => {
+        const noteTypeId = await ctx.prisma.noteType.findFirst({
+          where: {
+            type: noteType,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        let whereClause:
+          | { userId: string; noteTypeId: string }
+          | { userId: string; noteTypeId: string; pinned: boolean } = {
+          userId: userId,
+          noteTypeId: noteTypeId?.id ?? "",
+        };
+        if (pinned) {
+          whereClause = {
+            userId: userId,
+            noteTypeId: noteTypeId?.id ?? "",
+            pinned: pinned,
+          };
+        }
+
+        return await getInfiniteNotes({
+          limit,
+          ctx,
+          cursor,
+          whereClause: whereClause,
+        });
+      }
+    ),
 
   infiniteNotes: protectedProcedure
     .input(
       z.object({
         userId: z.string(),
+        pinned: z.boolean(),
         limit: z.number().optional(),
         cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
       })
     )
-    .query(async ({ input: { limit = 10, userId, cursor }, ctx }) => {
+    .query(async ({ input: { limit = 10, userId, pinned, cursor }, ctx }) => {
+      let whereClause:
+        | { userId: string }
+        | { userId: string; pinned: boolean } = { userId: userId };
+      if (pinned) {
+        whereClause = { userId: userId, pinned: pinned };
+      }
+
       return await getInfiniteNotes({
         limit,
         ctx,
         cursor,
-        whereClause: { userId },
+        whereClause: whereClause,
       });
     }),
 
