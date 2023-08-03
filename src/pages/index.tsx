@@ -18,15 +18,15 @@ const AllNotesSection = () => {
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
-  // const pinnedNotes = api.note.infiniteNotes.useInfiniteQuery(
-  //   { userId: sessionData.user.id },
-  //   { getNextPageParam: (lastPage) => lastPage.nextCursor }
-  // );
+  const pinnedNotes = api.note.infinitePinnedNotes.useInfiniteQuery(
+    { userId: sessionData.user.id },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
 
   return (
     <>
       <ResponsiveWrapper>
-        {/* {pinnedNotes.data?.pages[0]?.notes.length ? (
+        {pinnedNotes.data?.pages[0]?.notes.length ? (
           <>
             <Header text="Pinned notes" />
             <InfiniteNoteList
@@ -37,7 +37,7 @@ const AllNotesSection = () => {
               fetchNewNotes={pinnedNotes.fetchNextPage}
             />
           </>
-        ) : null} */}
+        ) : null}
         <Header text="All notes" />
         <InfiniteNoteList
           notes={notes.data?.pages.flatMap((page) => page.notes)}

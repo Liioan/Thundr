@@ -11,13 +11,13 @@ const List: NextPage = () => {
   const { data: sessionData } = useSession();
   if (!sessionData) return null;
 
-  const notes = api.note.infiniteNotesOfType.useInfiniteQuery(
-    { userId: sessionData.user.id, noteType: "note", pinned: false },
+  const notes = api.note.infiniteNotes.useInfiniteQuery(
+    { userId: sessionData.user.id, noteType: "note" },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
-  const pinnedNotes = api.note.infiniteNotesOfType.useInfiniteQuery(
-    { userId: sessionData.user.id, noteType: "note", pinned: true },
+  const pinnedNotes = api.note.infinitePinnedNotes.useInfiniteQuery(
+    { userId: sessionData.user.id, noteType: "note" },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
