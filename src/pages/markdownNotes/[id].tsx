@@ -9,8 +9,8 @@ import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
 import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
-import { parseJson } from "~/utils/JsonUtils";
-import { type note } from "~/types/NoteType";
+import { stringify } from "~/utils/JsonUtils";
+import { type markdownNote } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import ReactMarkdown from "react-markdown";
@@ -45,31 +45,23 @@ const NotePage: NextPage = () => {
     togglePin.mutate({ noteId: note.data?.id ?? "" });
   };
 
-  const handleEdit = (hasPinChanged?: boolean) => {
-    if (
-      noteContent === parseJson<note>(note.data?.content ?? "") &&
-      noteTitle === note.data?.title &&
-      !hasPinChanged
-    )
+  const handleEdit = () => {
+    if (noteContent === note.data?.content && noteTitle === note.data?.title)
       return;
+    const stringifiedContent = stringify<markdownNote | undefined>(noteContent);
     editNote.mutate({
       noteId: id as string,
       title: noteTitle,
-      content: noteContent,
+      content: stringifiedContent,
     });
   };
 
   useEffect(() => {
-    handleEdit(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isNotePinned]);
-
-  useEffect(() => {
-    if (note.data?.content != null) {
-      setNoteContent(parseJson<note>(note.data.content));
+    if (note.data != null) {
+      setNoteContent(note.data.content);
+      setIsNotePinned(note.data.pinnedByMe);
+      setNoteTitle(note.data.title);
     }
-    setNoteTitle(note.data?.title);
-    setIsNotePinned(note.data?.pinnedByMe);
   }, [note.data]);
 
   if (note.isLoading) return <LoadingScreen />;
