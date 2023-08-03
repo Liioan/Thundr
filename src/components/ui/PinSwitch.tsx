@@ -3,11 +3,15 @@ import Icon from "../global/Icon";
 
 interface PinSwitchProps {
   toggled: boolean;
+  onClickEvent: () => void;
 }
 
-const PinSwitch = ({ toggled }: PinSwitchProps) => {
+const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
   return (
-    <div className="relative z-10 flex items-center justify-center">
+    <button
+      className="relative z-10 flex items-center justify-center"
+      onClick={onClickEvent}
+    >
       <AnimatePresence>
         {toggled && (
           <motion.span
@@ -40,7 +44,7 @@ const PinSwitch = ({ toggled }: PinSwitchProps) => {
           </motion.span>
         )}
       </AnimatePresence>
-    </div>
+    </button>
   );
 };
 

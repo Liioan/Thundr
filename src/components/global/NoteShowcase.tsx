@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Title from "../ui/Title";
 import PinSwitch from "../ui/PinSwitch";
-import { parseJson } from "~/utils/parseJson";
+import { parseJson } from "~/utils/JsonUtils";
 import { type markdownNote, type note } from "~/types/NoteType";
 
 interface RenderDateProps {

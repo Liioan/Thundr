@@ -2,17 +2,17 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import GoBackButton from "~/components/ui/GoBackButton";
+import GoBackButton from "~/components/ui/buttons/GoBackButton";
 import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
 import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
-import { parseJson } from "~/utils/parseJson";
+import { parseJson } from "~/utils/JsonUtils";
 import { type note } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
-import DeleteButton from "~/components/ui/DeleteButton";
+import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import ReactMarkdown from "react-markdown";
 import Icon from "~/components/global/Icon";
 
@@ -35,6 +35,16 @@ const NotePage: NextPage = () => {
     },
   });
 
+  const togglePin = api.note.togglePin.useMutation({
+    async onSuccess() {
+      await utils.note.getNoteDetails.fetch({ noteId: note.data?.id ?? "" });
+    },
+  });
+
+  const handleTogglePin = () => {
+    togglePin.mutate({ noteId: note.data?.id ?? "" });
+  };
+
   const handleEdit = (hasPinChanged?: boolean) => {
     if (
       noteContent === parseJson<note>(note.data?.content ?? "") &&
@@ -46,7 +56,6 @@ const NotePage: NextPage = () => {
       noteId: id as string,
       title: noteTitle,
       content: noteContent,
-      pinned: isNotePinned,
     });
   };
 
@@ -60,7 +69,7 @@ const NotePage: NextPage = () => {
       setNoteContent(parseJson<note>(note.data.content));
     }
     setNoteTitle(note.data?.title);
-    setIsNotePinned(note.data?.pinned);
+    setIsNotePinned(note.data?.pinnedByMe);
   }, [note.data]);
 
   if (note.isLoading) return <LoadingScreen />;
@@ -77,14 +86,12 @@ const NotePage: NextPage = () => {
         <ResponsiveWrapper>
           <div className="flex items-center justify-between">
             <GoBackButton />
-            <button
-              className="flex h-10 w-10 items-center justify-center"
-              onClick={() => {
-                setIsNotePinned((prev) => !prev);
-              }}
-            >
-              <PinSwitch toggled={isNotePinned ?? note.data.pinned} />
-            </button>
+            <div className="flex h-10 w-10 items-center justify-center">
+              <PinSwitch
+                toggled={isNotePinned ?? note.data.pinnedByMe}
+                onClickEvent={handleTogglePin}
+              />
+            </div>
           </div>
           <form
             className="flex w-full flex-col gap-[25px]"

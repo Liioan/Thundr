@@ -30,7 +30,7 @@ export const noteRouter = createTRPCRouter({
             data = JSON.stringify("");
           }
           if (noteType === "todoList") {
-            data = JSON.stringify([]);
+            data = JSON.stringify([{ task: "", isFinished: false }]);
           }
           if (noteType === "progressTracker") {
             if (daysAmount == null) return;
@@ -76,21 +76,18 @@ export const noteRouter = createTRPCRouter({
     .input(
       z.object({
         noteId: z.string(),
-        pinned: z.boolean().optional(),
         title: z.string().optional(),
         content: z.string().optional(),
       })
     )
-    .mutation(async ({ input: { noteId, pinned, title, content }, ctx }) => {
-      const stringifiedContent = JSON.stringify(content);
+    .mutation(async ({ input: { noteId, title, content }, ctx }) => {
       const editedNote = await ctx.prisma.note.update({
         where: {
           id: noteId,
         },
         data: {
-          pinned: pinned,
           title: title,
-          content: stringifiedContent,
+          content: content,
         },
       });
       return editedNote;
@@ -104,80 +101,89 @@ export const noteRouter = createTRPCRouter({
         where: {
           id: noteId,
         },
+        select: {
+          id: true,
+          pin: { where: { userId: currentUserId } },
+          title: true,
+          type: true,
+          content: true,
+          reminderDate: true,
+          userId: true,
+        },
       });
       if (noteData?.userId !== currentUserId) return null;
-      return noteData;
+      return {
+        id: noteData.id,
+        title: noteData.title,
+        content: JSON.parse(noteData.content),
+        pinnedByMe: noteData.pin.length > 0,
+        reminderDate: noteData.reminderDate,
+        type: noteData.type,
+      };
     }),
 
   infiniteNotesOfType: protectedProcedure
     .input(
       z.object({
         userId: z.string(),
-        pinned: z.boolean(),
         noteType: z.string(),
         limit: z.number().optional(),
         cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
       })
     )
-    .query(
-      async ({
-        input: { limit = 10, userId, noteType, pinned, cursor },
-        ctx,
-      }) => {
-        const noteTypeId = await ctx.prisma.noteType.findFirst({
-          where: {
-            type: noteType,
-          },
-          select: {
-            id: true,
-          },
-        });
+    .query(async ({ input: { limit = 10, userId, noteType, cursor }, ctx }) => {
+      const noteTypeId = await ctx.prisma.noteType.findFirst({
+        where: {
+          type: noteType,
+        },
+        select: {
+          id: true,
+        },
+      });
 
-        let whereClause:
-          | { userId: string; noteTypeId: string }
-          | { userId: string; noteTypeId: string; pinned: boolean } = {
-          userId: userId,
-          noteTypeId: noteTypeId?.id ?? "",
-        };
-        if (pinned) {
-          whereClause = {
-            userId: userId,
-            noteTypeId: noteTypeId?.id ?? "",
-            pinned: pinned,
-          };
-        }
-
-        return await getInfiniteNotes({
-          limit,
-          ctx,
-          cursor,
-          whereClause: whereClause,
-        });
-      }
-    ),
-
-  infiniteNotes: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-        pinned: z.boolean(),
-        limit: z.number().optional(),
-        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
-      })
-    )
-    .query(async ({ input: { limit = 10, userId, pinned, cursor }, ctx }) => {
-      let whereClause:
-        | { userId: string }
-        | { userId: string; pinned: boolean } = { userId: userId };
-      if (pinned) {
-        whereClause = { userId: userId, pinned: pinned };
-      }
+      // let whereClause:
+      //   | { userId: string; noteTypeId: string }
+      //   | { userId: string; noteTypeId: string; pinned: boolean } = {
+      //   userId: userId,
+      //   noteTypeId: noteTypeId?.id ?? "",
+      // };
+      // if (pinned) {
+      //   whereClause = {
+      //     userId: userId,
+      //     noteTypeId: noteTypeId?.id ?? "",
+      //     pinned: pinned,
+      //   };
+      // }
 
       return await getInfiniteNotes({
         limit,
         ctx,
         cursor,
-        whereClause: whereClause,
+        whereClause: { userId: userId, noteTypeId: noteTypeId?.id ?? "" },
+      });
+    }),
+
+  infiniteNotes: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        limit: z.number().optional(),
+        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
+      })
+    )
+    .query(async ({ input: { limit = 10, userId, cursor }, ctx }) => {
+      // let whereClause:
+      //   | { userId: string }
+      //   | { userId: string; pin: boolean } = { userId: userId };
+      // if (pin) {
+      //   whereClause = { userId: userId };
+      // }
+
+      return await getInfiniteNotes({
+        limit,
+        ctx,
+        cursor,
+        whereClause: { userId },
       });
     }),
 
@@ -190,6 +196,24 @@ export const noteRouter = createTRPCRouter({
         },
       });
       return "Note deleted";
+    }),
+
+  togglePin: protectedProcedure
+    .input(z.object({ noteId: z.string() }))
+    .mutation(async ({ input: { noteId }, ctx }) => {
+      const data = { noteId: noteId, userId: ctx.session.user.id };
+
+      const existingPin = await ctx.prisma.pin.findUnique({
+        where: { userId_noteId: data },
+      });
+
+      if (existingPin == null) {
+        await ctx.prisma.pin.create({ data });
+        return { addedPin: true };
+      } else {
+        await ctx.prisma.pin.delete({ where: { userId_noteId: data } });
+        return { addedPin: false };
+      }
     }),
 });
 
@@ -204,6 +228,8 @@ async function getInfiniteNotes({
   cursor: { id: string; createdAt: Date } | undefined;
   ctx: inferAsyncReturnType<typeof createTRPCContext>;
 }) {
+  const currentUserId = ctx.session?.user.id;
+
   const data = await ctx.prisma.note.findMany({
     take: limit + 1,
     cursor: cursor ? { createdAt_id: cursor } : undefined,
@@ -212,7 +238,7 @@ async function getInfiniteNotes({
     select: {
       id: true,
       content: true,
-      pinned: true,
+      pin: currentUserId == null ? false : { where: { userId: currentUserId } },
       title: true,
       type: true,
       reminderDate: true,
@@ -232,8 +258,8 @@ async function getInfiniteNotes({
     notes: data.map((note) => {
       return {
         id: note.id,
-        content: note.content,
-        pinned: note.pinned,
+        content: JSON.parse(note.content),
+        pinnedByMe: note.pin.length > 0,
         title: note.title,
         type: note.type.type,
         reminderDate: note.reminderDate,

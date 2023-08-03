@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Icon from "../global/Icon";
+import Icon from "../../global/Icon";
 
 const GoBackButton = () => {
   const router = useRouter();

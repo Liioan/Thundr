@@ -15,6 +15,7 @@ interface TextAreaProps {
   onBlurEvent?: () => void;
   placeholder?: string;
   maxLength?: number;
+  autoFocus?: boolean;
 }
 
 const updateTextAreaSize = (textArea?: HTMLTextAreaElement) => {
@@ -31,6 +32,7 @@ const TextArea = ({
   className = "",
   placeholder = "",
   maxLength = 150,
+  autoFocus = false,
 }: TextAreaProps) => {
   const handleChange = (newValue: string) => {
     if (onChangeEvent != null) {
@@ -74,6 +76,8 @@ const TextArea = ({
       onBlur={onBlurEvent}
       value={text}
       placeholder={placeholder}
+      spellCheck={false}
+      autoFocus={autoFocus}
     />
   );
 };

@@ -9,7 +9,7 @@ interface Note {
   createdAt: Date;
   title: string;
   type: string;
-  pinned: boolean;
+  pinnedByMe: boolean;
   reminderDate: string | null;
 }
 
@@ -49,7 +49,7 @@ const InfiniteNoteList = ({
               key={note.id}
               content={note.content}
               id={note.id}
-              pinned={note.pinned}
+              pinned={note.pinnedByMe}
               reminderDate={note.reminderDate}
               title={note.title}
               noteType={note.type}

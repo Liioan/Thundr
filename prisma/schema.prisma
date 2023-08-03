@@ -50,6 +50,7 @@ model User {
     sessions      Session[]
     //! non nextauth
     notes         Note[]
+    Pin           Pin[]
 }
 
 model VerificationToken {
@@ -67,11 +68,11 @@ model Note {
     reminderDate String?
     userId       String
     noteTypeId   String
-    pinned       Boolean  @default(false)
     createdAt    DateTime @default(now())
 
     type NoteType @relation(fields: [noteTypeId], references: [id], onDelete: Cascade)
     user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    pin  Pin[]
 
     @@unique([createdAt, id])
     @@index([userId])
@@ -82,4 +83,16 @@ model NoteType {
     id    String @id @default(cuid())
     type  String
     notes Note[]
+}
+
+model Pin {
+    userId String
+    noteId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+
+    @@id([userId, noteId])
+    @@index([userId])
+    @@index([noteId])
 }
