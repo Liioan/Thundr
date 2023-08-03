@@ -48,7 +48,7 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
 
 const RenderNote = ({ content }: { content: string }) => {
   return content ? (
-    <p className="text-small text-text-light dark:text-text-dark">
+    <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
       {content.length > 100 ? (
         <>
           {content.substring(0, 100)}
@@ -74,12 +74,18 @@ const RenderMarkdownNote = ({ content }: { content: string }) => {
   }
 
   return content ? (
-    <p>
-      {content}
-      <span className="font-bold text-primary-light dark:text-primary-dark">
-        {" "}
-        ...
-      </span>
+    <p className="overflow-hidden">
+      {content.length > 100 ? (
+        <>
+          {content.substring(0, 100)}
+          <span className="font-bold text-primary-light dark:text-primary-dark">
+            {" "}
+            ...
+          </span>
+        </>
+      ) : (
+        content
+      )}
     </p>
   ) : (
     <span className="text-text-light opacity-50 dark:text-text-dark">
