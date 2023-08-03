@@ -3,14 +3,20 @@ import Icon from "../global/Icon";
 
 interface PinSwitchProps {
   toggled: boolean;
-  onClickEvent: () => void;
+  onClickEvent?: () => void;
 }
 
 const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
+  const handleClick = () => {
+    if (!onClickEvent) return;
+
+    onClickEvent();
+  };
+
   return (
     <button
       className="relative z-10 flex items-center justify-center"
-      onClick={onClickEvent}
+      onClick={handleClick}
     >
       <AnimatePresence>
         {toggled && (

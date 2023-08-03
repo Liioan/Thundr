@@ -12,68 +12,8 @@ import { stringify } from "~/utils/JsonUtils";
 import { type todoList } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
-import Checkbox from "~/components/ui/Checkbox";
-import XButton from "~/components/ui/buttons/XButton";
 import Icon from "~/components/global/Icon";
-
-interface TodoItemProps {
-  task: string;
-  isFinished: boolean;
-  taskId: number;
-  disabled?: boolean;
-  onClickEvent: (taskId: number) => void;
-  changeTaskText: (text: string, taskId: number) => void;
-  removeTask: (taskId: number) => void;
-}
-
-const TodoItem = ({
-  task,
-  isFinished = false,
-  onClickEvent,
-  taskId,
-  changeTaskText,
-  removeTask,
-  disabled = false,
-}: TodoItemProps) => {
-  const [taskText, setTaskText] = useState<string | undefined>(task);
-
-  const handleBlur = () => {
-    changeTaskText(taskText ?? "", taskId);
-  };
-
-  const handleChange = (newTaskText: string) => {
-    newTaskText.trim();
-    setTaskText(newTaskText);
-  };
-
-  return (
-    <li className="flex items-center justify-between">
-      <div className="flex items-center gap-[10px]">
-        <button
-          onClick={() => {
-            onClickEvent(taskId);
-          }}
-        >
-          <Checkbox toggled={isFinished} />
-        </button>
-        <input
-          className={`resize-none bg-background-light text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark ${
-            isFinished ? "line-through opacity-50" : "opacity-100"
-          }`}
-          value={taskText}
-          disabled={isFinished || disabled}
-          maxLength={200}
-          placeholder="type in your task"
-          onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={isFinished ? "opacity-100" : "opacity-50"}>
-        <XButton onClickEvent={() => removeTask(taskId)} />
-      </div>
-    </li>
-  );
-};
+import TodoItem from "~/components/ui/TodoItem";
 
 interface AddNewTodoProps {
   onClickEvent: () => void;

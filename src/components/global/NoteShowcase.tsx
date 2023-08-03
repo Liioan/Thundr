@@ -1,8 +1,21 @@
 import Link from "next/link";
 import Title from "../ui/Title";
 import PinSwitch from "../ui/PinSwitch";
-import { parseJson } from "~/utils/JsonUtils";
-import { type markdownNote, type note } from "~/types/NoteType";
+import type {
+  counter,
+  decisionTree,
+  note,
+  progressTracker,
+  todoList,
+} from "~/types/NoteType";
+import TodoItem from "../ui/TodoItem";
+
+type PossibleNoteContent =
+  | note
+  | todoList
+  | decisionTree
+  | counter
+  | progressTracker;
 
 interface RenderDateProps {
   reminderDate: string | null;
@@ -33,27 +46,19 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
   );
 };
 
-interface RenderComponentsProps {
-  content: string;
-}
-
-const RenderNote = ({ content }: RenderComponentsProps) => {
-  const parsedContent = parseJson<note>(content ?? "");
-
-  if (parsedContent == undefined) return null;
-
-  return parsedContent ? (
+const RenderNote = ({ content }: { content: string }) => {
+  return content ? (
     <p className="text-small text-text-light dark:text-text-dark">
-      {parsedContent.length > 100 ? (
+      {content.length > 100 ? (
         <>
-          {parsedContent.substring(0, 100)}
+          {content.substring(0, 100)}
           <span className="font-bold text-primary-light dark:text-primary-dark">
             {" "}
             ...
           </span>
         </>
       ) : (
-        parsedContent
+        content
       )}
     </p>
   ) : (
@@ -63,29 +68,14 @@ const RenderNote = ({ content }: RenderComponentsProps) => {
   );
 };
 
-const RenderMarkdownNote = ({ content }: RenderComponentsProps) => {
-  let parsedContent = parseJson<markdownNote>(content ?? "");
-
-  if (parsedContent == undefined) return null;
-
-  if (parsedContent.length > 100) {
-    parsedContent = parsedContent.substring(0, 100);
+const RenderMarkdownNote = ({ content }: { content: string }) => {
+  if (content.length > 100) {
+    content = content.substring(0, 100);
   }
 
-  return parsedContent ? (
-    // <>
-    //   <ReactMarkdown className="prose overflow-hidden text-text-light prose-headings:text-text-light dark:text-text-dark dark:prose-headings:text-text-dark ">
-    //     {parsedContent}
-    //   </ReactMarkdown>
-    //   {parsedContent.length >= 100 && (
-    //     <span className="font-bold text-primary-light dark:text-primary-dark">
-    //       {" "}
-    //       ...
-    //     </span>
-    //   )}
-    // </>
+  return content ? (
     <p>
-      {parsedContent}
+      {content}
       <span className="font-bold text-primary-light dark:text-primary-dark">
         {" "}
         ...
@@ -98,22 +88,63 @@ const RenderMarkdownNote = ({ content }: RenderComponentsProps) => {
   );
 };
 
+const RenderTodoList = ({ content }: { content: todoList }) => {
+  if (content.length > 5) {
+    content = content.splice(4, content.length - 4);
+  }
+  return (
+    <div className="flex flex-col gap-[15px]">
+      <ul className="relative flex flex-col gap-[15px]">
+        {content?.map((todo, i) => {
+          if (!todo.isFinished)
+            return (
+              <TodoItem
+                key={i}
+                task={todo.task}
+                isFinished={todo.isFinished}
+                taskId={i}
+                disabled
+              />
+            );
+        })}
+      </ul>
+      <ul className="flex flex-col gap-[15px]">
+        {content?.map((todo, i) => {
+          if (todo.isFinished)
+            return (
+              <TodoItem
+                key={i}
+                task={todo.task}
+                isFinished={todo.isFinished}
+                taskId={i}
+                disabled
+              />
+            );
+        })}
+      </ul>
+    </div>
+  );
+};
+
 interface RenderContentProps {
   type: string;
-  content: string;
+  content: PossibleNoteContent;
 }
 
 const RenderContent = ({ type, content }: RenderContentProps) => {
-  if (type === "note") return <RenderNote content={content} />;
-  if (type === "markdownNote") return <RenderMarkdownNote content={content} />;
+  if (type === "note") return <RenderNote content={content as string} />;
+  if (type === "markdownNote")
+    return <RenderMarkdownNote content={content as string} />;
+  if (type === "todoList")
+    return <RenderTodoList content={content as todoList} />;
 };
 
 interface NoteShowcaseProps {
   id: string;
   title: string;
-  content: string | null;
+  content: PossibleNoteContent;
   reminderDate: string | null;
-  pinned: boolean;
+  pinnedByMe: boolean;
   noteType: string;
 }
 
@@ -122,14 +153,14 @@ const NoteShowcase = ({
   title,
   content,
   reminderDate,
-  pinned,
+  pinnedByMe,
   noteType,
 }: NoteShowcaseProps) => {
   return (
     <Link href={`/${noteType}s/${id}`}>
-      <div className="relative flex min-h-[150px] w-full flex-col gap-[10px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:min-h-[200px]">
+      <div className="relative flex min-h-[150px] w-full flex-col gap-[20px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:min-h-[200px]">
         <span className="absolute right-[30px] top-[30px]">
-          <PinSwitch toggled={pinned} />
+          <PinSwitch toggled={pinnedByMe} />
         </span>
         <Title text={title} />
         <RenderContent content={content ?? ""} type={noteType} />
