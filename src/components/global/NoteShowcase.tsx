@@ -89,8 +89,8 @@ const RenderMarkdownNote = ({ content }: { content: string }) => {
 };
 
 const RenderTodoList = ({ content }: { content: todoList }) => {
-  if (content.length > 5) {
-    content = content.splice(4, content.length - 4);
+  if (content.length > 3) {
+    content = content.splice(2, content.length - 3);
   }
   return (
     <div className="flex flex-col gap-[15px]">
@@ -158,7 +158,7 @@ const NoteShowcase = ({
 }: NoteShowcaseProps) => {
   return (
     <Link href={`/${noteType}s/${id}`}>
-      <div className="relative flex min-h-[150px] w-full flex-col gap-[20px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark sm:min-h-[200px]">
+      <div className="relative flex min-h-[150px] w-full flex-col gap-[20px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[200px]">
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinnedByMe} />
         </span>
