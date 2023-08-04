@@ -79,7 +79,7 @@ const links = [
   { path: "/", text: "Home" },
   { path: "/notes", text: "Notes" },
   { path: "/markdownNotes", text: "Markdown Notes" },
-  { path: "/todos", text: "Todo's" },
+  { path: "/todoLists", text: "Todo's" },
   { path: "/counters", text: "Counters" },
   { path: "/progressTrackers", text: "Progress trackers" },
   { path: "/decisionTrees", text: "Decision trees" },
