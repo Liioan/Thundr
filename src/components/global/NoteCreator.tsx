@@ -258,11 +258,14 @@ const NoteCreator = () => {
 
   return (
     <Overlay condition={isNoteCreatorOpen} zIndex="z-20">
-      <div className=" flex h-3/4 items-center justify-center transition-colors duration-200">
+      <div className="flex h-3/4 items-center justify-center transition-colors duration-200">
         <div className="h-[400px] w-[280px] rounded-15 bg-foreground-light p-7 dark:bg-foreground-dark">
-          <form
+          <motion.form
             className="flex h-full w-full flex-col justify-between gap-4 "
             onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
           >
             <div className="flex justify-between">
               <Header text="Note creator" />
@@ -316,7 +319,7 @@ const NoteCreator = () => {
                 )}
               </button>
             </div>
-          </form>
+          </motion.form>
         </div>
       </div>
     </Overlay>

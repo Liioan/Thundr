@@ -122,7 +122,7 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="fixed top-0 z-40 flex w-full justify-between p-[25px]">
+      <nav className="fixed top-0 z-40 flex w-full justify-between p-[25px] backdrop-blur-md">
         <MenuButton
           isMenuOpened={isMenuOpened}
           setIsMenuOpened={setIsMenuOpened}
@@ -166,7 +166,7 @@ const Nav = () => {
                 <NavLink
                   href={link.path}
                   key={link.path}
-                  className="text-big text-text-light dark:text-text-dark"
+                  className="text-big text-text-light transition-colors duration-200 dark:text-text-dark"
                   onClickEvent={() => {
                     !isDesktop && setIsMenuOpened(false);
                   }}

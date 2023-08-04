@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Checkbox from "./Checkbox";
 import XButton from "./buttons/XButton";
+import { motion } from "framer-motion";
 
 interface TodoItemProps {
   task: string;
@@ -44,7 +45,11 @@ const TodoItem = ({
   };
 
   return (
-    <li className="flex items-center justify-between">
+    <motion.li
+      className="flex items-center justify-between"
+      initial={{ opacity: disabled ? 1 : 0 }}
+      animate={{ opacity: 1 }}
+    >
       <div className="flex items-center gap-[10px]">
         <button onClick={handleClick}>
           <Checkbox toggled={isFinished} />
@@ -64,7 +69,7 @@ const TodoItem = ({
       <div className={isFinished ? "opacity-100" : "opacity-50"}>
         {!disabled && <XButton onClickEvent={handleRemove} />}
       </div>
-    </li>
+    </motion.li>
   );
 };
 

@@ -9,6 +9,7 @@ import type {
   todoList,
 } from "~/types/NoteType";
 import TodoItem from "../ui/TodoItem";
+import { motion } from "framer-motion";
 
 type PossibleNoteContent =
   | note
@@ -59,9 +60,9 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
 const RenderNote = ({ content }: { content: string }) => {
   return content ? (
     <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
-      {content.length > 100 ? (
+      {content.length > 150 ? (
         <>
-          {content.substring(0, 100)}
+          {content.substring(0, 150)}
           <ShowMore />
         </>
       ) : (
@@ -78,9 +79,9 @@ const RenderNote = ({ content }: { content: string }) => {
 const RenderMarkdownNote = ({ content }: { content: string }) => {
   return content ? (
     <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
-      {content.length > 100 ? (
+      {content.length > 150 ? (
         <>
-          {content.substring(0, 100)}
+          {content.substring(0, 150)}
           <ShowMore />
         </>
       ) : (
@@ -99,7 +100,7 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
     content = content.splice(2, content.length - 3);
   }
   return (
-    <div className="flex flex-col gap-[15px]">
+    <div className="flex flex-col">
       <ul className="relative flex flex-col gap-[15px]">
         {content?.map((todo, i) => {
           if (!todo.isFinished)
@@ -136,7 +137,7 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
 const RenderCounter = ({ content }: { content: number }) => {
   return (
     <>
-      <h2 className="text-center text-4xl text-text-light dark:text-text-dark">
+      <h2 className="flex h-full -translate-y-2 items-center justify-center text-center text-4xl text-text-light dark:text-text-dark">
         {content}
       </h2>
       <ShowMore />
@@ -176,8 +177,14 @@ const NoteShowcase = ({
   noteType,
 }: NoteShowcaseProps) => {
   return (
-    <Link href={`/${noteType}s/${id}`}>
-      <div className="relative flex min-h-[150px] w-full flex-col gap-[20px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[200px]">
+    <Link href={`/${noteType}s/${id}`} className="overflow-x-hidden">
+      <motion.div
+        className="relative flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[220px]"
+        initial={{ opacity: 0, x: -100 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "backInOut", delay: 0.2 }}
+      >
         <span className="absolute right-[30px] top-[30px]">
           <PinSwitch toggled={pinnedByMe} />
         </span>
@@ -186,7 +193,7 @@ const NoteShowcase = ({
           <RenderContent content={content ?? ""} type={noteType} />
         </div>
         <RenderDate reminderDate={reminderDate} />
-      </div>
+      </motion.div>
     </Link>
   );
 };
