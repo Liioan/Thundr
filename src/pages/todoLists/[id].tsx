@@ -132,7 +132,7 @@ const NotePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`Note - ${note.data?.title}`}</title>
+        <title>{`Todo list - ${note.data?.title}`}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Main>

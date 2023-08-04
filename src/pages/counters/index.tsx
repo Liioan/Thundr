@@ -12,26 +12,26 @@ const List: NextPage = () => {
   if (!sessionData) return null;
 
   const notes = api.note.infiniteNotes.useInfiniteQuery(
-    { userId: sessionData.user.id, noteType: "todoList" },
+    { userId: sessionData.user.id, noteType: "counter" },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
   const pinnedNotes = api.note.infinitePinnedNotes.useInfiniteQuery(
-    { userId: sessionData.user.id, noteType: "todoList" },
+    { userId: sessionData.user.id, noteType: "counter" },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
   return (
     <>
       <Head>
-        <title>{`Todo lists`}</title>
+        <title>{`Note list`}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Main>
         <ResponsiveWrapper>
           {pinnedNotes.data?.pages[0]?.notes.length ? (
             <>
-              <Header text="Pinned todo lists" />
+              <Header text="Pinned counters" />
               <InfiniteNoteList
                 notes={pinnedNotes.data?.pages.flatMap((page) => page.notes)}
                 isError={pinnedNotes.isError}
@@ -41,7 +41,7 @@ const List: NextPage = () => {
               />
             </>
           ) : null}
-          <Header text="Todo lists" />
+          <Header text="Counters" />
           <InfiniteNoteList
             notes={notes.data?.pages.flatMap((page) => page.notes)}
             isError={notes.isError}

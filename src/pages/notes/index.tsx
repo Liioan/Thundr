@@ -24,7 +24,7 @@ const List: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`Note list`}</title>
+        <title>{`Counter list`}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Main>

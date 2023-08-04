@@ -7,10 +7,9 @@ import Title from "~/components/ui/Title";
 import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
-import TextArea from "~/components/ui/TextArea";
 import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
 import { stringify } from "~/utils/JsonUtils";
-import { type note } from "~/types/NoteType";
+import { type counter } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 
@@ -21,7 +20,7 @@ const NotePage: NextPage = () => {
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
   const utils = api.useContext();
 
-  const [noteContent, setNoteContent] = useState<string | undefined>();
+  const [noteContent, setNoteContent] = useState<number>();
   const [noteTitle, setNoteTitle] = useState<string | undefined>();
   const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
@@ -44,12 +43,20 @@ const NotePage: NextPage = () => {
   const handleEdit = () => {
     if (noteContent === note.data?.content && noteTitle === note.data?.title)
       return;
-    const stringifiedContent = stringify<note | undefined>(noteContent);
+    const stringifiedContent = stringify<counter | undefined>(noteContent);
     editNote.mutate({
       noteId: id as string,
       title: noteTitle,
       content: stringifiedContent,
     });
+  };
+
+  const handleClick = (operation: "add" | "subtract") => {
+    if (noteContent == undefined) return;
+    let newValue = noteContent;
+    if (operation === "add") newValue = newValue + 1;
+    if (operation === "subtract") newValue = newValue - 1;
+    setNoteContent(newValue);
   };
 
   useEffect(() => {
@@ -67,7 +74,7 @@ const NotePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`Counter - ${note.data?.title}`}</title>
+        <title>{`Note - ${note.data?.title}`}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Main>
@@ -81,29 +88,37 @@ const NotePage: NextPage = () => {
               />
             </div>
           </div>
-          <form
-            className="flex w-full flex-col gap-[25px]"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleEdit();
-            }}
-          >
+          <div className="flex w-full flex-col gap-[25px]">
             <Title
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
               onBlurEvent={handleEdit}
             />
-            <TextArea
-              className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
-              placeholder="type something here"
-              text={noteContent ?? note.data.content}
-              onChangeEvent={setNoteContent}
-              onBlurEvent={handleEdit}
-              isDisabled={false}
-              maxLength={3000}
-            />
-          </form>
+            <div className="mt-11 flex flex-col gap-[45px] md:mt-20">
+              <h2 className="text-center text-5xl text-text-light dark:text-text-dark">
+                {noteContent}
+              </h2>
+              <div className="flex flex-col items-center justify-center gap-3 md:flex-row">
+                <button
+                  disabled={note.isLoading}
+                  onBlur={handleEdit}
+                  className="h-14 w-56 rounded-15 bg-primary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-primary-dark"
+                  onClick={() => handleClick("add")}
+                >
+                  Add
+                </button>
+                <button
+                  disabled={note.isLoading}
+                  onBlur={handleEdit}
+                  className="h-14 w-56 rounded-15 bg-secondary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-secondary-dark"
+                  onClick={() => handleClick("subtract")}
+                >
+                  Subtract
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="fixed bottom-[25px] flex items-center gap-5 self-end">
             <DeleteButton id={note.data.id} />
             <div>{/* button */}</div>
