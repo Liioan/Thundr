@@ -17,6 +17,16 @@ type PossibleNoteContent =
   | counter
   | progressTracker;
 
+const ShowMore = () => {
+  return (
+    <>
+      <span className="font-bold text-primary-light dark:text-primary-dark">
+        ...
+      </span>
+    </>
+  );
+};
+
 interface RenderDateProps {
   reminderDate: string | null;
 }
@@ -52,10 +62,7 @@ const RenderNote = ({ content }: { content: string }) => {
       {content.length > 100 ? (
         <>
           {content.substring(0, 100)}
-          <span className="font-bold text-primary-light dark:text-primary-dark">
-            {" "}
-            ...
-          </span>
+          <ShowMore />
         </>
       ) : (
         content
@@ -69,19 +76,12 @@ const RenderNote = ({ content }: { content: string }) => {
 };
 
 const RenderMarkdownNote = ({ content }: { content: string }) => {
-  if (content.length > 100) {
-    content = content.substring(0, 100);
-  }
-
   return content ? (
-    <p className="overflow-hidden">
+    <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
       {content.length > 100 ? (
         <>
           {content.substring(0, 100)}
-          <span className="font-bold text-primary-light dark:text-primary-dark">
-            {" "}
-            ...
-          </span>
+          <ShowMore />
         </>
       ) : (
         content
@@ -128,7 +128,19 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
             );
         })}
       </ul>
+      <ShowMore />
     </div>
+  );
+};
+
+const RenderCounter = ({ content }: { content: number }) => {
+  return (
+    <>
+      <h2 className="text-center text-4xl text-text-light dark:text-text-dark">
+        {content}
+      </h2>
+      <ShowMore />
+    </>
   );
 };
 
@@ -143,6 +155,7 @@ const RenderContent = ({ type, content }: RenderContentProps) => {
     return <RenderMarkdownNote content={content as string} />;
   if (type === "todoList")
     return <RenderTodoList content={content as todoList} />;
+  if (type === "counter") return <RenderCounter content={content as number} />;
 };
 
 interface NoteShowcaseProps {
@@ -169,7 +182,9 @@ const NoteShowcase = ({
           <PinSwitch toggled={pinnedByMe} />
         </span>
         <Title text={title} />
-        <RenderContent content={content ?? ""} type={noteType} />
+        <div className="flex h-full flex-col justify-between">
+          <RenderContent content={content ?? ""} type={noteType} />
+        </div>
         <RenderDate reminderDate={reminderDate} />
       </div>
     </Link>
