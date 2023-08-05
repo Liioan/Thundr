@@ -14,7 +14,7 @@ import Title from "../ui/Title";
 import { useUiStore } from "~/store/useUiStore";
 import { api } from "~/utils/api";
 import Router from "next/router";
-import Icon from "./Icon";
+import { IoIosArrowBack, IoIosArrowForward, IoMdAdd } from "react-icons/io";
 
 interface FormData {
   noteTitle?: string;
@@ -285,10 +285,7 @@ const NoteCreator = () => {
                 onClick={back}
                 type="button"
               >
-                <Icon
-                  iconName="chevron_left"
-                  className="-translate-x-[1px] text-4xl text-text-light"
-                />
+                <IoIosArrowBack className="-translate-x-[1px] text-2xl text-text-light" />
               </button>
 
               <button
@@ -312,10 +309,7 @@ const NoteCreator = () => {
                     finish
                   </span>
                 ) : (
-                  <Icon
-                    iconName="chevron_right"
-                    className="translate-x-[1px] text-4xl text-text-light"
-                  />
+                  <IoIosArrowForward className="translate-x-[1px] text-2xl text-text-light" />
                 )}
               </button>
             </div>
@@ -348,7 +342,7 @@ export const OpenNoteCreatorButton = () => {
       className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
       onClick={() => setIsNoteCreatorOpen(true)}
     >
-      <Icon iconName="add_box" className="text-text-light" />
+      <IoMdAdd className="text-2xl text-text-light" />
       new
     </button>
   );

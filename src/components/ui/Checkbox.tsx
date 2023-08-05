@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import Icon from "../global/Icon";
+import { IoMdCheckmark } from "react-icons/io";
 
 interface CheckboxProps {
   toggled: boolean;
@@ -24,10 +24,7 @@ const Checkbox = ({ toggled }: CheckboxProps) => {
             transition={{ ease: "backInOut", duration: 0.2 }}
           >
             {/* <CheckIcon className="w-5 -translate-x-[1px] text-text-light" /> */}
-            <Icon
-              iconName="done"
-              className=" -translate-x-[1px] text-text-light"
-            />
+            <IoMdCheckmark className="text-xl text-text-light" />
           </motion.span>
         )}
       </AnimatePresence>

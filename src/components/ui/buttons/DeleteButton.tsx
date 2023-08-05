@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
-import Icon from "../../global/Icon";
 import usePopup from "~/hooks/usePopup";
 import { useRouter } from "next/router";
+import { FiTrash2 } from "react-icons/fi";
 
 interface DeleteButtonProps {
   id: string;
@@ -28,7 +28,7 @@ const DeleteButton = ({ id }: DeleteButtonProps) => {
         deleteNote.mutate({ noteId: id });
       }}
     >
-      <Icon iconName="delete" className="text-text-light" />
+      <FiTrash2 className=" text-xl text-text-light" />
     </button>
   );
 };

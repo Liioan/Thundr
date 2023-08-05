@@ -7,9 +7,10 @@ import "@theme-toggles/react/css/Expand.css";
 import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
-import Icon from "./Icon";
 import NavLink from "../ui/NavLink";
 import usePopup from "~/hooks/usePopup";
+import Icon from "./Icon";
+import { IoMdMenu, IoMdClose } from "react-icons/io";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -31,10 +32,7 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
             exit={{ rotate: "180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Icon
-              iconName="menu"
-              className="text-4xl text-primary-light dark:text-primary-dark"
-            />
+            <IoMdMenu className="text-4xl text-primary-light dark:text-primary-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -47,10 +45,7 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
             exit={{ rotate: "-180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Icon
-              iconName="close"
-              className="text-4xl text-primary-light dark:text-primary-dark"
-            />
+            <IoMdClose className="text-4xl text-primary-light dark:text-primary-dark" />
           </motion.span>
         )}
       </AnimatePresence>

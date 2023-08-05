@@ -12,8 +12,8 @@ import { stringify } from "~/utils/JsonUtils";
 import { type todoList } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
-import Icon from "~/components/global/Icon";
 import TodoItem from "~/components/ui/TodoItem";
+import { IoMdAdd } from "react-icons/io";
 
 interface AddNewTodoProps {
   onClickEvent: () => void;
@@ -25,11 +25,8 @@ const AddNewTodo = ({ onClickEvent }: AddNewTodoProps) => {
       className="flex items-center justify-center gap-[10px] self-start"
       onClick={onClickEvent}
     >
-      <Icon
-        iconName="add"
-        className="text-accent-light dark:text-accent-dark"
-      />{" "}
-      Add new item
+      <IoMdAdd className="text-accent-light dark:text-accent-dark" /> Add new
+      item
     </button>
   );
 };

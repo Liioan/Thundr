@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import Icon from "../global/Icon";
+import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 
 interface PinSwitchProps {
   toggled: boolean;
@@ -27,10 +27,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Icon
-              iconName="bookmark"
-              className="filled text-3xl font-light text-primary-light dark:text-primary-dark"
-            />
+            <GoBookmarkFill className="text-2xl font-light text-primary-light dark:text-primary-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -43,10 +40,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Icon
-              iconName="bookmark"
-              className="text-3xl font-light text-secondary-light dark:text-secondary-dark"
-            />
+            <GoBookmark className="text-2xl font-light text-secondary-light dark:text-secondary-dark" />
           </motion.span>
         )}
       </AnimatePresence>

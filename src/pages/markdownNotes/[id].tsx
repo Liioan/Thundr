@@ -14,7 +14,8 @@ import { type markdownNote } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import ReactMarkdown from "react-markdown";
-import Icon from "~/components/global/Icon";
+import { GrView } from "react-icons/gr";
+import { AiOutlineEdit } from "react-icons/ai";
 
 const NotePage: NextPage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -124,12 +125,12 @@ const NotePage: NextPage = () => {
               >
                 {isEditing ? (
                   <>
-                    <Icon iconName="visibility" className="" />
+                    <GrView className="text-xl" />
                     <span>View</span>
                   </>
                 ) : (
                   <>
-                    <Icon iconName="edit" className="" />
+                    <AiOutlineEdit className="text-2xl" />
                     <span>Edit</span>
                   </>
                 )}
