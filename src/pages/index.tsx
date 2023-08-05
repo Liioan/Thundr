@@ -57,7 +57,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Thundr</title>
         <meta name="description" content="Note app" />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon_dark.svg" />
       </Head>
       <Main>
         <AllNotesSection />

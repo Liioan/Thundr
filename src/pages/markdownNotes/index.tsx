@@ -25,7 +25,7 @@ const List: NextPage = () => {
     <>
       <Head>
         <title>{`Markdown note list`}</title>
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon_dark.svg" />
       </Head>
       <Main>
         <ResponsiveWrapper>

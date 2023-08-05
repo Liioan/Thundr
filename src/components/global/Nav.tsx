@@ -9,7 +9,6 @@ import { signOut, useSession } from "next-auth/react";
 import Overlay from "../ui/Overlay";
 import NavLink from "../ui/NavLink";
 import usePopup from "~/hooks/usePopup";
-import Icon from "./Icon";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 
 interface MenuButtonProps {
@@ -111,8 +110,11 @@ const Nav = () => {
   const { theme } = useTheme();
 
   let logoUrl = "/logo_dark.svg";
+  let faviconUrl = "/favicon_dark.svg";
+
   if (theme === "light") {
     logoUrl = "/logo_light.svg";
+    faviconUrl = "/favicon_light.svg";
   }
 
   return (
@@ -142,10 +144,7 @@ const Nav = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <Icon
-            iconName="filter_drama"
-            className="bg-gradient-light bg-clip-text text-3xl font-semibold text-transparent dark:bg-gradient-dark"
-          />
+          <Image src={faviconUrl} width={30} height={30} alt="icon" />
         </Link>
       </nav>
       <Overlay
