@@ -100,7 +100,7 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
     content = content.splice(2, content.length - 3);
   }
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-[15px]">
       <ul className="relative flex flex-col gap-[15px]">
         {content?.map((todo, i) => {
           if (!todo.isFinished)
@@ -137,7 +137,7 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
 const RenderCounter = ({ content }: { content: number }) => {
   return (
     <>
-      <h2 className="flex h-full -translate-y-2 items-center justify-center text-center text-4xl text-text-light dark:text-text-dark">
+      <h2 className="mt-4 flex h-full -translate-y-2 items-center justify-center text-center text-4xl text-text-light dark:text-text-dark">
         {content}
       </h2>
       <ShowMore />
