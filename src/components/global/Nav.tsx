@@ -144,7 +144,13 @@ const Nav = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <Image src={faviconUrl} width={30} height={30} alt="icon" />
+          <Image
+            src={faviconUrl}
+            width={30}
+            height={30}
+            alt="icon"
+            className="h-[30px] w-[30px]"
+          />
         </Link>
       </nav>
       <Overlay
