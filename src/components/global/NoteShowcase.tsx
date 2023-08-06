@@ -177,9 +177,12 @@ const NoteShowcase = ({
   noteType,
 }: NoteShowcaseProps) => {
   return (
-    <Link href={`/${noteType}s/${id}`} className="overflow-x-hidden">
+    <Link
+      href={`/${noteType}s/${id}`}
+      className="cursor-pointer overflow-x-hidden"
+    >
       <motion.div
-        className="relative flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[220px]"
+        className="relative  flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[220px]"
         initial={{ opacity: 0, x: -100 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
