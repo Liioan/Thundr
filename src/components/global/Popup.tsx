@@ -1,10 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import usePopup from "~/hooks/usePopup";
+import useTimeout from "~/hooks/useTimeout";
 import { useUiStore } from "~/store/useUiStore";
 
 const Popup = () => {
   const [isDesktop, setIsDesktop] = useState(false);
+
+  const { closePopup } = usePopup();
+  const { isPopupOpen, popupMessage, isPopupError } = useUiStore();
+  const { reset } = useTimeout(closePopup, 2000);
 
   const onResize = () => {
     setIsDesktop(window.innerWidth >= 1800);
@@ -22,17 +27,9 @@ const Popup = () => {
     onResize();
   }, []);
 
-  const { closePopup } = usePopup();
-  const { isPopupOpen, popupMessage, isPopupError } = useUiStore();
-
   useEffect(() => {
-    if (isPopupOpen) {
-      setTimeout(() => {
-        closePopup();
-      }, 2000);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPopupOpen]);
+    reset();
+  }, [popupMessage, reset]);
 
   return (
     <>
