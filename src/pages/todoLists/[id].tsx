@@ -25,8 +25,8 @@ const AddNewTodo = ({ onClickEvent }: AddNewTodoProps) => {
       className="flex items-center justify-center gap-[10px] self-start"
       onClick={onClickEvent}
     >
-      <IoMdAdd className="text-accent-light dark:text-accent-dark" /> Add new
-      item
+      <IoMdAdd className="text-2xl text-accent-light dark:text-accent-dark" />{" "}
+      Add new item
     </button>
   );
 };
