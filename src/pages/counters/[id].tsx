@@ -12,6 +12,7 @@ import { stringify } from "~/utils/JsonUtils";
 import { type counter } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
+import useDebounce from "~/hooks/useDebounce";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const NotePage: NextPage = () => {
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
   const utils = api.useContext();
 
-  const [noteContent, setNoteContent] = useState<number>();
+  const [noteContent, setNoteContent] = useState<number>(0);
   const [noteTitle, setNoteTitle] = useState<string | undefined>();
   const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
 
@@ -58,6 +59,8 @@ const NotePage: NextPage = () => {
     if (operation === "subtract") newValue = newValue - 1;
     setNoteContent(newValue);
   };
+
+  useDebounce<number>(handleEdit, 1000, [noteContent]);
 
   useEffect(() => {
     if (note.data != null) {
@@ -102,7 +105,7 @@ const NotePage: NextPage = () => {
               <div className="flex flex-col items-center justify-center gap-3 md:flex-row">
                 <button
                   disabled={note.isLoading}
-                  onBlur={handleEdit}
+                  // onBlur={handleEdit}
                   className="h-14 w-56 rounded-15 bg-primary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-primary-dark"
                   onClick={() => handleClick("add")}
                 >
@@ -110,7 +113,7 @@ const NotePage: NextPage = () => {
                 </button>
                 <button
                   disabled={note.isLoading}
-                  onBlur={handleEdit}
+                  // onBlur={handleEdit}
                   className="h-14 w-56 rounded-15 bg-secondary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-secondary-dark"
                   onClick={() => handleClick("subtract")}
                 >
