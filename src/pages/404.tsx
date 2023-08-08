@@ -12,7 +12,7 @@ const Custom404 = () => {
         <meta name="description" content="Note app" />
         <link rel="icon" href="/favicon_dark.svg" />
       </Head>
-      <Main className="flex flex-col items-center justify-center">
+      <Main className="flex flex-col items-center justify-center bg-background-dark">
         <motion.div
           className="flex w-full max-w-[450px] flex-col items-center justify-center  gap-[40px] rounded-15 bg-foreground-dark p-10"
           initial={{ opacity: 0, y: 100 }}
@@ -20,10 +20,10 @@ const Custom404 = () => {
           transition={{ duration: 1, ease: "backInOut" }}
         >
           <div className="flex flex-col gap-[10px]">
-            <h1 className="text-center text-3xl text-text-dark sm:text-5xl">
+            <h1 className="text-center text-3xl font-bold text-accent-dark sm:text-5xl">
               404
             </h1>
-            <h2 className="text-center text-xl text-text-dark sm:text-3xl">
+            <h2 className="text-center text-xl font-bold text-text-dark sm:text-3xl">
               Page not found
             </h2>
           </div>

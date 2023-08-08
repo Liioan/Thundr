@@ -218,6 +218,28 @@ export const noteRouter = createTRPCRouter({
         return { addedPin: false };
       }
     }),
+
+  hasUserNotes: protectedProcedure
+    .input(z.object({ userId: z.string(), noteType: z.string().optional() }))
+    .query(async ({ input: { userId, noteType }, ctx }) => {
+      let whereClause:
+        | { userId: string }
+        | { userId: string; noteTypeId: string } = { userId: userId };
+
+      if (noteType) {
+        const noteTypeId = await ctx.prisma.noteType.findFirst({
+          where: { type: noteType },
+          select: { id: true, type: false },
+        });
+        whereClause = { userId: userId, noteTypeId: noteTypeId?.id };
+      }
+
+      const userNotes = await ctx.prisma.note.findFirst({
+        where: whereClause,
+      });
+
+      return userNotes ? true : false;
+    }),
 });
 
 async function getInfiniteNotes({

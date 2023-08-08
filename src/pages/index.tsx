@@ -1,57 +1,21 @@
 import Head from "next/head";
 import { type GetServerSideProps, type NextPage } from "next";
 import { getServerAuthSession } from "../server/auth";
-import Header from "~/components/ui/Header";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
-import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
 import Main from "~/components/ui/Main";
-import InfiniteNoteList from "~/components/global/InfiniteNoteList";
+import NoNotesScreen from "~/components/global/NoNotesScreen";
+import RenderNotesList from "~/components/global/RenderNotesList";
 
-const AllNotesSection = () => {
+const Home: NextPage = () => {
   const { data: sessionData } = useSession();
   if (!sessionData) return null;
 
-  const notes = api.note.infiniteNotes.useInfiniteQuery(
-    { userId: sessionData.user.id },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor }
-  );
+  const hasUserNotes = api.note.hasUserNotes.useQuery({
+    userId: sessionData.user.id,
+  }).data;
 
-  const pinnedNotes = api.note.infinitePinnedNotes.useInfiniteQuery(
-    { userId: sessionData.user.id },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor }
-  );
-
-  return (
-    <>
-      <ResponsiveWrapper>
-        {pinnedNotes.data?.pages[0]?.notes.length ? (
-          <>
-            <Header text="Pinned notes" />
-            <InfiniteNoteList
-              notes={pinnedNotes.data?.pages.flatMap((page) => page.notes)}
-              isError={pinnedNotes.isError}
-              isLoading={pinnedNotes.isLoading}
-              hasMore={pinnedNotes.hasNextPage}
-              fetchNewNotes={pinnedNotes.fetchNextPage}
-            />
-          </>
-        ) : null}
-        <Header text="All notes" />
-        <InfiniteNoteList
-          notes={notes.data?.pages.flatMap((page) => page.notes)}
-          isError={notes.isError}
-          isLoading={notes.isLoading}
-          hasMore={notes.hasNextPage}
-          fetchNewNotes={notes.fetchNextPage}
-        />
-      </ResponsiveWrapper>
-    </>
-  );
-};
-
-const Home: NextPage = () => {
   return (
     <>
       <Head>
@@ -60,7 +24,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_dark.svg" />
       </Head>
       <Main>
-        <AllNotesSection />
+        {hasUserNotes ? (
+          <RenderNotesList headerText="notes" />
+        ) : (
+          <NoNotesScreen noteType="note" />
+        )}
         <OpenNoteCreatorButton />
       </Main>
     </>
