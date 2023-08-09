@@ -9,6 +9,7 @@ import NoNotesScreen from "~/components/global/NoNotesScreen";
 import RenderNotesList from "~/components/global/RenderNotesList";
 import { useHotkeys } from "@mantine/hooks";
 import usePopup from "~/hooks/usePopup";
+import LoadingScreen from "~/components/global/LoadingScreen";
 
 const Home: NextPage = () => {
   const { openPopup } = usePopup();
@@ -21,7 +22,22 @@ const Home: NextPage = () => {
 
   const hasUserNotes = api.note.hasUserNotes.useQuery({
     userId: sessionData.user.id,
-  }).data;
+  });
+
+  if (hasUserNotes.isLoading)
+    return (
+      <>
+        <Head>
+          <title>Thundr</title>
+          <meta name="description" content="Note app" />
+          <link rel="icon" href="/favicon_dark.svg" />
+        </Head>
+        <Main>
+          <LoadingScreen />
+          <OpenNoteCreatorButton />
+        </Main>
+      </>
+    );
 
   return (
     <>
@@ -31,7 +47,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_dark.svg" />
       </Head>
       <Main>
-        {hasUserNotes ? (
+        {hasUserNotes.data ? (
           <RenderNotesList headerText="notes" />
         ) : (
           <NoNotesScreen noteType="note" />
