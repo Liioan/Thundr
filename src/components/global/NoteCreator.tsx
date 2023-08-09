@@ -1,3 +1,4 @@
+import { useHotkeys } from "@mantine/hooks";
 import { useMultistepForm } from "~/hooks/useMultistepForm";
 import Header from "../ui/Header";
 import Overlay from "../ui/Overlay";
@@ -6,7 +7,6 @@ import {
   type ReactElement,
   type ReactNode,
   useState,
-  useEffect,
 } from "react";
 import Checkbox from "../ui/Checkbox";
 import { AnimatePresence, motion } from "framer-motion";
@@ -212,17 +212,7 @@ const NoteCreator = () => {
     });
   };
 
-  const onKeyboardClick = (event: KeyboardEvent) => {
-    if (!isNoteCreatorOpen) return;
-
-    if (event.key === "Escape") setIsNoteCreatorOpen(false);
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", (e) => onKeyboardClick(e));
-
-    return window.removeEventListener("keydown", (e) => onKeyboardClick(e));
-  });
+  useHotkeys([["escape", () => setIsNoteCreatorOpen(false)]]);
 
   const steps: ReactElement[] = [
     <NoteTypeForm key={"NoteTypeForm"} {...data} updateFields={updateFields} />,
@@ -323,19 +313,9 @@ const NoteCreator = () => {
 export default NoteCreator;
 
 export const OpenNoteCreatorButton = () => {
-  const { setIsNoteCreatorOpen, isNoteCreatorOpen } = useUiStore();
+  const { setIsNoteCreatorOpen } = useUiStore();
 
-  const onKeyboardClick = (event: KeyboardEvent) => {
-    if (isNoteCreatorOpen) return;
-
-    if (event.key === "N" && event.shiftKey) setIsNoteCreatorOpen(true);
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", (e) => onKeyboardClick(e));
-
-    return window.removeEventListener("keydown", (e) => onKeyboardClick(e));
-  });
+  useHotkeys([["shift+alt+n", () => setIsNoteCreatorOpen(true)]]);
 
   return (
     <button

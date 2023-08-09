@@ -7,8 +7,15 @@ import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
 import Main from "~/components/ui/Main";
 import NoNotesScreen from "~/components/global/NoNotesScreen";
 import RenderNotesList from "~/components/global/RenderNotesList";
+import { useHotkeys } from "@mantine/hooks";
+import usePopup from "~/hooks/usePopup";
 
 const Home: NextPage = () => {
+  const { openPopup } = usePopup();
+  useHotkeys([
+    ["ctrl+shift+v", () => openPopup("vovota is a big pepega", false)],
+  ]);
+
   const { data: sessionData } = useSession();
   if (!sessionData) return null;
 

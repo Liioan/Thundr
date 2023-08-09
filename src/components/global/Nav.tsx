@@ -10,6 +10,7 @@ import Overlay from "../ui/Overlay";
 import NavLink from "../ui/NavLink";
 import usePopup from "~/hooks/usePopup";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
+import { useHotkeys } from "@mantine/hooks";
 
 interface MenuButtonProps {
   isMenuOpened: boolean;
@@ -107,7 +108,9 @@ const Nav = () => {
 
   const { data: session } = useSession();
 
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
+
+  useHotkeys([["ctrl+j", () => setTheme(theme === "dark" ? "light" : "dark")]]);
 
   let logoUrl = "/logo_dark.svg";
   let faviconUrl = "/favicon_dark.svg";
