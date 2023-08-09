@@ -290,9 +290,10 @@ const NoteCreator = () => {
                 cancel
               </button>
               <button
-                className={`flex h-8 items-center justify-center justify-self-end rounded-full bg-primary-light transition-all duration-200 dark:bg-primary-dark 
+                className={`flex h-8 items-center justify-center justify-self-end rounded-full bg-primary-light transition-all duration-200 disabled:opacity-50 dark:bg-primary-dark
                 ${isLastStep ? "w-auto px-3" : "w-8"}`}
                 type="submit"
+                disabled={createNote.isLoading}
               >
                 {isLastStep ? (
                   <span className="text-small font-medium text-text-light">
