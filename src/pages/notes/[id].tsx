@@ -13,6 +13,7 @@ import { stringify } from "~/utils/JsonUtils";
 import { type note } from "~/types/NoteType";
 import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
+import useDebounce from "~/hooks/useDebounce";
 
 const NotePage: NextPage = () => {
   const router = useRouter();
@@ -21,9 +22,9 @@ const NotePage: NextPage = () => {
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
   const utils = api.useContext();
 
-  const [noteContent, setNoteContent] = useState<string | undefined>();
-  const [noteTitle, setNoteTitle] = useState<string | undefined>();
-  const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
+  const [noteContent, setNoteContent] = useState<string>("");
+  const [noteTitle, setNoteTitle] = useState<string>("");
+  const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -51,6 +52,8 @@ const NotePage: NextPage = () => {
       content: stringifiedContent,
     });
   };
+
+  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
 
   useEffect(() => {
     if (note.data != null) {
@@ -92,14 +95,12 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
-              onBlurEvent={handleEdit}
             />
             <TextArea
               className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
               placeholder="type something here"
               text={noteContent ?? note.data.content}
               onChangeEvent={setNoteContent}
-              onBlurEvent={handleEdit}
               isDisabled={false}
               maxLength={3000}
             />

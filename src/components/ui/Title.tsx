@@ -4,16 +4,10 @@ import TextArea from "./TextArea";
 interface TitleProps {
   text: string;
   isDisabled?: boolean;
-  onChangeEvent?: Dispatch<SetStateAction<string | undefined>>;
-  onBlurEvent?: () => void;
+  onChangeEvent?: Dispatch<SetStateAction<string>>;
 }
 
-const Title = ({
-  text,
-  isDisabled = true,
-  onChangeEvent,
-  onBlurEvent,
-}: TitleProps) => {
+const Title = ({ text, isDisabled = true, onChangeEvent }: TitleProps) => {
   const insertText = () => {
     if (isDisabled && text.length > 20) return `${text.substring(0, 20)}...`;
     return text;
@@ -30,7 +24,6 @@ const Title = ({
         text={insertText()}
         isDisabled={isDisabled}
         onChangeEvent={onChangeEvent}
-        onBlurEvent={onBlurEvent}
       />
     </div>
   );

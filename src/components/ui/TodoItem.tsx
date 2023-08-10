@@ -2,6 +2,7 @@ import { useState } from "react";
 import Checkbox from "./Checkbox";
 import XButton from "./buttons/XButton";
 import { motion } from "framer-motion";
+import useDebounce from "~/hooks/useDebounce";
 
 interface TodoItemProps {
   task: string;
@@ -24,10 +25,12 @@ const TodoItem = ({
 }: TodoItemProps) => {
   const [taskText, setTaskText] = useState<string>(task);
 
-  const handleBlur = () => {
+  const handleEdit = () => {
     if (!changeTaskText) return;
     changeTaskText(taskText ?? "", taskId);
   };
+
+  useDebounce<string>(handleEdit, 500, [taskText]);
 
   const handleClick = () => {
     if (!onClickEvent) return;
@@ -63,7 +66,6 @@ const TodoItem = ({
           maxLength={200}
           placeholder={disabled ? "empty task" : "type in your task"}
           onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleBlur}
         />
       </div>
       <div className={isFinished ? "opacity-100" : "opacity-50"}>

@@ -16,6 +16,7 @@ import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import ReactMarkdown from "react-markdown";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
+import useDebounce from "~/hooks/useDebounce";
 
 const NotePage: NextPage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,9 +27,9 @@ const NotePage: NextPage = () => {
   const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
   const utils = api.useContext();
 
-  const [noteContent, setNoteContent] = useState<string | undefined>();
-  const [noteTitle, setNoteTitle] = useState<string | undefined>();
-  const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
+  const [noteContent, setNoteContent] = useState<string>("");
+  const [noteTitle, setNoteTitle] = useState<string>("");
+  const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -56,6 +57,8 @@ const NotePage: NextPage = () => {
       content: stringifiedContent,
     });
   };
+
+  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
 
   useEffect(() => {
     if (note.data != null) {
@@ -98,7 +101,6 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
-              onBlurEvent={handleEdit}
             />
             {isEditing ? (
               <TextArea
@@ -106,7 +108,6 @@ const NotePage: NextPage = () => {
                 placeholder="type something here"
                 text={noteContent ?? note.data.content}
                 onChangeEvent={setNoteContent}
-                onBlurEvent={handleEdit}
                 isDisabled={false}
                 maxLength={3000}
               />

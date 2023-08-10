@@ -11,8 +11,7 @@ interface TextAreaProps {
   className: string;
   text: string;
   isDisabled?: boolean;
-  onChangeEvent?: Dispatch<SetStateAction<string | undefined>>;
-  onBlurEvent?: () => void;
+  onChangeEvent?: Dispatch<SetStateAction<string>>;
   placeholder?: string;
   maxLength?: number;
   autoFocus?: boolean;
@@ -28,7 +27,6 @@ const TextArea = ({
   text,
   isDisabled = true,
   onChangeEvent,
-  onBlurEvent,
   className = "",
   placeholder = "",
   maxLength = 150,
@@ -73,7 +71,6 @@ const TextArea = ({
       disabled={isDisabled}
       className={className}
       onChange={(e) => handleChange(e.target.value)}
-      onBlur={onBlurEvent}
       value={text}
       placeholder={placeholder}
       spellCheck={false}

@@ -22,8 +22,8 @@ const NotePage: NextPage = () => {
   const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<number>(0);
-  const [noteTitle, setNoteTitle] = useState<string | undefined>();
-  const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
+  const [noteTitle, setNoteTitle] = useState<string>("");
+  const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -60,7 +60,7 @@ const NotePage: NextPage = () => {
     setNoteContent(newValue);
   };
 
-  useDebounce<number>(handleEdit, 1000, [noteContent]);
+  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
 
   useEffect(() => {
     if (note.data != null) {
@@ -96,7 +96,6 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
-              onBlurEvent={handleEdit}
             />
             <div className="mt-11 flex flex-col gap-[45px] md:mt-20">
               <h2 className="text-center text-5xl text-text-light dark:text-text-dark">
@@ -105,7 +104,6 @@ const NotePage: NextPage = () => {
               <div className="flex flex-col items-center justify-center gap-3 md:flex-row">
                 <button
                   disabled={note.isLoading}
-                  // onBlur={handleEdit}
                   className="h-14 w-56 rounded-15 bg-primary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-primary-dark"
                   onClick={() => handleClick("add")}
                 >
@@ -113,7 +111,6 @@ const NotePage: NextPage = () => {
                 </button>
                 <button
                   disabled={note.isLoading}
-                  // onBlur={handleEdit}
                   className="h-14 w-56 rounded-15 bg-secondary-light text-medium font-bold text-text-light disabled:opacity-50 dark:bg-secondary-dark"
                   onClick={() => handleClick("subtract")}
                 >

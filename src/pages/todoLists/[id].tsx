@@ -14,6 +14,7 @@ import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import TodoItem from "~/components/ui/TodoItem";
 import { IoMdAdd } from "react-icons/io";
+import useDebounce from "~/hooks/useDebounce";
 
 interface AddNewTodoProps {
   onClickEvent: () => void;
@@ -39,8 +40,8 @@ const NotePage: NextPage = () => {
   const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<todoList | undefined>();
-  const [noteTitle, setNoteTitle] = useState<string | undefined>();
-  const [isNotePinned, setIsNotePinned] = useState<boolean | undefined>();
+  const [noteTitle, setNoteTitle] = useState<string>("");
+  const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -109,6 +110,8 @@ const NotePage: NextPage = () => {
     });
   };
 
+  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
+
   useEffect(() => {
     if (note.data != null) {
       setNoteContent(note.data.content);
@@ -116,11 +119,6 @@ const NotePage: NextPage = () => {
       setNoteTitle(note.data.title);
     }
   }, [note.data]);
-
-  useEffect(() => {
-    handleEdit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [noteContent]);
 
   if (note.isLoading) return <LoadingScreen />;
 
@@ -154,7 +152,6 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
-              onBlurEvent={handleEdit}
             />
             <div
               className={`flex flex-col ${
