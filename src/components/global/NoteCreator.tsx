@@ -316,7 +316,7 @@ export default NoteCreator;
 export const OpenNoteCreatorButton = () => {
   const { setIsNoteCreatorOpen } = useUiStore();
 
-  useHotkeys([["shift+alt+n", () => setIsNoteCreatorOpen(true)]]);
+  useHotkeys([["shift+n", () => setIsNoteCreatorOpen(true)]]);
 
   return (
     <button
