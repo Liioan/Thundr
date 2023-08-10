@@ -77,7 +77,7 @@ const NotePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{`Note - ${note.data?.title}`}</title>
+        <title>{`Counter - ${note.data?.title}`}</title>
         <link rel="icon" href="/favicon_dark.svg" />
       </Head>
       <Main>
