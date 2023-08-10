@@ -36,7 +36,10 @@ const NotePage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const note = api.note.getNoteDetails.useQuery({ noteId: id as string });
+  const note = api.note.getNoteDetails.useQuery(
+    { noteId: id as string },
+    { refetchOnMount: true }
+  );
   const utils = api.useContext();
 
   const [noteContent, setNoteContent] = useState<todoList | undefined>();
@@ -45,7 +48,7 @@ const NotePage: NextPage = () => {
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
-      await utils.note.getNoteDetails.fetch({ noteId: input.id });
+      await utils.note.getNoteDetails.invalidate({ noteId: input.id });
     },
   });
 

@@ -28,7 +28,7 @@ const NotePage: NextPage = () => {
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
-      await utils.note.getNoteDetails.fetch({ noteId: input.id });
+      await utils.note.getNoteDetails.invalidate({ noteId: input.id });
     },
   });
 
@@ -97,7 +97,7 @@ const NotePage: NextPage = () => {
               onChangeEvent={setNoteTitle}
             />
             <TextArea
-              className="h-auto resize-none bg-background-light text-small text-text-light focus:text-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:focus:text-primary-dark"
+              className="h-auto resize-none bg-background-light text-small text-text-light caret-primary-light focus:outline-none dark:bg-background-dark dark:text-text-dark dark:caret-primary-dark"
               placeholder="type something here"
               text={noteContent ?? note.data.content}
               onChangeEvent={setNoteContent}

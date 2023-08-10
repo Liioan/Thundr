@@ -27,7 +27,7 @@ const NotePage: NextPage = () => {
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
-      await utils.note.getNoteDetails.fetch({ noteId: input.id });
+      await utils.note.getNoteDetails.invalidate({ noteId: input.id });
     },
   });
 
