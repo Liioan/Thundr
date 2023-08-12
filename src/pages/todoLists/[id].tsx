@@ -148,7 +148,6 @@ const NotePage: NextPage = () => {
             className="flex w-full flex-col gap-[25px]"
             onSubmit={(e) => {
               e.preventDefault();
-              handleEdit();
             }}
           >
             <Title
