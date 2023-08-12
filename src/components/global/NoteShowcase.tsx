@@ -10,6 +10,8 @@ import type {
 } from "~/types/NoteType";
 import TodoItem from "../ui/TodoItem";
 import { motion } from "framer-motion";
+import Score from "../ui/Score";
+import ProgressTile from "../ui/ProgressTile";
 
 type PossibleNoteContent =
   | note
@@ -145,6 +147,30 @@ const RenderCounter = ({ content }: { content: number }) => {
   );
 };
 
+const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
+  let truncatedContent = content;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (content.length > 8) truncatedContent = content.toSpliced(8);
+
+  return (
+    <>
+      <Score content={content} />
+      <ul className="relative mt-4 grid grid-cols-4 gap-2 self-center">
+        {truncatedContent?.map((day, i) => (
+          <ProgressTile
+            key={i}
+            dayNumber={day.dayNumber}
+            isFinished={day.isFinished}
+            disabled
+          />
+        ))}
+      </ul>
+      <ShowMore />
+    </>
+  );
+};
+
 interface RenderContentProps {
   type: string;
   content: PossibleNoteContent;
@@ -157,6 +183,8 @@ const RenderContent = ({ type, content }: RenderContentProps) => {
   if (type === "todoList")
     return <RenderTodoList content={content as todoList} />;
   if (type === "counter") return <RenderCounter content={content as number} />;
+  if (type === "progressTracker")
+    return <RenderProgressTracker content={content as progressTracker} />;
 };
 
 interface NoteShowcaseProps {
@@ -182,7 +210,7 @@ const NoteShowcase = ({
       className="cursor-pointer overflow-x-hidden"
     >
       <motion.div
-        className="relative  flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-[220px]"
+        className="relative  flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-full lg:min-h-[220px]"
         initial={{ opacity: 0, x: -100 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}

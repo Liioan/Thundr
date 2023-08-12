@@ -1,9 +1,25 @@
+import { useState, useEffect } from "react";
+import { type progressTracker } from "~/types/NoteType";
+
 interface ScoreProps {
-  daysFinished: number;
-  daysLeft: number;
+  content: progressTracker | undefined;
 }
 
-const Score = ({ daysFinished, daysLeft }: ScoreProps) => {
+const Score = ({ content }: ScoreProps) => {
+  const [daysFinished, setDaysFinished] = useState(0);
+
+  useEffect(() => {
+    let daysFinished = 0;
+
+    content?.map((day) => {
+      if (day.isFinished) {
+        daysFinished++;
+      }
+    });
+    setDaysFinished(daysFinished);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
+
   return (
     <div className="text-medium font-bold">
       score
@@ -13,7 +29,7 @@ const Score = ({ daysFinished, daysLeft }: ScoreProps) => {
       </span>{" "}
       /{" "}
       <span className="text-accent-light dark:text-accent-dark">
-        {daysLeft}
+        {content?.length}
       </span>
     </div>
   );

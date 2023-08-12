@@ -30,8 +30,6 @@ const NotePage: NextPage = () => {
   const [noteTitle, setNoteTitle] = useState<string>("");
   const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
 
-  const [dayStatus, setDayStatus] = useState({ daysFinished: 0, daysLeft: 0 });
-
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
       await utils.note.getNoteDetails.invalidate({ noteId: input.id });
@@ -81,21 +79,6 @@ const NotePage: NextPage = () => {
     }
   }, [note.data]);
 
-  useEffect(() => {
-    let daysFinished = 0;
-    let daysLeft = 0;
-
-    noteContent?.map((day) => {
-      if (day.isFinished) {
-        daysFinished++;
-      } else {
-        daysLeft++;
-      }
-    });
-    setDayStatus({ daysFinished: daysFinished, daysLeft: daysLeft });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [noteContent]);
-
   if (note.isLoading) return <LoadingScreen />;
 
   if (note.data == null) return null;
@@ -128,10 +111,7 @@ const NotePage: NextPage = () => {
               isDisabled={false}
               onChangeEvent={setNoteTitle}
             />
-            <Score
-              daysFinished={dayStatus.daysFinished}
-              daysLeft={dayStatus.daysLeft}
-            />
+            <Score content={noteContent} />
             <ul className="relative mt-4 grid grid-cols-4 gap-2 self-center sm:grid-cols-6 lg:grid-cols-10">
               {noteContent?.map((day, i) => (
                 <ProgressTile
