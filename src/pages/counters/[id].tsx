@@ -121,7 +121,15 @@ const NotePage: NextPage = () => {
           </div>
           <div className="fixed bottom-[25px] flex items-center gap-5 self-end">
             <DeleteButton id={note.data.id} />
-            <div>{/* button */}</div>
+            <div>
+              <button
+                onClick={() => setNoteContent(0)}
+                className="flex h-8 w-24 items-center justify-center gap-2 rounded-full bg-accent-light text-small font-bold text-text-light dark:bg-accent-dark"
+              >
+                reset
+              </button>
+              {/* button */}
+            </div>
           </div>
         </ResponsiveWrapper>
       </Main>

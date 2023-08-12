@@ -56,6 +56,13 @@ const NotePage: NextPage = () => {
     setNoteContent(newDaysArray);
   };
 
+  const resetProgress = () => {
+    const newDaysArray = noteContent?.map((day) => {
+      return { ...day, isFinished: false };
+    });
+    setNoteContent(newDaysArray);
+  };
+
   const handleEdit = () => {
     if (noteContent === note.data?.content && noteTitle === note.data?.title)
       return;
@@ -112,7 +119,7 @@ const NotePage: NextPage = () => {
               onChangeEvent={setNoteTitle}
             />
             <Score content={noteContent} />
-            <ul className="relative mt-4 grid grid-cols-4 gap-2 self-center sm:grid-cols-6 lg:grid-cols-10">
+            <ul className="relative mt-4 grid grid-cols-4 gap-2 self-center sm:grid-cols-6 lg:grid-cols-9">
               {noteContent?.map((day, i) => (
                 <ProgressTile
                   key={i}
@@ -123,9 +130,17 @@ const NotePage: NextPage = () => {
               ))}
             </ul>
           </form>
-          <div className="fixed bottom-[25px] flex items-center gap-5 self-end">
+          <div className="fixed bottom-[25px] flex items-center gap-2 self-end">
             <DeleteButton id={note.data.id} />
-            <div>{/* button */}</div>
+            <div>
+              <button
+                onClick={resetProgress}
+                className="flex h-8 w-24 items-center justify-center gap-2 rounded-full bg-accent-light text-small font-bold text-text-light dark:bg-accent-dark"
+              >
+                reset
+              </button>
+              {/* button */}
+            </div>
           </div>
         </ResponsiveWrapper>
       </Main>
