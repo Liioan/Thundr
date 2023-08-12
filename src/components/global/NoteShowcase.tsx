@@ -148,10 +148,41 @@ const RenderCounter = ({ content }: { content: number }) => {
 };
 
 const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
+  const findFirstUnfinished = (daysArray: progressTracker) => {
+    for (let i = 0; i < daysArray.length; i++) {
+      if (!daysArray[i]?.isFinished) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  const selectDaysAroundUnfinished = (
+    daysArray: progressTracker,
+    daysBefore: number,
+    daysAfter: number
+  ) => {
+    const unfinishedIndex = findFirstUnfinished(daysArray);
+    if (unfinishedIndex === -1) {
+      return [];
+    }
+    const startIndex = Math.max(0, unfinishedIndex - daysBefore);
+    const endIndex = Math.min(content.length - 1, unfinishedIndex + daysAfter);
+    return content.slice(startIndex, endIndex + 1);
+  };
+
+  const indexOfFirstUnfinished = findFirstUnfinished(content);
+
   let truncatedContent = content;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (content.length > 8) truncatedContent = content.toSpliced(8);
+  if (content.length > 8 && indexOfFirstUnfinished !== 0) {
+    truncatedContent = selectDaysAroundUnfinished(content, 1, 6);
+  }
+
+  if (indexOfFirstUnfinished === 0 || indexOfFirstUnfinished === -1) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    truncatedContent = content.toSpliced(8, content.length - 8);
+  }
 
   return (
     <>
