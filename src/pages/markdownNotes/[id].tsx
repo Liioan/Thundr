@@ -17,6 +17,7 @@ import ReactMarkdown from "react-markdown";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit } from "react-icons/ai";
 import useDebounce from "~/hooks/useDebounce";
+import { useHotkeys } from "@mantine/hooks";
 
 const NotePage: NextPage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -60,12 +61,13 @@ const NotePage: NextPage = () => {
 
   useDebounce(handleEdit, 500, [noteContent, noteTitle]);
 
+  useHotkeys([["ctrl+e", () => setIsEditing((prev) => !prev)]]);
+
   useEffect(() => {
     if (note.data != null) {
       setNoteContent(note.data.content);
       setIsNotePinned(note.data.pinnedByMe);
       setNoteTitle(note.data.title);
-      setIsEditing(!note.data.content.length);
     }
   }, [note.data]);
 
@@ -94,7 +96,6 @@ const NotePage: NextPage = () => {
             className="flex w-full flex-col gap-[25px]"
             onSubmit={(e) => {
               e.preventDefault();
-              handleEdit();
             }}
           >
             <Title
@@ -121,7 +122,7 @@ const NotePage: NextPage = () => {
             <DeleteButton id={note.data.id} />
             <div>
               <button
-                onClick={() => setIsEditing(!isEditing)}
+                onClick={() => setIsEditing((prev) => !prev)}
                 className="flex h-8 w-24 items-center justify-center gap-2 rounded-full bg-accent-light text-small font-medium text-text-light dark:bg-accent-dark"
               >
                 {isEditing ? (
