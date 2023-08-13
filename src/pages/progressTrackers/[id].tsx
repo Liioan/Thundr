@@ -76,7 +76,7 @@ const NotePage: NextPage = () => {
     });
   };
 
-  useDebounce(handleEdit, 1000, [noteContent, noteTitle]);
+  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
 
   useEffect(() => {
     if (note.data != null) {
