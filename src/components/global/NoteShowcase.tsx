@@ -102,37 +102,39 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
     content = content.splice(2, content.length - 3);
   }
   return (
-    <div className="flex flex-col gap-[15px]">
-      <ul className="relative flex flex-col gap-[15px]">
-        {content?.map((todo, i) => {
-          if (!todo.isFinished)
-            return (
-              <TodoItem
-                key={i}
-                task={todo.task}
-                isFinished={todo.isFinished}
-                taskId={i}
-                disabled
-              />
-            );
-        })}
-      </ul>
-      <ul className="flex flex-col gap-[15px]">
-        {content?.map((todo, i) => {
-          if (todo.isFinished)
-            return (
-              <TodoItem
-                key={i}
-                task={todo.task}
-                isFinished={todo.isFinished}
-                taskId={i}
-                disabled
-              />
-            );
-        })}
-      </ul>
+    <>
+      <div className="flex flex-col gap-[15px]">
+        <ul className="relative flex flex-col gap-[15px]">
+          {content?.map((todo, i) => {
+            if (!todo.isFinished)
+              return (
+                <TodoItem
+                  key={i}
+                  task={todo.task}
+                  isFinished={todo.isFinished}
+                  taskId={i}
+                  disabled
+                />
+              );
+          })}
+        </ul>
+        <ul className="flex flex-col gap-[15px]">
+          {content?.map((todo, i) => {
+            if (todo.isFinished)
+              return (
+                <TodoItem
+                  key={i}
+                  task={todo.task}
+                  isFinished={todo.isFinished}
+                  taskId={i}
+                  disabled
+                />
+              );
+          })}
+        </ul>
+      </div>
       <ShowMore />
-    </div>
+    </>
   );
 };
 
