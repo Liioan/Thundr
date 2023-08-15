@@ -46,7 +46,7 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
     <>
       {date != null ? (
         <span
-          className={`mt-auto self-end text-accent-light  dark:text-accent-dark ${
+          className={`absolute bottom-[15px] right-[15px] self-end text-accent-light  dark:text-accent-dark ${
             today === date
               ? "text-primary-light opacity-100 dark:text-primary-dark"
               : "opacity-50"
