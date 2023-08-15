@@ -3,6 +3,7 @@ import Checkbox from "./Checkbox";
 import XButton from "./buttons/XButton";
 import { motion } from "framer-motion";
 import useDebounce from "~/hooks/useDebounce";
+import TextArea from "./TextArea";
 
 interface TodoItemProps {
   task: string;
@@ -42,30 +43,25 @@ const TodoItem = ({
     removeTask(taskId);
   };
 
-  const handleChange = (newTaskText: string) => {
-    newTaskText.trim();
-    setTaskText(newTaskText);
-  };
-
   return (
     <motion.li
       className="flex items-center justify-between"
       initial={{ opacity: disabled ? 1 : 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className="flex items-center gap-[10px]">
+      <div className="flex w-full items-center gap-[10px]">
         <button onClick={handleClick}>
           <Checkbox toggled={isFinished} />
         </button>
-        <input
-          className={`resize-none bg-transparent text-text-light focus:text-primary-light focus:outline-none dark:text-text-dark dark:focus:text-primary-dark ${
+        <TextArea
+          className={`w-full resize-none bg-transparent text-text-light focus:text-primary-light focus:outline-none dark:text-text-dark dark:focus:text-primary-dark ${
             isFinished ? "line-through opacity-50" : "opacity-100"
           }`}
-          value={taskText}
-          disabled={isFinished || disabled}
+          text={taskText}
+          isDisabled={isFinished || disabled}
           maxLength={200}
           placeholder={disabled ? "empty task" : "type in your task"}
-          onChange={(e) => handleChange(e.target.value)}
+          onChangeEvent={setTaskText}
         />
       </div>
       <div className={isFinished ? "opacity-100" : "opacity-50"}>
