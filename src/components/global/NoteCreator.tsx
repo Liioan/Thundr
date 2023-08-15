@@ -322,8 +322,6 @@ export default NoteCreator;
 export const OpenNoteCreatorButton = () => {
   const { setIsNoteCreatorOpen } = useUiStore();
 
-  useHotkeys([["shift+n", () => setIsNoteCreatorOpen(true)]]);
-
   return (
     <button
       className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"

@@ -7,11 +7,16 @@ import { ThemeProvider } from "next-themes";
 import Nav from "~/components/global/Nav";
 import NoteCreator from "~/components/global/NoteCreator";
 import Popup from "~/components/global/Popup";
+import { useHotkeys } from "@mantine/hooks";
+import { useUiStore } from "~/store/useUiStore";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const { setIsNoteCreatorOpen } = useUiStore();
+  useHotkeys([["shift+n", () => setIsNoteCreatorOpen(true)]]);
+
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class" defaultTheme="dark">
