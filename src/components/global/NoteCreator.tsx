@@ -15,11 +15,12 @@ import { useUiStore } from "~/store/useUiStore";
 import { api } from "~/utils/api";
 import Router from "next/router";
 import { IoIosArrowBack, IoIosArrowForward, IoMdAdd } from "react-icons/io";
+import usePopup from "~/hooks/usePopup";
 
 interface FormData {
   noteTitle?: string;
   noteType: string;
-  daysAmount?: number;
+  daysAmount: number;
   reminderDate?: string;
 }
 
@@ -205,6 +206,7 @@ const INITIAL_DATA: FormData = {
 const NoteCreator = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const { isNoteCreatorOpen, setIsNoteCreatorOpen } = useUiStore();
+  const { openPopup } = usePopup();
 
   const updateFields = (fields: Partial<FormData>) => {
     setData((prev) => {
@@ -242,6 +244,10 @@ const NoteCreator = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (currentStepIndex === 1) {
+      if (data.noteType === "progressTracker" && data.daysAmount < 1)
+        return openPopup("incorrect days amount ", true);
+    }
     if (!isLastStep) return next();
     createNote.mutate({ ...data });
   };
