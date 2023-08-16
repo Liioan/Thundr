@@ -54,9 +54,9 @@ const NoteTypeForm = ({ noteType, updateFields }: NoteTypeFormProps) => {
   const noteTypeList: { value: string; text: string }[] = [
     { value: "note", text: "Note" },
     { value: "todoList", text: "Todo list" },
+    { value: "counter", text: "Counter" },
     { value: "progressTracker", text: "Progress tracker" },
     { value: "decisionTree", text: "Decision tree" },
-    { value: "counter", text: "Counter" },
   ];
   return (
     <FormWrapper className="flex flex-col gap-3">
