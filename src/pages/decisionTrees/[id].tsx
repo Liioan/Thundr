@@ -103,7 +103,7 @@ const NotePage: NextPage = () => {
     });
   };
 
-  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
+  useDebounce(handleEdit, 1000, [noteContent, noteTitle]);
   useDebounce(handleTogglePin, 500, [isNotePinned]);
 
   useEffect(() => {
@@ -146,11 +146,7 @@ const NotePage: NextPage = () => {
               isDisabled={false}
               onChangeEvent={setNoteTitle}
             />
-            <div
-              className={`flex flex-col ${
-                noteContent?.length ? "gap-[50px]" : "gap-[20px]"
-              }`}
-            >
+            <div className={`flex flex-col gap-[50px]`}>
               <ul className="relative flex flex-col gap-[15px] after:absolute after:-bottom-[25px] after:h-1 after:w-full after:rounded-15 after:bg-foreground-light after:content-[''] dark:after:bg-foreground-dark">
                 <Header text="for" />
                 {noteContent?.map((argument, i) => {
