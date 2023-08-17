@@ -60,6 +60,7 @@ const NotePage: NextPage = () => {
   };
 
   useDebounce(handleEdit, 500, [noteContent, noteTitle]);
+  useDebounce(handleTogglePin, 500, [isNotePinned]);
 
   useHotkeys([["ctrl+e", () => setIsEditing((prev) => !prev)]]);
 
@@ -88,7 +89,7 @@ const NotePage: NextPage = () => {
             <div className="flex h-10 w-10 items-center justify-center">
               <PinSwitch
                 toggled={isNotePinned ?? note.data.pinnedByMe}
-                onClickEvent={handleTogglePin}
+                onClickEvent={() => setIsNotePinned((prev) => !prev)}
               />
             </div>
           </div>

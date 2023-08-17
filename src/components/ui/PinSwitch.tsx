@@ -25,7 +25,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           >
             <GoBookmarkFill className="text-2xl font-light text-primary-light dark:text-primary-dark" />
           </motion.span>
@@ -38,7 +38,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           >
             <GoBookmark className="text-2xl font-light text-secondary-light dark:text-secondary-dark" />
           </motion.span>
