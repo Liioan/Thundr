@@ -14,7 +14,7 @@ import Main from "~/components/ui/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import useDebounce from "~/hooks/useDebounce";
 import ProgressTile from "~/components/ui/ProgressTile";
-import Score from "~/components/ui/Score";
+import Score from "~/components/ui/scores/ProgressScore";
 
 const NotePage: NextPage = () => {
   const router = useRouter();

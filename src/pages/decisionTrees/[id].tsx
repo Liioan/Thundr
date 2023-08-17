@@ -16,6 +16,7 @@ import { IoMdAdd } from "react-icons/io";
 import useDebounce from "~/hooks/useDebounce";
 import DecisionTreeItem from "~/components/ui/DecisionTreeItem";
 import Header from "~/components/ui/Header";
+import DecisionScore from "~/components/ui/scores/DecisionScore";
 
 interface AddNewTodoProps {
   onClickEvent: () => void;
@@ -146,6 +147,7 @@ const NotePage: NextPage = () => {
               isDisabled={false}
               onChangeEvent={setNoteTitle}
             />
+            <DecisionScore content={noteContent} />
             <div className={`flex flex-col gap-[50px]`}>
               <ul className="relative flex flex-col gap-[15px] after:absolute after:-bottom-[25px] after:h-1 after:w-full after:rounded-15 after:bg-foreground-light after:content-[''] dark:after:bg-foreground-dark">
                 <Header text="for" />

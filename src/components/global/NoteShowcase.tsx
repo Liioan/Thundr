@@ -10,7 +10,7 @@ import type {
 } from "~/types/NoteType";
 import TodoItem from "../ui/TodoItem";
 import { motion } from "framer-motion";
-import Score from "../ui/Score";
+import Score from "../ui/scores/ProgressScore";
 import ProgressTile from "../ui/ProgressTile";
 
 type PossibleNoteContent =

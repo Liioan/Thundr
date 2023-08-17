@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import { type progressTracker } from "~/types/NoteType";
 
-interface ScoreProps {
+interface ProgressScoreProps {
   content: progressTracker | undefined;
 }
 
-const Score = ({ content }: ScoreProps) => {
+const ProgressScore = ({ content }: ProgressScoreProps) => {
   const [daysFinished, setDaysFinished] = useState(0);
 
   useEffect(() => {
-    let daysFinished = 0;
+    let daysFinishedCount = 0;
 
     content?.map((day) => {
       if (day.isFinished) {
-        daysFinished++;
+        daysFinishedCount++;
       }
     });
-    setDaysFinished(daysFinished);
+    setDaysFinished(daysFinishedCount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
@@ -35,4 +35,4 @@ const Score = ({ content }: ScoreProps) => {
   );
 };
 
-export default Score;
+export default ProgressScore;
