@@ -10,8 +10,10 @@ import type {
 } from "~/types/NoteType";
 import TodoItem from "../ui/TodoItem";
 import { motion } from "framer-motion";
-import Score from "../ui/scores/ProgressScore";
+import ProgressScore from "../ui/scores/ProgressScore";
 import ProgressTile from "../ui/ProgressTile";
+import DecisionTreeItem from "../ui/DecisionTreeItem";
+import DecisionScore from "../ui/scores/DecisionScore";
 
 type PossibleNoteContent =
   | note
@@ -188,7 +190,7 @@ const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
 
   return (
     <>
-      <Score content={content} />
+      <ProgressScore content={content} />
       <ul className="relative mt-4 grid grid-cols-4 gap-2 self-center">
         {truncatedContent?.map((day, i) => (
           <ProgressTile
@@ -199,6 +201,31 @@ const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
           />
         ))}
       </ul>
+      <ShowMore />
+    </>
+  );
+};
+
+const RenderDecisionTree = ({ content }: { content: decisionTree }) => {
+  if (content.length > 3) {
+    content = content.splice(2, content.length - 3);
+  }
+  return (
+    <>
+      <div className="flex flex-col gap-[15px]">
+        <DecisionScore content={content} />
+        <ul className="relative flex flex-col gap-[15px]">
+          {content?.map((argument, i) => (
+            <DecisionTreeItem
+              key={i}
+              isPositive={argument.isPositive}
+              text={argument.text}
+              argumentId={i}
+              disabled
+            />
+          ))}
+        </ul>
+      </div>
       <ShowMore />
     </>
   );
@@ -218,6 +245,8 @@ const RenderContent = ({ type, content }: RenderContentProps) => {
   if (type === "counter") return <RenderCounter content={content as number} />;
   if (type === "progressTracker")
     return <RenderProgressTracker content={content as progressTracker} />;
+  if (type === "decisionTree")
+    return <RenderDecisionTree content={content as decisionTree} />;
 };
 
 interface NoteShowcaseProps {
