@@ -50,7 +50,15 @@ const Popup = () => {
               } `}
             >
               {popupMessage}
-              <span className="text-accent-light dark:text-accent-dark">!</span>
+              <span
+                className={
+                  isPopupError
+                    ? "text-text-light"
+                    : "text-accent-light dark:text-accent-dark "
+                }
+              >
+                !
+              </span>
             </div>
           </motion.div>
         )}
