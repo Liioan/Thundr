@@ -79,7 +79,6 @@ const links = [
   { path: "/progressTrackers", text: "Progress trackers" },
   { path: "/decisionTrees", text: "Decision trees" },
   { path: "/sharedFiles", text: "Shared files" },
-  { path: "/allFiles", text: "All files" },
 ];
 
 const Nav = () => {
