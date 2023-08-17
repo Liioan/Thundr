@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Main from "~/components/ui/Main";
+import Main from "~/components/ui/layout/Main";
 import RenderNotesList from "~/components/global/RenderNotesList";
 import NoNotesScreen from "~/components/global/NoNotesScreen";
 import { api } from "~/utils/api";

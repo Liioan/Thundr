@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import "@theme-toggles/react/css/Expand.css";
 import { Expand } from "@theme-toggles/react";
 import { signOut, useSession } from "next-auth/react";
-import Overlay from "../ui/Overlay";
+import Overlay from "../ui/layout/Overlay";
 import NavLink from "../ui/NavLink";
 import usePopup from "~/hooks/usePopup";
 import { IoMdMenu, IoMdClose } from "react-icons/io";

@@ -1,7 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingScreen from "./LoadingScreen";
 import NoteShowcase from "./NoteShowcase";
-import { NoteListWrapper } from "../ui/NoteListWrapper";
+import { NoteListWrapper } from "../ui/layout/NoteListWrapper";
 
 interface Note {
   id: string;

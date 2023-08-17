@@ -1,7 +1,7 @@
 import { useHotkeys } from "@mantine/hooks";
 import { useMultistepForm } from "~/hooks/useMultistepForm";
 import Header from "../ui/Header";
-import Overlay from "../ui/Overlay";
+import Overlay from "../ui/layout/Overlay";
 import {
   type FormEvent,
   type ReactElement,

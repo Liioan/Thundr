@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import Header from "../ui/Header";
-import { ResponsiveWrapper } from "../ui/ResponsiveWrapper";
+import { ResponsiveWrapper } from "../ui/layout/ResponsiveWrapper";
 import InfiniteNoteList from "./InfiniteNoteList";
 
 interface RenderNotesListProps {

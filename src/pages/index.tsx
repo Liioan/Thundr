@@ -4,7 +4,7 @@ import { getServerAuthSession } from "../server/auth";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
-import Main from "~/components/ui/Main";
+import Main from "~/components/ui/layout/Main";
 import NoNotesScreen from "~/components/global/NoNotesScreen";
 import RenderNotesList from "~/components/global/RenderNotesList";
 import { useHotkeys } from "@mantine/hooks";

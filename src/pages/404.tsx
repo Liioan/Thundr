@@ -1,4 +1,4 @@
-import Main from "~/components/ui/Main";
+import Main from "~/components/ui/layout/Main";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";

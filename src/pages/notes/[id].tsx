@@ -8,10 +8,10 @@ import { api } from "~/utils/api";
 import PinSwitch from "~/components/ui/PinSwitch";
 import LoadingScreen from "~/components/global/LoadingScreen";
 import TextArea from "~/components/ui/TextArea";
-import { ResponsiveWrapper } from "~/components/ui/ResponsiveWrapper";
+import { ResponsiveWrapper } from "~/components/ui/layout/ResponsiveWrapper";
 import { stringify } from "~/utils/JsonUtils";
 import { type note } from "~/types/NoteType";
-import Main from "~/components/ui/Main";
+import Main from "~/components/ui/layout/Main";
 import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import useDebounce from "~/hooks/useDebounce";
 

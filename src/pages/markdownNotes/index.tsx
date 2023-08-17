@@ -5,7 +5,7 @@ import LoadingScreen from "~/components/global/LoadingScreen";
 import NoNotesScreen from "~/components/global/NoNotesScreen";
 import { OpenNoteCreatorButton } from "~/components/global/NoteCreator";
 import RenderNotesList from "~/components/global/RenderNotesList";
-import Main from "~/components/ui/Main";
+import Main from "~/components/ui/layout/Main";
 import { api } from "~/utils/api";
 
 const List: NextPage = () => {
