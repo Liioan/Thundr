@@ -105,7 +105,9 @@ const RenderTodoList = ({ content }: { content: todoList }) => {
 
   useEffect(() => {
     if (content.length > 3) {
-      setTruncatedContent(content.slice(2, content.length - 3));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setTruncatedContent(content.toSpliced(2, content.length - 3));
     }
   }, [content]);
 
@@ -200,9 +202,15 @@ const RenderDecisionTree = ({ content }: { content: decisionTree }) => {
 
   useEffect(() => {
     if (content.length > 3) {
-      setTruncatedContent(content.slice(2, content.length - 3));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setTruncatedContent(content.toSpliced(2, content.length - 3));
     }
   }, [content]);
+
+  useEffect(() => {
+    console.log(truncatedContent);
+  }, [truncatedContent]);
 
   return (
     <>
