@@ -113,7 +113,7 @@ const NotePage: NextPage = () => {
     });
   };
 
-  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
+  useDebounce(handleEdit, 750, [noteContent, noteTitle]);
   useDebounce(handleTogglePin, 500, [isNotePinned]);
 
   useEffect(() => {
