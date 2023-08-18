@@ -14,6 +14,7 @@ import ProgressScore from "../ui/scores/ProgressScore";
 import ProgressTile from "../ui/ProgressTile";
 import DecisionTreeItem from "../ui/DecisionTreeItem";
 import DecisionScore from "../ui/scores/DecisionScore";
+import { useEffect, useState } from "react";
 
 type PossibleNoteContent =
   | note
@@ -100,14 +101,19 @@ const RenderMarkdownNote = ({ content }: { content: string }) => {
 };
 
 const RenderTodoList = ({ content }: { content: todoList }) => {
-  if (content.length > 3) {
-    content = content.splice(2, content.length - 3);
-  }
+  const [truncatedContent, setTruncatedContent] = useState(content);
+
+  useEffect(() => {
+    if (content.length > 3) {
+      setTruncatedContent(content.slice(2, content.length - 3));
+    }
+  }, [content]);
+
   return (
     <>
       <div className="flex flex-col gap-[15px]">
         <ul className="relative flex flex-col gap-[15px]">
-          {content?.map((todo, i) => (
+          {truncatedContent?.map((todo, i) => (
             <TodoItem
               key={i}
               task={todo.task}
@@ -190,15 +196,20 @@ const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
 };
 
 const RenderDecisionTree = ({ content }: { content: decisionTree }) => {
-  if (content.length > 3) {
-    content = content.splice(2, content.length - 3);
-  }
+  const [truncatedContent, setTruncatedContent] = useState(content);
+
+  useEffect(() => {
+    if (content.length > 3) {
+      setTruncatedContent(content.slice(2, content.length - 3));
+    }
+  }, [content]);
+
   return (
     <>
       <div className="flex flex-col gap-[15px]">
         <DecisionScore content={content} />
         <ul className="relative flex flex-col gap-[15px]">
-          {content?.map((argument, i) => (
+          {truncatedContent?.map((argument, i) => (
             <DecisionTreeItem
               key={i}
               isPositive={argument.isPositive}
