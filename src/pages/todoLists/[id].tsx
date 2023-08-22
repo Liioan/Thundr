@@ -15,6 +15,7 @@ import DeleteButton from "~/components/ui/buttons/DeleteButton";
 import TodoItem from "~/components/ui/TodoItem";
 import { IoMdAdd } from "react-icons/io";
 import useDebounce from "~/hooks/useDebounce";
+import ReminderDate from "~/components/ui/ReminderDate";
 
 interface AddNewTodoProps {
   onClickEvent: () => void;
@@ -45,6 +46,7 @@ const NotePage: NextPage = () => {
   const [noteContent, setNoteContent] = useState<todoList | undefined>();
   const [noteTitle, setNoteTitle] = useState<string>("");
   const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
+  const [noteReminderDate, setNoteReminderDate] = useState<string | null>(null);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -103,17 +105,22 @@ const NotePage: NextPage = () => {
   };
 
   const handleEdit = () => {
-    if (noteContent === note.data?.content && noteTitle === note.data?.title)
+    if (
+      noteContent === note.data?.content &&
+      noteTitle === note.data?.title &&
+      noteReminderDate === note.data?.reminderDate
+    )
       return;
     const stringifiedContent = stringify<todoList | undefined>(noteContent);
     editNote.mutate({
       noteId: id as string,
       title: noteTitle,
       content: stringifiedContent,
+      reminderDate: noteReminderDate,
     });
   };
 
-  useDebounce(handleEdit, 750, [noteContent, noteTitle]);
+  useDebounce(handleEdit, 750, [noteContent, noteTitle, noteReminderDate]);
   useDebounce(handleTogglePin, 500, [isNotePinned]);
 
   useEffect(() => {
@@ -121,6 +128,7 @@ const NotePage: NextPage = () => {
       setNoteContent(note.data.content);
       setIsNotePinned(note.data.pinnedByMe);
       setNoteTitle(note.data.title);
+      setNoteReminderDate(note.data.reminderDate);
     }
   }, [note.data]);
 
@@ -155,6 +163,10 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
+            />
+            <ReminderDate
+              noteReminderDate={noteReminderDate}
+              setNoteReminderDate={setNoteReminderDate}
             />
             <div
               className={`flex flex-col ${

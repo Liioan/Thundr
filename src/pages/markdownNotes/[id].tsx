@@ -18,6 +18,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import useDebounce from "~/hooks/useDebounce";
 import { useHotkeys } from "@mantine/hooks";
 import RenderMarkdown from "~/components/ui/RenderMarkdown";
+import ReminderDate from "~/components/ui/ReminderDate";
 
 const NotePage: NextPage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -31,6 +32,7 @@ const NotePage: NextPage = () => {
   const [noteContent, setNoteContent] = useState<string>("");
   const [noteTitle, setNoteTitle] = useState<string>("");
   const [isNotePinned, setIsNotePinned] = useState<boolean>(false);
+  const [noteReminderDate, setNoteReminderDate] = useState<string | null>(null);
 
   const editNote = api.note.editNote.useMutation({
     async onSuccess(input) {
@@ -49,17 +51,22 @@ const NotePage: NextPage = () => {
   };
 
   const handleEdit = () => {
-    if (noteContent === note.data?.content && noteTitle === note.data?.title)
+    if (
+      noteContent === note.data?.content &&
+      noteTitle === note.data?.title &&
+      noteReminderDate === note.data?.reminderDate
+    )
       return;
     const stringifiedContent = stringify<markdownNote | undefined>(noteContent);
     editNote.mutate({
       noteId: id as string,
       title: noteTitle,
       content: stringifiedContent,
+      reminderDate: noteReminderDate,
     });
   };
 
-  useDebounce(handleEdit, 500, [noteContent, noteTitle]);
+  useDebounce(handleEdit, 750, [noteContent, noteTitle, noteReminderDate]);
   useDebounce(handleTogglePin, 500, [isNotePinned]);
 
   useHotkeys([["ctrl+e", () => setIsEditing((prev) => !prev)]]);
@@ -69,6 +76,7 @@ const NotePage: NextPage = () => {
       setNoteContent(note.data.content);
       setIsNotePinned(note.data.pinnedByMe);
       setNoteTitle(note.data.title);
+      setNoteReminderDate(note.data.reminderDate);
     }
   }, [note.data]);
 
@@ -103,6 +111,10 @@ const NotePage: NextPage = () => {
               text={noteTitle ?? note.data.title}
               isDisabled={false}
               onChangeEvent={setNoteTitle}
+            />
+            <ReminderDate
+              noteReminderDate={noteReminderDate}
+              setNoteReminderDate={setNoteReminderDate}
             />
             {isEditing ? (
               <TextArea
