@@ -64,7 +64,7 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
 
 const RenderNote = ({ content }: { content: string }) => {
   return content ? (
-    <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
+    <p className="mb-[25px] overflow-hidden text-small text-text-light dark:text-text-dark">
       {content.length > 150 ? (
         <>
           {content.substring(0, 150)}
@@ -83,7 +83,7 @@ const RenderNote = ({ content }: { content: string }) => {
 
 const RenderMarkdownNote = ({ content }: { content: string }) => {
   return content ? (
-    <p className="overflow-hidden text-small text-text-light dark:text-text-dark">
+    <p className="mb-[25px] overflow-hidden text-small text-text-light dark:text-text-dark">
       {content.length > 150 ? (
         <>
           {content.substring(0, 150)}
@@ -270,7 +270,7 @@ const NoteShowcase = ({
       className="cursor-pointer overflow-x-hidden"
     >
       <motion.div
-        className="relative  flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-full lg:min-h-[220px]"
+        className="relative flex min-h-[150px] w-full flex-col gap-[15px] overflow-hidden rounded-15 bg-foreground-light p-[15px] dark:bg-foreground-dark lg:h-full lg:min-h-[220px]"
         initial={{ opacity: 0, x: -100 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
