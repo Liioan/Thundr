@@ -208,10 +208,6 @@ const RenderDecisionTree = ({ content }: { content: decisionTree }) => {
     }
   }, [content]);
 
-  useEffect(() => {
-    console.log(truncatedContent);
-  }, [truncatedContent]);
-
   return (
     <>
       <div className="flex flex-col gap-[15px]">
