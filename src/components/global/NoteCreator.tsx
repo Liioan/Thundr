@@ -179,8 +179,7 @@ interface RemindDateFormProps {
 
 const RemindDateForm = ({ remindDate, updateFields }: RemindDateFormProps) => {
   const makeDate = (date: Date) => {
-    const fullDate = date.toISOString().split("T")[0];
-    updateFields({ reminderDate: fullDate });
+    updateFields({ reminderDate: date.toLocaleDateString() });
   };
 
   return (

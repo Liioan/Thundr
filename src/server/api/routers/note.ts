@@ -122,6 +122,75 @@ export const noteRouter = createTRPCRouter({
       };
     }),
 
+  infiniteNotes: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        noteType: z.string().optional(),
+        limit: z.number().optional(),
+        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
+      })
+    )
+    .query(async ({ input: { limit = 5, userId, noteType, cursor }, ctx }) => {
+      let whereClause:
+        | { userId: string }
+        | { userId: string; noteTypeId: string } = { userId: userId };
+
+      if (noteType) {
+        const noteTypeId = await ctx.prisma.noteType.findFirst({
+          where: { type: noteType },
+          select: { id: true, type: false },
+        });
+        whereClause = { userId: userId, noteTypeId: noteTypeId?.id };
+      }
+
+      return await getInfiniteNotes({
+        limit,
+        ctx,
+        cursor,
+        whereClause: whereClause,
+      });
+    }),
+
+  infiniteCurrentNotes: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        noteType: z.string().optional(),
+        limit: z.number().optional(),
+        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
+      })
+    )
+    .query(async ({ input: { limit = 5, userId, noteType, cursor }, ctx }) => {
+      const today = new Date().toLocaleDateString();
+
+      let whereClause:
+        | { userId: string; date: string }
+        | { userId: string; date: string; noteTypeId: string } = {
+        userId: userId,
+        date: today,
+      };
+
+      if (noteType) {
+        const noteTypeId = await ctx.prisma.noteType.findFirst({
+          where: { type: noteType },
+          select: { id: true, type: false },
+        });
+        whereClause = {
+          userId: userId,
+          date: today,
+          noteTypeId: noteTypeId?.id,
+        };
+      }
+
+      return await getInfiniteNotes({
+        limit,
+        ctx,
+        cursor,
+        whereClause: whereClause,
+      });
+    }),
+
   infinitePinnedNotes: protectedProcedure
     .input(
       z.object({
@@ -150,36 +219,6 @@ export const noteRouter = createTRPCRouter({
           noteTypeId: noteTypeId?.id,
           pin: { some: { userId: userId } },
         };
-      }
-
-      return await getInfiniteNotes({
-        limit,
-        ctx,
-        cursor,
-        whereClause: whereClause,
-      });
-    }),
-
-  infiniteNotes: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-        noteType: z.string().optional(),
-        limit: z.number().optional(),
-        cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
-      })
-    )
-    .query(async ({ input: { limit = 5, userId, noteType, cursor }, ctx }) => {
-      let whereClause:
-        | { userId: string }
-        | { userId: string; noteTypeId: string } = { userId: userId };
-
-      if (noteType) {
-        const noteTypeId = await ctx.prisma.noteType.findFirst({
-          where: { type: noteType },
-          select: { id: true, type: false },
-        });
-        whereClause = { userId: userId, noteTypeId: noteTypeId?.id };
       }
 
       return await getInfiniteNotes({

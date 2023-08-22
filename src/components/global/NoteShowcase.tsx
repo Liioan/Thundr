@@ -42,7 +42,7 @@ const RenderDate = ({ reminderDate }: RenderDateProps) => {
 
   let date: string | undefined;
   if (reminderDate != null) {
-    date = new Date(reminderDate).toLocaleDateString();
+    date = reminderDate;
   }
 
   return (
