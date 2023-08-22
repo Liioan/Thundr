@@ -26,9 +26,28 @@ const RenderNotesList = ({
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
+  const currentNotes = api.note.infiniteCurrentNotes.useInfiniteQuery(
+    inputData,
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
+
   return (
     <>
       <ResponsiveWrapper>
+        {currentNotes.data?.pages[0]?.notes.length ? (
+          <>
+            <Header text={`Today is a day to`} />
+            <InfiniteNoteList
+              notes={currentNotes.data?.pages.flatMap((page) => page.notes)}
+              isError={currentNotes.isError}
+              isLoading={currentNotes.isLoading}
+              hasMore={currentNotes.hasNextPage}
+              fetchNewNotes={currentNotes.fetchNextPage}
+            />
+          </>
+        ) : null}
         {pinnedNotes.data?.pages[0]?.notes.length ? (
           <>
             <Header text={`Pinned ${headerText}`} />

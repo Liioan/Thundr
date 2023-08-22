@@ -165,10 +165,10 @@ export const noteRouter = createTRPCRouter({
       const today = new Date().toLocaleDateString();
 
       let whereClause:
-        | { userId: string; date: string }
-        | { userId: string; date: string; noteTypeId: string } = {
+        | { userId: string; reminderDate: string }
+        | { userId: string; reminderDate: string; noteTypeId: string } = {
         userId: userId,
-        date: today,
+        reminderDate: today,
       };
 
       if (noteType) {
@@ -178,7 +178,7 @@ export const noteRouter = createTRPCRouter({
         });
         whereClause = {
           userId: userId,
-          date: today,
+          reminderDate: today,
           noteTypeId: noteTypeId?.id,
         };
       }
