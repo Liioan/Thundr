@@ -207,7 +207,9 @@ const Nav = () => {
           <Link
             href={"/docs"}
             className="opacity-50"
-            onClick={() => setIsMenuOpened(false)}
+            onClick={() => {
+              !isDesktop && setIsMenuOpened(false);
+            }}
           >
             docs
           </Link>
