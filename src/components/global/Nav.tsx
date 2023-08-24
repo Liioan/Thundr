@@ -158,51 +158,61 @@ const Nav = () => {
       <Overlay
         condition={isMenuOpened}
         zIndex="z-30"
-        className="md:max-w-sm lg:border-r-2 lg:border-foreground-light lg:dark:border-foreground-dark"
+        className="flex justify-between pb-[25px] md:max-w-sm lg:border-r-2 lg:border-foreground-light lg:dark:border-foreground-dark"
       >
-        <ThemeSwitch />
-        {session != null ? (
-          <div className="flex flex-col gap-[50px]">
-            <div className="relative flex flex-col gap-[10px] after:absolute after:-bottom-[25px] after:h-[4px] after:w-full after:rounded-full after:bg-accent-light after:content-[''] dark:after:bg-accent-dark">
-              {links.map((link) => (
-                <NavLink
-                  href={link.path}
-                  key={link.path}
-                  className="text-big text-text-light transition-colors duration-200 dark:text-text-dark"
-                  onClickEvent={() => {
-                    !isDesktop && setIsMenuOpened(false);
-                  }}
-                >
-                  {link.text}
-                </NavLink>
-              ))}
+        <div className="flex flex-col">
+          <ThemeSwitch />
+          {session != null ? (
+            <div className="flex flex-col gap-[50px]">
+              <div className="relative flex flex-col gap-[10px] after:absolute after:-bottom-[25px] after:h-[4px] after:w-full after:rounded-full after:bg-accent-light after:content-[''] dark:after:bg-accent-dark">
+                {links.map((link) => (
+                  <NavLink
+                    href={link.path}
+                    key={link.path}
+                    className="text-big text-text-light transition-colors duration-200 dark:text-text-dark"
+                    onClickEvent={() => {
+                      !isDesktop && setIsMenuOpened(false);
+                    }}
+                  >
+                    {link.text}
+                  </NavLink>
+                ))}
+              </div>
+              <button
+                onClick={() => void signOut()}
+                className="self-start text-big text-danger-light dark:text-danger-dark"
+              >
+                Log out
+              </button>
             </div>
-            <button
-              onClick={() => void signOut()}
-              className="self-start text-big text-danger-light dark:text-danger-dark"
-            >
-              Log out
-            </button>
-          </div>
-        ) : (
-          <div className="flex h-3/4 items-center justify-center">
-            <span className="text-big text-text-light dark:text-text-dark">
-              Log in to see more
-            </span>
-          </div>
-        )}
-        <a
-          href="https://github.com/Liioan/Thundr"
-          className="absolute bottom-[25px] left-[25px]"
-        >
-          <Image
-            src={"/github.svg"}
-            width={30}
-            height={30}
-            alt="github logo"
-            className="h-7 w-7 opacity-50 dark:invert"
-          />
-        </a>
+          ) : (
+            <div className="flex h-3/4 items-center justify-center">
+              <span className="text-big text-text-light dark:text-text-dark">
+                Log in to see more
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex w-full items-center justify-between">
+          <a href="https://github.com/Liioan/Thundr" className="">
+            <Image
+              src={"/github.svg"}
+              width={30}
+              height={30}
+              alt="github logo"
+              className="h-7 w-7 opacity-50 dark:invert"
+            />
+          </a>
+          <Link
+            href={"/docs"}
+            className="opacity-50"
+            onClick={() => setIsMenuOpened(false)}
+          >
+            docs
+          </Link>
+          <span></span>
+        </div>
       </Overlay>
     </>
   );
