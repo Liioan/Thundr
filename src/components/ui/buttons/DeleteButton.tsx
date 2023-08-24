@@ -23,7 +23,7 @@ const DeleteButton = ({ id }: DeleteButtonProps) => {
 
   return (
     <button
-      className="flex h-8 w-8 items-center justify-center rounded-full bg-danger-light dark:bg-danger-dark"
+      className="flex h-8 w-8 items-center justify-center rounded-full bg-danger-light opacity-80 transition-opacity duration-200 hover:opacity-100 dark:bg-danger-dark"
       onClick={() => {
         deleteNote.mutate({ noteId: id });
       }}

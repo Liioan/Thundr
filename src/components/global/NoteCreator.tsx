@@ -274,8 +274,10 @@ const NoteCreator = () => {
             <div className="mt-5 grid grid-cols-3 gap-2">
               <button
                 className={` ${
-                  isFirstStep ? "opacity-50" : "opacity-100"
-                } flex h-8 w-8 items-center justify-center rounded-full bg-primary-light transition-colors duration-200 dark:bg-primary-dark`}
+                  isFirstStep
+                    ? "opacity-50"
+                    : "opacity-100 hover:bg-accept-light dark:hover:bg-accept-dark"
+                } flex h-8 w-8 items-center justify-center rounded-full bg-primary-light transition-colors duration-200  dark:bg-primary-dark `}
                 disabled={isFirstStep}
                 onClick={back}
                 type="button"
@@ -284,7 +286,7 @@ const NoteCreator = () => {
               </button>
 
               <button
-                className="min-w-min rounded-full bg-accent-light px-3 text-center text-small font-medium text-text-light dark:bg-accent-dark"
+                className="min-w-min rounded-full bg-accent-light px-3 text-center text-small font-medium text-text-light transition-colors duration-200 hover:bg-danger-light dark:bg-accent-dark dark:hover:bg-danger-dark"
                 type="button"
                 onClick={() => {
                   setIsNoteCreatorOpen(false);
@@ -295,7 +297,7 @@ const NoteCreator = () => {
                 cancel
               </button>
               <button
-                className={`flex h-8 items-center justify-center justify-self-end rounded-full bg-primary-light transition-all duration-200 disabled:opacity-50 dark:bg-primary-dark
+                className={`flex h-8 items-center justify-center justify-self-end rounded-full bg-primary-light transition-all duration-200 hover:bg-accept-light disabled:opacity-50 dark:bg-primary-dark dark:hover:bg-accept-dark
                 ${isLastStep ? "w-auto px-3" : "w-8"}`}
                 type="submit"
                 disabled={createNote.isLoading}
@@ -323,7 +325,7 @@ export const OpenNoteCreatorButton = () => {
 
   return (
     <button
-      className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light dark:bg-accept-dark"
+      className="fixed bottom-[25px] right-[25px] z-10 flex h-auto w-auto items-center justify-center gap-2 rounded-full bg-accept-light px-3 text-medium text-text-light transition-colors duration-200 hover:bg-primary-light dark:bg-accept-dark dark:hover:bg-primary-dark"
       onClick={() => setIsNoteCreatorOpen(true)}
     >
       <IoMdAdd className="text-2xl text-text-light" />

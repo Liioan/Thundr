@@ -32,7 +32,7 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
             exit={{ rotate: "180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <IoMdMenu className="text-4xl text-primary-light dark:text-primary-dark" />
+            <IoMdMenu className="text-4xl text-primary-light transition-colors duration-200 hover:text-accept-light dark:text-primary-dark dark:hover:text-accept-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -45,7 +45,7 @@ const MenuButton = ({ isMenuOpened, setIsMenuOpened }: MenuButtonProps) => {
             exit={{ rotate: "-180deg", opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <IoMdClose className="text-4xl text-primary-light dark:text-primary-dark" />
+            <IoMdClose className="text-4xl text-primary-light transition-colors duration-200 hover:text-danger-light dark:text-primary-dark dark:hover:text-danger-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -169,7 +169,7 @@ const Nav = () => {
                   <NavLink
                     href={link.path}
                     key={link.path}
-                    className="text-big text-text-light transition-colors duration-200 dark:text-text-dark"
+                    className="text-big text-text-light transition-colors duration-200 hover:text-primary-light dark:text-text-dark dark:hover:text-primary-dark"
                     onClickEvent={() => {
                       !isDesktop && setIsMenuOpened(false);
                     }}

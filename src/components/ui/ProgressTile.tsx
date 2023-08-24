@@ -22,8 +22,8 @@ const ProgressTile = ({
       <button
         className={`h-full w-full rounded-15 text-3xl transition-colors duration-200 ${
           isFinished
-            ? "bg-accept-light text-text-light dark:bg-accept-dark "
-            : "border-2 border-accent-light text-text-light dark:border-accent-dark dark:text-text-dark"
+            ? "bg-accept-light text-text-light transition-colors duration-200 hover:bg-accent-light dark:bg-accept-dark dark:hover:bg-accent-dark"
+            : "border-2 border-accent-light text-text-light hover:border-accept-dark dark:border-accent-dark dark:text-text-dark dark:hover:border-accept-dark"
         }`}
         disabled={disabled}
         onClick={handleClick}

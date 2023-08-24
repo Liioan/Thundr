@@ -27,7 +27,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            <GoBookmarkFill className="text-2xl font-light text-primary-light dark:text-primary-dark" />
+            <GoBookmarkFill className="du text-2xl font-light text-primary-light transition-colors duration-200 hover:text-accept-light dark:text-primary-dark dark:hover:text-accept-dark" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -40,7 +40,7 @@ const PinSwitch = ({ toggled, onClickEvent }: PinSwitchProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            <GoBookmark className="text-2xl font-light text-secondary-light dark:text-secondary-dark" />
+            <GoBookmark className="du text-2xl font-light text-secondary-light transition-colors duration-200 hover:text-accept-light dark:text-secondary-dark dark:hover:text-accept-dark" />
           </motion.span>
         )}
       </AnimatePresence>

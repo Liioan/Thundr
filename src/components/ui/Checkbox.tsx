@@ -11,7 +11,7 @@ const Checkbox = ({ toggled }: CheckboxProps) => {
       className={`flex h-6 w-6 items-center justify-center rounded-full transition-colors duration-200 ${
         toggled
           ? "border-accept-light bg-accept-light dark:border-accept-dark dark:bg-accept-dark"
-          : "border-2 border-primary-light dark:border-primary-dark"
+          : "border-2 border-primary-light hover:border-accept-light dark:border-primary-dark dark:hover:border-accept-dark"
       }`}
     >
       <AnimatePresence>
