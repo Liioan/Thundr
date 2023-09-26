@@ -3,6 +3,7 @@ import { api } from "~/utils/api";
 import Header from "../ui/Header";
 import { ResponsiveWrapper } from "../ui/layout/ResponsiveWrapper";
 import InfiniteNoteList from "./InfiniteNoteList";
+import { useMemo } from "react";
 
 interface RenderNotesListProps {
   noteType?: string;
@@ -13,6 +14,8 @@ const RenderNotesList = ({
   noteType = undefined,
   headerText,
 }: RenderNotesListProps) => {
+  const today = useMemo(() => new Date(), []);
+
   const { data: sessionData } = useSession();
   if (!sessionData) return null;
 
@@ -27,7 +30,7 @@ const RenderNotesList = ({
   });
 
   const currentNotes = api.note.infiniteCurrentNotes.useInfiniteQuery(
-    inputData,
+    { ...inputData, date: today },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }

@@ -12,6 +12,8 @@ import usePopup from "~/hooks/usePopup";
 import LoadingScreen from "~/components/global/LoadingScreen";
 
 const Home: NextPage = () => {
+
+  
   const { openPopup } = usePopup();
   useHotkeys([
     ["ctrl+shift+v", () => openPopup("vovota is a big pepega", false)],

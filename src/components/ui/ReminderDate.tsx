@@ -28,25 +28,27 @@ const ReminderDate = ({
       >
         {noteReminderDate}
       </span>
-      <label
-        htmlFor="date"
-        onClick={openDatePicker}
-        className="flex cursor-pointer items-center gap-2 text-text-light dark:text-text-dark"
-      >
-        change date
-        <IoMdCalendar className="text-[25px] text-accent-light dark:text-accent-dark" />
-      </label>
-      <input
-        type="date"
-        ref={dateRef}
-        className="absolute z-0 w-0 cursor-default self-center opacity-0"
-        onChange={(e) =>
-          setNoteReminderDate(new Date(e.target.value).toLocaleDateString())
-        }
-      />
+      <div>
+        <label
+          htmlFor="date"
+          onClick={openDatePicker}
+          className="flex cursor-pointer items-center gap-2 text-text-light dark:text-text-dark"
+        >
+          change date
+          <IoMdCalendar className="text-[25px] text-accent-light dark:text-accent-dark" />
+        </label>
+        <input
+          type="date"
+          ref={dateRef}
+          className="absolute z-0 w-0 cursor-default self-center opacity-0"
+          onChange={(e) =>
+            setNoteReminderDate(new Date(e.target.value).toLocaleDateString())
+          }
+        />
+      </div>
     </div>
   ) : (
-    <div className=" flex items-center justify-between rounded-5 bg-foreground-light px-4 py-3 dark:bg-foreground-dark">
+    <div className=" flex items-center rounded-5 bg-foreground-light px-4 py-3 dark:bg-foreground-dark">
       <label
         htmlFor="date"
         onClick={openDatePicker}
@@ -58,7 +60,7 @@ const ReminderDate = ({
       <input
         type="date"
         ref={dateRef}
-        className="w-0 cursor-default self-center opacity-0"
+        className="w-0 cursor-default self-start opacity-0"
         onChange={(e) =>
           setNoteReminderDate(new Date(e.target.value).toLocaleDateString())
         }

@@ -159,41 +159,44 @@ export const noteRouter = createTRPCRouter({
   infiniteCurrentNotes: protectedProcedure
     .input(
       z.object({
+        date: z.date(),
         userId: z.string(),
         noteType: z.string().optional(),
         limit: z.number().optional(),
         cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
       })
     )
-    .query(async ({ input: { limit = 5, userId, noteType, cursor }, ctx }) => {
-      const today = new Date().toLocaleDateString();
+    .query(
+      async ({ input: { date, limit = 5, userId, noteType, cursor }, ctx }) => {
+        const today = date.toLocaleDateString();
 
-      let whereClause:
-        | { userId: string; reminderDate: string }
-        | { userId: string; reminderDate: string; noteTypeId: string } = {
-        userId: userId,
-        reminderDate: today,
-      };
-
-      if (noteType) {
-        const noteTypeId = await ctx.prisma.noteType.findFirst({
-          where: { type: noteType },
-          select: { id: true, type: false },
-        });
-        whereClause = {
+        let whereClause:
+          | { userId: string; reminderDate: string }
+          | { userId: string; reminderDate: string; noteTypeId: string } = {
           userId: userId,
           reminderDate: today,
-          noteTypeId: noteTypeId?.id,
         };
-      }
 
-      return await getInfiniteNotes({
-        limit,
-        ctx,
-        cursor,
-        whereClause: whereClause,
-      });
-    }),
+        if (noteType) {
+          const noteTypeId = await ctx.prisma.noteType.findFirst({
+            where: { type: noteType },
+            select: { id: true, type: false },
+          });
+          whereClause = {
+            userId: userId,
+            reminderDate: today,
+            noteTypeId: noteTypeId?.id,
+          };
+        }
+
+        return await getInfiniteNotes({
+          limit,
+          ctx,
+          cursor,
+          whereClause: whereClause,
+        });
+      }
+    ),
 
   infinitePinnedNotes: protectedProcedure
     .input(

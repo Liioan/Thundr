@@ -41,6 +41,7 @@ const NotePage: NextPage = () => {
   });
 
   const handleTogglePin = () => {
+    if (isNotePinned === note.data?.pinnedByMe) return;
     togglePin.mutate({ noteId: note.data?.id ?? "" });
   };
 
