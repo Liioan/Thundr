@@ -186,6 +186,7 @@ const RenderProgressTracker = ({ content }: { content: progressTracker }) => {
         {truncatedContent?.map((day, i) => (
           <ProgressTile
             key={i}
+            showcase
             dayNumber={day.dayNumber}
             isFinished={day.isFinished}
             disabled

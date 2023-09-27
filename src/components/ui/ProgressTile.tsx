@@ -3,6 +3,7 @@ interface ProgressTileProps {
   isFinished: boolean;
   onClickEvent?: () => void;
   disabled?: boolean;
+  showcase?: boolean;
 }
 
 const ProgressTile = ({
@@ -10,6 +11,7 @@ const ProgressTile = ({
   isFinished,
   onClickEvent,
   disabled = false,
+  showcase = false,
 }: ProgressTileProps) => {
   const handleClick = () => {
     if (onClickEvent) {
@@ -18,7 +20,7 @@ const ProgressTile = ({
   };
 
   return (
-    <li className="h-[70px] w-[70px]">
+    <li className={`aspect-square ${showcase ? "w-[50px]" : "w-[70px]"}`}>
       <button
         className={`h-full w-full rounded-15 text-3xl transition-colors duration-200 ${
           isFinished
